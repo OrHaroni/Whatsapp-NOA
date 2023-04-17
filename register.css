@@ -1,0 +1,22 @@
+.background {
+    background-size: cover;
+    height: 100vh;
+  }
+  .upper-bg{
+    background-color:#aa96da;
+    height: 100px;
+    width: 100%;
+    position: absolute;
+}
+.form-container{
+    background-color: #ffffd2;
+    top:10%;
+    left: 15%;
+    position:absolute;
+    width: 70%;
+    height: 75%;
+}
+.logo-img {
+    max-width: 1500px;
+    max-height: 1500px;
+  }
