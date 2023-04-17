@@ -1,0 +1,83 @@
+
+.body{
+    
+    background-color : #c5fad5;
+    background: linear-gradient(to bottom right, #f2fac5,#9dff00,#00ff2a,#2bff00, #00ff55, #00ff9d);
+    
+/*
+  background-image: repeating-linear-gradient(
+    45deg,
+    #ff0000,
+    #faebc5 10px,
+    #e1ff00 10px,
+    #00ff2a 10px,
+    #ff0000 10px
+  );
+    */
+} 
+.form-container{
+    padding-left: 20px;
+    padding-top: 15px;
+    background-color: #ffffd2;
+    top:5%;
+    left: 15%;
+    position:absolute;
+    width: 70%;
+    height: 20%;
+}
+.textForm{
+    top:5%;
+    left: 15%;
+
+}
+.container {
+	margin-top: 150px;
+    margin-right: 100px;
+	text-align: center;
+	padding: 20px;
+	border-radius: 50px;
+	background: #5D6D7E;  
+	background: -webkit-linear-gradient(to right, #5D6D7E, #364F6B);  
+	background: linear-gradient(to right, #5D6D7E, #364F6B);
+}
+
+h1 {
+	font-size: 6rem;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-shadow: 5px 5px #000000;
+	display: inline-block;
+	padding: 30px 50px;
+	border-radius: 50px;
+	background-color: #F7DC6F;
+}
+
+.half-moon {
+	display: inline-block;
+	background-color: #364F6B;
+	padding: 20px 40px;
+	border-radius: 100px 0 0 100px;
+	transform: skew(-10deg);
+	text-transform: uppercase;
+    font-size: 100px;
+
+}
+
+.rainbow {
+	background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+	-webkit-background-clip: text;
+	background-clip: text;
+    font-size: 100px;
+
+	color: transparent;
+}
+.logo {
+    display: inline-block;
+    vertical-align:mide;
+    margin-left: 10px;
+    width: 200px;
+    height: 200px;
+    background: white; 
+    mix-blend-mode: multiply; 
+  }
+  
