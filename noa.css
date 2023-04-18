@@ -25,6 +25,28 @@
   width: 10%;
   height: 50%; 
 }
+.regbut{
+    background-color: #00887a;
+    color: #ffffff;
+    border: 0ch;
+    
+}
+.regbut:hover{
+    background-color: #000000;
+}
+.in-register{
+    height: 550px; 
+    max-width: 750px;
+}
+
+.reg-head{
+    font-size: 25px;
+    letter-spacing: 2px;
+    word-spacing: 4px;
+    color: #000000;
+    font-weight: normal;
+    font-style: italic;
+}
 .btn-logout{
     position: absolute;
     top: 0;
