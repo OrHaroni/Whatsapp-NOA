@@ -3,36 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="stylesheet" type="text/css" href="register.css">
+    <title>WhatsApp-NOA</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-</head>
+    <link rel="stylesheet" type="text/css" href="noa.css">
   </head>
-  <body style="background-color: #c5fad5;">
-    <div class="upper-bg"></div>
-    <div class="background d-flex justify-content-center align-items-center">
-        <div class="form-container p-4 rounded" style="height: 60%;;">
-          <form style="position: relative; top: 100xp;">
-            <div class="mb-3">
-              <label for="exampleFormControlInput1" class="form-label">Email address</label>
-              <input type="Username" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
-            </div>
-            <label for="inputPassword5" class="form-label">Password</label>
-                <input type="password" id="inputPassword5" class="form-control" aria-labelledby="passwordHelpBlock">
-                <div class="mb-3">
-                    <br>
-                    <label for="exampleFormControlInput1" class="form-label">Display Name</label>
-                    <input type="Display Name" class="form-control" id="exampleFormControlInput1">
-                  </div>
-                  <div class="mb-3">
-                    <label for="formFile" class="form-label">Picture</label>
-                    <input class="form-control" type="file" id="formFile">
-                  </div>
-                  <div class="mb-3">
-            <button type="submit" class="btn btn-primary">Register</button>
-          </form>
-        </div>
-      </div>
  
+  <body class="body">
+    <div class="upper-bg">
+      <img src="LOGO.png" class="logo"></img>
+    </div>
+    <div class="background d-flex justify-content-center align-items-center">
+      <div class="form-container p-4 rounded in-register">
+        <header class="reg-head">Create an account</header><br>
+        <label for="exampleFormControlInput1" class="form-label">Email address</label><br>
+        <input type="Username" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com"><br>
+        <label for="inputPassword5" class="form-label">Password</label><br>
+        <input type="password" id="inputPassword5" class="form-control" aria-labelledby="passwordHelpBlock"><br>
+        <label for="exampleFormControlInput1" class="form-label">Display Name</label><br>
+        <input type="Display Name" class="form-control" id="exampleFormControlInput1"><br>
+        <label for="formFile" class="form-label">Picture</label><br>
+        <input class="form-control" type="file" id="formFile"><br>
+        <button type="submit" class="btn btn-primary regbut">Register</button>
+        <button type="submit" class="btn btn-primary regbut">I already have an account</button>
+      </div>
+    </div>
   </body>
 </html>
