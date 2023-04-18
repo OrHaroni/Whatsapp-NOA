@@ -8,18 +8,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body class="body">
-   <div class="upper-bg"></div>
-   <form class="form-container">
-      <label for="username">Username:</label>
-     <input type="text" id="username" name="username" required><br><br>
-     <label for="password">Password:</label>
-     <input type="password" id="password" name="password" required><br><br>
-     <input type="submit" value="Login">
-     <p>Not registered? <a href="#">Click here </a> to sign up</p>
-     <div class="container">
-      <h1 class="rainbow half-moon">Welcome to WhatsApp Noa</h1>
-      <img src="C:\Users\Naor\Downloads\noa.jpeg" alt="Logo" class="logo">
+   <div class="upper-bg">
+    <img src="LOGO.png" class="logo"></img>
+   </div>
+  </div>
+  <div class="background d-flex justify-content-center align-items-center">
+    <div class="form-container p-4 rounded in-Login">
+      <header class="reg-head">Login</header><br>
+      <label for="exampleFormControlInput1" class="form-label">Username</label><br>
+      <input type="Display Name" class="form-control" id="exampleFormControlInput1"><br>
+      <label for="inputPassword5" class="form-label">Password</label><br>
+      <input type="password" id="inputPassword5" class="form-control" aria-labelledby="passwordHelpBlock"><br>
+      <button type="submit" class="btn btn-primary regbut">Login</button>
+      <button type="submit" class="btn btn-primary regbut">Not register? Click here to sign up</button>
     </div>
-   </form>
+   
  </body>
 </html>
