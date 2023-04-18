@@ -1,0 +1,32 @@
+.upper-bg{
+    background-color:#ffccbc;
+    height: 100px;
+    width: 100%;
+}
+.form-container{
+    background-color: #ffffff;
+    top:10%;
+    left: 15%;
+    position:absolute;
+    width: 70%;
+    height: 75%;
+}
+.body{
+    background-color: #d3e3fc;
+}
+.chat-container{
+    position: relative;
+     width: 30%;
+     height: 100%;
+     float: left;
+}
+.logo{
+  position: relative;
+  width: 10%;
+  height: 50%; 
+}
+.btn-logout{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
