@@ -5,7 +5,7 @@
 }
 .form-container{
     background-color: #ffffff;
-    top:5%;
+    top:10%;
     left: 15%;
     position:absolute;
     width: 70%;
@@ -38,6 +38,11 @@
     height: 550px; 
     max-width: 750px;
 }
+.in-Login{
+    height: 350px; 
+    max-width: 750px;
+}
+
 
 .reg-head{
     font-size: 25px;
@@ -46,9 +51,4 @@
     color: #000000;
     font-weight: normal;
     font-style: italic;
-}
-.btn-logout{
-    position: absolute;
-    top: 0;
-    right: 0;
 }
