@@ -13,29 +13,78 @@
             <button id="logout-btn" type="button" class="btn btn-danger btn-logout">Logout</button>
             <img src="LOGO.png" class="logo"></img>
         </div>
-        <div id="main-chat" class=" form-container p-4 rounded" style="display: flex;">
-            <div id="contacts-list" class="chat-container">
-                <header id="contacts-header" style="position: relative;height: 10%;">
-                    <div style="position: relative; background-color: #F5F5F5; width: 50%; height: 100%;float: left;border-width: 1px; border-style: solid;
-                    border-color: black;border-bottom: none; border-right: none;">
-                        <img src="user-profile.png" class="rounded-circle" style="position: relative; top: 20%; left: 7%;width: 25px; height: 25px;"></img>    
+        <div id="main-chat" class=" form-container p-4 rounded in-chat">
+            <div id="contacts-list" class="contacts-list">
+                <header id="contacts-header" class="user-in-chat">
+                    <div id="user-in-chat-left">
+                        <img src="user-profile.png" class="rounded-circle profile-pic-in-div"></img>    
                     </div>
-                    <div style="position: relative; background-color: #F5F5F5; width: 50%; height: 100%;float: left;border-width: 1px; border-style: solid;
-                    border-color: black;border-bottom: none; border-left: none;">
-                        <img src="add-chat.png" class="rounded-circle" style="position: relative;top: 20%; left:78%; width: 15px; height: 15px;"></img>
+                    <div id="user-in-chat-right">
+                        <img type="button" src="add-chat.png" alt="image" id="add-btn" class="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal"></img>
+                        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="imageModalLabel">Image</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <img src="path/to/image.jpg" alt="Image" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                     </div>
                 </header> 
-                <div id="chat-list" style="position: relative; border: 1px solid black; height:90%;">
-                    <div id="chat-example" style="position: relative; height:15%;border: 1px solid black;border-top: none;border-left: none;border-right: none;">
-                    <img src="user-profile.png" class="rounded-circle" style="position: relative; top: 30%; left: 3%;width: 25px; height: 25px;"></img>
-                    <p style="position: relative; left:25%;"">name example</p>
-                    </div>
-                </div>           
+                <ul class="list-unstyled chat-list mb-0" id="chat-list">
+                    <li class="clearfix chat-tag" id="chat-example">
+                        <div>
+                            <img src="user-profile.png" class="rounded-circle profile-pic-in-div"></img>
+                        </div>
+                        <div>
+                            <span class="chat-tag-label">Name example</span>
+                        </div>
+                        <div>
+                            <span class="chat-tag-label">Date and Time</span>
+                        </div>
+                    </li>
+                    <li class="clearfix chat-tag" id="chat-example">
+                        <div>
+                            <img src="user-profile.png" class="rounded-circle profile-pic-in-div"></img>
+                        </div>
+                        <div>
+                            <span class="chat-tag-label">Name example</span>
+                        </div>
+                        <div>
+                            <span class="chat-tag-label">Date and Time</span>
+                        </div>
+                    </li>
+                </ul>           
             </div>
-            <div id="chat" class="chat-container" style="background-color: #ffffff; width: 70%;">
-                <div style="position: relative; height: 10%; border: 1px solid black; border-left: none; border-bottom: none;">Name of chat</div>
-                <div style="position: relative; height: 85%; background-color: #77a6f7; border: 1px solid black; border-bottom: none;border-left: none;">Active chat</div>
-                <div style="position: relative; height: 5%; border: 1px solid black; border-left: none;">input</div>
+            <div id="chat" class="chat-container">
+                <div id="current-chat-info">
+                    <img src="user-profile.png" class="rounded-circle profile-pic-in-div"></img>
+                    <span id="chat-name">name example</span>
+                </div>
+                <div id="active-chat" class="chat-history">
+                    <ul class="m-b-0">
+                        <li id="first-message-example" class="clearfix">
+                            <div class="message-data text-right">
+
+                            </div>
+                            <div class="message-data-time">
+
+                            </div>
+                        </li>
+                </div>
+                <div id="send-area">
+                    <div id="chat-input" class="input-group">
+                        <input id="textbox-input" type="text" class="form-control" placeholder="New message here...">
+                        <div class="input-group-append">
+                          <button id="send-btn" class="btn btn-outline-secondary our-btn" type="button">Send</button>
+                        </div>
+                      </div>
+                    </div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
