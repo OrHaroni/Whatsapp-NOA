@@ -43,7 +43,7 @@
     background-color: #000000;
 }
 .in-register{
-    height: 550px; 
+    height: 602px; 
     max-width: 750px;
 }
 .in-chat{
@@ -198,9 +198,24 @@ li > div{
 #send-btn{
     left:50%;
 }
-  .modal-dialog {
-    top: 35%;
+.modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
   }
+  
+  .modal-dialog {
+    margin: 0 auto;
+    max-width: 800px;
+  }
+  
+.modal-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
 #active-chat-list {
     position: absolute;
     bottom: 0;
@@ -220,3 +235,4 @@ li > div{
 .recieve {
     transform: rotate(180deg);
 }
+  
