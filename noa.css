@@ -25,17 +25,17 @@
   width: 10%;
   height: 50%; 
 }
-.regbut{
+.our-btn{
     background-color: #00887a;
     color: #ffffff;
     border: 0ch;
     
 }
-.regbut:hover{
+.our-btn:hover{
     background-color: #000000;
 }
 .in-register{
-    height: 550px; 
+    height: 602px; 
     max-width: 750px;
 }
 
@@ -52,3 +52,103 @@
     top: 0;
     right: 0;
 }
+.user-in-chat{
+    position: relative;
+    height: 10%;
+}
+#user-in-chat-left{
+    position: relative;
+    background-color: gray;
+    width: 50%;
+    height: 100%;
+    float: left;
+    border: 1px solid black;
+    border-bottom: none;
+    border-right: none;
+}
+#user-in-chat-right{
+    position: relative;
+    background-color: gray;
+    width: 50%;
+    height: 100%;
+    float: left;
+    border: 1px solid black;
+    border-bottom: none;
+    border-left: none;
+}
+#chat-list{
+    position: relative;
+    border: 1px solid black;
+    height: 90%;
+}
+.chat-tag{
+    position: relative;
+    height: 15%;
+    border: 1px solid black;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+.profile-pic-in-div{
+    position: relative;
+    top:30%;
+    left:5%;
+    width: 25px;
+    height: 25px;
+    float: left;
+}
+#add-btn{
+    position: relative;
+    top:30%;
+    left:78%;
+    width: 25px;
+    height: 25px;
+    float: left;
+}
+li > div{
+float: left;
+}
+li.chat-tag:nth-child(1) {
+position: relative;
+top: 20%;
+left: 5%;
+width: 10%;
+height: 50%;
+}
+li.chat-tag:nth-child(2) {
+    position: relative;
+    top: 20%;
+    left: 5%;
+    width: 40%;
+    height: 50%;
+    }
+li.chat-tag:nth-child(3) {
+    position: relative;
+    top: 20%;
+    left: 5%;
+    width: 40%;
+    height: 50%;
+    }
+
+    #current-chat-info{
+        position: relative;
+        height: 10%;
+        border: 1px solid black;
+        border-left: none;
+        border-bottom: none;
+    }
+    #active-chat{
+        position: relative;
+        height: 80%;
+        background-color: #77a6f7;
+        border: 1px solid black;
+        border-left: none;
+        border-bottom: none;
+    }
+    #send-area{
+        position: relative;
+        height: 10%;
+        border: 1px solid black;
+        border-left: none;
+    }
+    
