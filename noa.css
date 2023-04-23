@@ -198,24 +198,9 @@ li > div{
 #send-btn{
     left:50%;
 }
-.modal-content {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-  }
-  
   .modal-dialog {
-    margin: 0 auto;
-    max-width: 800px;
+    top: 35%;
   }
-  
-.modal-body img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
-}
-
 #active-chat-list {
     position: absolute;
     bottom: 0;
@@ -235,4 +220,3 @@ li > div{
 .recieve {
     transform: rotate(180deg);
 }
-  
