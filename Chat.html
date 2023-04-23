@@ -38,9 +38,9 @@
                     </div>
                 </header> 
                 <ul class="list-unstyled chat-list mb-0" id="chat-list">
-                    <li class="clearfix chat-tag" id="chat-example">
+                    <li class=" chat-tag" id="chat-example">
                         <div>
-                            <img src="pictures\or-haroni-profile.jpg" class="rounded-circle profile-pic-in-div"></img>
+                            <img src="pictures\or-haroni-profile.jpg" class="rounded-circle chat-profile-pic"></img>
                         </div>
                         <div>
                             <span class="chat-tag-label">Or The King</span>
@@ -49,9 +49,9 @@
                             <span class="chat-tag-label">November 16th, 1999 12:30 PM UTC</span>
                         </div>
                     </li>
-                    <li class="clearfix chat-tag" id="chat-example" style="background-color: gray; font-weight: bold;">
+                    <li class="chat-tag" id="chat-example" style="background-color: gray; font-weight: bold;">
                         <div>
-                            <img src="pictures\Three-musketeers.jpg" class="rounded-circle profile-pic-in-div"></img>
+                            <img src="pictures\Three-musketeers.jpg" class="rounded-circle chat-profile-pic"></img>
                         </div>
                         <div>
                             <span class="chat-tag-label">The three musketeers</span>
@@ -68,15 +68,26 @@
                     <span id="chat-name">The three musketeers</span>
                 </div>
                 <div id="active-chat" class="chat-history">
-                    <ul class="m-b-0">
+                    <ul id="active-chat-list" class="list-unstyled chat-list mb-0">
                         <li id="first-message-example" class="clearfix">
-                            <div class="message-data text-right">
-
-                            </div>
-                            <div class="message-data-time">
-
-                            </div>
+                            <img src="pictures\naor-nahman-profile.jpg" class="rounded-circle profile-pic-in-div">
+                            <div class="card text-white bg-primary mb-3" style="max-width: 18rem; left:10%">
+                                <div class="card-body">
+                                  <p class="card-text">hey</p>
+                                </div>
+                              </div>
                         </li>
+                        <li>
+                            <img src="pictures\or-haroni-profile.jpg" class="rounded-circle sender-pic-in-div">
+                            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem; float:right;right: 10%;">
+                                <div class="card-body">
+                                  <h5 class="card-title">Or Haroni</h5>
+                                  <p class="card-text">Hello guys</p>
+                                </div>
+                              </div>
+                        </li>
+                    </ul>
+                        
                 </div>
                 <div id="send-area">
                     <div id="chat-input" class="input-group">
