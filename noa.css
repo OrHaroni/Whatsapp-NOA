@@ -186,3 +186,15 @@ li > div{
   .modal-dialog {
     top: 35%;
   }
+  .no-underline {
+    text-decoration: none;
+  }
+  .in-Login{
+    height: 350px; 
+    max-width: 750px;
+}
+a.no-underline {
+    text-decoration: none;
+  }
+  
+ 
