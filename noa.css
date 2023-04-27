@@ -107,10 +107,25 @@
 .profile-pic-in-div{
     position: relative;
     top:30%;
-    left:5%;
-    width: 25px;
-    height: 25px;
+    left:20px;
+    width: 28px;
+    height: 28px;
     float: left;
+}
+.chat-profile-pic{
+    position: relative;
+    top:30%;
+    width: 28px;
+    height: 28px;
+    float: left;
+}
+.sender-pic-in-div{
+    position: relative;
+    top:30%;
+    right:5%;
+    width: 28px;
+    height: 28px;
+    float: right;
 }
 #add-btn{
     position: relative;
@@ -160,7 +175,7 @@ li > div{
 #active-chat{
     position: relative;
     height: 80%;
-    background-color: #77a6f7;
+    background: linear-gradient(to top, #3f87a6, #ebf8e1, #f69d3c);
     border: 1px solid black;
     border-left: none;
     border-bottom: none;
@@ -196,5 +211,22 @@ li > div{
 a.no-underline {
     text-decoration: none;
   }
-  
- 
+#active-chat-list {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+.message {
+    position: relative;
+}
+.send {
+    float:left;
+
+}
+.recieve {
+    transform: rotate(180deg);
+}
