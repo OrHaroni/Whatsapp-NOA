@@ -230,3 +230,11 @@ a.no-underline {
 .recieve {
     transform: rotate(180deg);
 }
+.prof-pic{
+    position: relative;
+    float: right;
+    right: 22%;
+    height: 18%;
+    bottom: 2%;
+    border: 1px solid black;
+}
