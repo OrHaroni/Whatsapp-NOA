@@ -32,3 +32,5 @@ function CurrentUser(props) {
             </div></header>
     );
 }
+
+export default CurrentUser;

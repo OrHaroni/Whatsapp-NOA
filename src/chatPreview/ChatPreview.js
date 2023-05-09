@@ -1,6 +1,6 @@
-import './noa.css';
+import '../noa.css';
 
-function ChatPreview({props}) {
+function ChatPreview(props) {
 
 
     return(
@@ -18,3 +18,5 @@ function ChatPreview({props}) {
 
     );
 }
+
+export default ChatPreview;

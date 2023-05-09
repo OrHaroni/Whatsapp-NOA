@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Chat from '../chat/chat';
 import Register from '../register/register';
 import { root } from '../index.js'
+import logo from '../pictures/LOGO.png'
 
 
 
@@ -19,7 +20,7 @@ function Login() {
   return (
     <>
     <div className="upper-bg">
-      <img src="pictures\LOGO.png" className="logo"></img>
+      <img src={logo} className="logo"></img>
   </div>
 
     <div className="background d-flex justify-content-center align-items-center">

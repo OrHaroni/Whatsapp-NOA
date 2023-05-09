@@ -3,6 +3,8 @@ import '../noa.css';
 import Login from '../login/Login';
 import Chat from '../chat/chat';
 import { root } from '../index.js'
+import logo from "../pictures/LOGO.png"
+import default_picture from "../pictures/naor-nahman-profile.jpg"
 
 
 
@@ -18,7 +20,7 @@ function Register() {
   return (
     <>
     <div className="upper-bg">
-      <img src="pictures\LOGO.png" className="logo"></img>
+      <img src={logo} className="logo"></img>
   </div>
 
     <div className="background d-flex justify-content-center align-items-center">
@@ -32,7 +34,7 @@ function Register() {
         <input type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
         <label htmlFor="formFile" className="form-label">Picture</label><br></br>
         <input className="form-control" type="file" id="formFile"></input><br></br>
-        <img src="pictures\naor-nahman-profile.jpg" className="prof-pic"></img>
+        <img src={default_picture} className="prof-pic"></img>
           <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Register</button>
           <button onClick={ClickLogin} type="submit" className="btn btn-primary our-btn">I already have an account</button>
       </div>

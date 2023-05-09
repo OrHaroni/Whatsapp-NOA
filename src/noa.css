@@ -1,3 +1,8 @@
+ul {
+    overflow: auto;
+    overflow-x: hidden;
+  }
+  
 .upper-bg{
     background-color:#ffccbc;
     height: 100px;
@@ -101,8 +106,9 @@
 }
 .chat-tag-label{
     position: relative;
-    top: 30%;
+    top: 4%;
     width: 50%;
+    overflow: hidden;
 }
 .profile-pic-in-div{
     position: relative;
@@ -114,7 +120,8 @@
 }
 .chat-profile-pic{
     position: relative;
-    top:30%;
+    top:4%;
+    right:35%;
     width: 28px;
     height: 28px;
     float: left;
