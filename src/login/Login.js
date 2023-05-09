@@ -1,8 +1,8 @@
-import './noa.css';
+import '../noa.css';
 import React, { useState } from 'react';
-import Chat from './chat';
-import Register from './register';
-import { root } from './index.js'
+import Chat from '../chat/chat';
+import Register from '../register/register';
+import { root } from '../index.js'
 
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Login from './Login';
+import Login from './login/Login';
 import { createRoot } from 'react-dom/client';
 
 const container = document.getElementById('root');

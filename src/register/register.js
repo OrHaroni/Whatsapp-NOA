@@ -1,8 +1,8 @@
 import React from 'react';
-import './noa.css';
-import Login from './Login';
-import Chat from './chat';
-import { root } from './index.js'
+import '../noa.css';
+import Login from '../login/Login';
+import Chat from '../chat/chat';
+import { root } from '../index.js'
 
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import './noa.css';
-import Login from './Login';
-import { root } from './index.js'
+import '../noa.css';
+import Login from '../login/Login';
+import { root } from '../index.js'
 
 
 
