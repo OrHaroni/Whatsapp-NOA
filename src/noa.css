@@ -245,3 +245,13 @@ a.no-underline {
     bottom: 2%;
     border: 1px solid black;
 }
+#have-acc{
+    position: relative;
+    top: 0;
+    left: 1%;
+}
+#not-reg{
+    position: relative;
+    top: 0;
+    left: 1%;
+}

@@ -67,7 +67,7 @@ function Login() {
       <label htmlFor="inputPassword5" className="form-label">Password</label><br></br>
       <input type="password" className="form-control" aria-labelledby="passwordHelpBlock" ref={password}></input><br></br>
       <button onClick={ClickLogin} id="buttonLogin" type="submit" className="btn btn-primary our-btn">Login</button>
-      <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Not register? Click here to sign up</button>
+      <button onClick={ClickRegister} id="not-reg" type="submit" className="btn btn-primary our-btn">Not register? Click here to sign up</button>
     </div>
     </div>
     </>
