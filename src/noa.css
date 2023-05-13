@@ -179,14 +179,7 @@ li > div{
     top:30%;
     font-size: larger;
 }
-#active-chat{
-    position: relative;
-    height: 80%;
-    background: linear-gradient(to top, #3f87a6, #ebf8e1, #f69d3c);
-    border: 1px solid black;
-    border-left: none;
-    border-bottom: none;
-}
+
 #send-area{
     position: relative;
     height: 10%;
@@ -218,7 +211,17 @@ li > div{
 a.no-underline {
     text-decoration: none;
   }
+  #active-chat{
+    overflow-y: scroll;
+    position: relative;
+    height: 80%;
+    background: linear-gradient(to top, #3f87a6, #ebf8e1, #f69d3c);
+    border: 1px solid black;
+    border-left: none;
+    border-bottom: none;
+}
 #active-chat-list {
+    list-style: none;
     position: absolute;
     bottom: 0;
     display: flex;
