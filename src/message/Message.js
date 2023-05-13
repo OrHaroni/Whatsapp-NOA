@@ -1,6 +1,4 @@
-import { useState } from 'react';
-import or_pic from '../pictures/or-haroni-profile.jpg';
-import naor_pic from '../pictures/naor-nahman-profile.jpg';
+
 
   
 

@@ -6,30 +6,30 @@ import { root } from '../index.js'
 import logo from '../pictures/LOGO.png'
 import { useUserList } from '../database/Database.js';
 
+export function isUserExist(userList, name){
+  var output = false;
+  userList.forEach(user => { 
+    if(user.username === name){
+      output = true;
+    }
+  })
+return output;
+};
 
+function isCorrectPass(userList,username, password){
+  var output = false;
+  let user = userList.find((user) => user.username === username);
+  if(user.password === password){
+    output = true;
+  }
+  return output;
+};
 
 function Login() {
 
-  function isUserExist(userList, name){
-    var output = false;
-    userList.forEach(user => { 
-      if(user.username === name){
-        output = true;
-      }
-    })
-  return output;
-  };
 
-  function isCorrectPass(userList,username, password){
-    var output = false;
-    let user = userList.find((user) => user.username === username);
-    if(user.password === password){
-      output = true;
-    }
-    return output;
-  };
 
-  const [userList, addUser, getUserById] = useUserList();
+  const [userList, setUserList, getUserById] = useUserList();
   const username = useRef(null);
   const password = useRef(null);
 

@@ -3,24 +3,18 @@ import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
 import logo from '../pictures/LOGO.png';
-import naor_pic from '../pictures/naor-nahman-profile.jpg';
 import three_pic from '../pictures/Three-musketeers.jpg';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
-import Message, { useMessageList } from '../message/Message.js';
+import Message from '../message/Message.js';
+import { useUserList } from '../database/Database';
+
+
 
 function Chat(props) {
   const ClickLogout = () => {
     root.render(<Login />);
   };
-  const textbox = useRef();
-
-  //Getting the active user by the id
-  const user = props.user;
-
-  //Getting the chat that we want to display by the name of the chat we want to open.
-  const chat = user.chatList[0];
-
   const ClickSend = () => {
     var message = {
       sender: "me",
@@ -31,6 +25,21 @@ function Chat(props) {
     textbox.current.value = '';
     root.render(<Chat user={user} />)
   }
+
+  const [userList, setUserList, getUserById] = useUserList();
+  console.log("This is all users");
+  console.log(userList);
+
+  const textbox = useRef();
+
+  //Getting the active user by the id
+  const user = props.user;
+
+  //Getting the chat that we want to display by the name of the chat we want to open.
+  const chat = user.chatList?.[0];
+  const reversedList = chat.messageList.slice().reverse();
+
+
 
   return (
     <>
@@ -43,9 +52,9 @@ function Chat(props) {
         <div id="contacts-list" className="contacts-list">
           <header id="contacts-header" className="user-in-chat">
             <div id="user-in-chat-left">
-              <img src={naor_pic} className="rounded-circle profile-pic-in-div" />
+              <img src={user.img} className="rounded-circle profile-pic-in-div" />
             </div>
-            <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>Naor Nahman</span>
+            <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.name}</span>
             <div id="user-in-chat-right">
               <img type="button" src={addbtn} alt="image" id="add-btn" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal" />
               <div className="modal fade" id="imageModal" tabIndex={-1} aria-labelledby="imageModalLabel" aria-hidden="true">
@@ -68,9 +77,9 @@ function Chat(props) {
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
-            {user.chatList.map((message) => (
+            {user.chatList ? user.chatList.map((message) => (
               <ChatPreview img={message.img} name={message.name} date={message.date} />
-            ))}
+            )) : null}
           </ul>
         </div>
         <div id="chat" className="chat-container">
@@ -80,9 +89,9 @@ function Chat(props) {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {chat.messageList.reverse().map((message) => (
+              {reversedList ? reversedList.map((message) => (
                 <Message sender={message.sender} messageText={message.messageText} img={message.img} />
-              ))}
+              )) : null}
             </ul>
           </div>
           <div id="send-area">
