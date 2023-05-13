@@ -2,21 +2,6 @@ import { useState } from 'react';
 import or_pic from '../pictures/or-haroni-profile.jpg';
 import naor_pic from '../pictures/naor-nahman-profile.jpg';
 
-
-export const useMessageList = () => {
-    //Declare the list of messages
-    const [messageList, setMessageList] = useState([
-      { sender: 'me', messageText: 'I am a message', img: or_pic },
-      { sender: 'Naor Nahman', messageText: 'Text text text', img: naor_pic }
-    ]);
-  
-    //Adding a message to the list
-    const addMessage = (name, text, img) => {
-      setMessageList([...messageList, { name, text, img }]);
-    };
-  
-    return [messageList, addMessage];
-  };
   
 
   //Returning the HTML of a message.

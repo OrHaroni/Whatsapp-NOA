@@ -12,8 +12,8 @@ export const useUserList = () => {
     //Declare the list of users
     const [userList, setUserList] = useState([
       {
-        id: 1,
-        email: "or.haroni@gmail.com",
+        id: "1",
+        username: "or8641",
         password: "1234",
         name: "Or The King",
         img: or_pic,
@@ -26,10 +26,10 @@ export const useUserList = () => {
     ]);
   
     //Function that add a user to the list
-    const addUser = ( email, password, name, img, chatList) => {
+    const addUser = ( username, password, name, img, chatList) => {
       const newUser = {
         id: numOfusers,
-        email: email,
+        username: username,
         password: password,
         name: name,
         img: img,
@@ -43,8 +43,9 @@ export const useUserList = () => {
 
     //returning a user (variable like) by the id
     const getUserById = (id) => {
-        return userList.find((user) => user.id === id);
+        return userList.find((user) => user.id == id);
       };
+
   
     return [userList, addUser, getUserById];
   };

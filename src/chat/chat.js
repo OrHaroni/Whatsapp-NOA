@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
@@ -6,25 +6,31 @@ import logo from '../pictures/LOGO.png';
 import naor_pic from '../pictures/naor-nahman-profile.jpg';
 import three_pic from '../pictures/Three-musketeers.jpg';
 import addbtn from '../pictures/add-chat.png';
-import Message from '../message/Message.js';
 import ChatPreview from '../chatPreview/ChatPreview.js';
-import { useUserList } from '../database/Database.js';
-import { useChatList } from '../chatPreview/ChatPreview.js';
+import Message, { useMessageList } from '../message/Message.js';
 
-function Chat() {
+function Chat(props) {
   const ClickLogout = () => {
     root.render(<Login />);
   };
-
-  const [userList, addUser, getUserById] = useUserList();
-  const [chatList, addChatPreview, getChatByName] = useChatList();
+  const textbox = useRef();
 
   //Getting the active user by the id
-  const user = getUserById(1);
-  
-  //Getting the chat that we want to display by the name of the chat we want to open.
-  const chat = user.chatList.find((chatPreview) => chatPreview.name === "Naor Nahman");
+  const user = props.user;
 
+  //Getting the chat that we want to display by the name of the chat we want to open.
+  const chat = user.chatList[0];
+
+  const ClickSend = () => {
+    var message = {
+      sender: "me",
+      messageText: textbox.current.value,
+      img: user.img
+    };
+    user.chatList[0].messageList.push(message);
+    textbox.current.value = '';
+    root.render(<Chat user={user} />)
+  }
 
   return (
     <>
@@ -62,8 +68,8 @@ function Chat() {
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
-            {user.chatList?.map((chatPreview) => (
-              <ChatPreview img={chatPreview.img} name={chatPreview.name} date={chatPreview.date} />
+            {user.chatList.map((message) => (
+              <ChatPreview img={message.img} name={message.name} date={message.date} />
             ))}
           </ul>
         </div>
@@ -74,16 +80,16 @@ function Chat() {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {chat.messageList.map((message) => (
+              {chat.messageList.reverse().map((message) => (
                 <Message sender={message.sender} messageText={message.messageText} img={message.img} />
               ))}
             </ul>
           </div>
           <div id="send-area">
             <div id="chat-input" className="input-group">
-              <input id="textbox-input" type="text" className="form-control" placeholder="New message here..." />
+              <input ref={textbox} type="text" className="form-control" placeholder="New message here..." />
               <div className="input-group-append">
-                <button id="send-btn" className="btn btn-outline-secondary our-btn" type="button">Send</button>
+                <button onClick={ClickSend} className="btn btn-outline-secondary our-btn" type="button">Send</button>
               </div>
             </div>
           </div>
