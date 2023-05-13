@@ -9,23 +9,29 @@ import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { useUserList } from '../database/Database';
 
-
-
 function Chat(props) {
   const ClickLogout = () => {
     root.render(<Login />);
   };
-  const ClickSend = () => {
-    var message = {
-      sender: "me",
-      messageText: textbox.current.value,
-      img: user.img
-    };
-    user.chatList[0].messageList.push(message);
-    textbox.current.value = '';
-    root.render(<Chat user={user} />)
-  }
 
+  const ClickSend = () => {
+    if (textbox.current.value !== '') {
+      var message = {
+        sender: "me",
+        messageText: textbox.current.value,
+        img: user.img
+      };
+      user.chatList[0].messageList.push(message);
+      textbox.current.value = '';
+      root.render(<Chat user={user} />);
+    }
+  };
+
+  const ClickEnter = (event) => {
+    if (event.key === 'Enter') {
+      ClickSend();
+    }
+  };
   const [userList, setUserList, getUserById] = useUserList();
   console.log("This is all users");
   console.log(userList);
@@ -96,7 +102,7 @@ function Chat(props) {
           </div>
           <div id="send-area">
             <div id="chat-input" className="input-group">
-              <input ref={textbox} type="text" className="form-control" placeholder="New message here..." />
+              <input onKeyDown={ClickEnter} ref={textbox} type="text" className="form-control" placeholder="New message here..." />
               <div className="input-group-append">
                 <button onClick={ClickSend} className="btn btn-outline-secondary our-btn" type="button">Send</button>
               </div>

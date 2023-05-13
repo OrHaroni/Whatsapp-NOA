@@ -212,7 +212,7 @@ a.no-underline {
     text-decoration: none;
   }
   #active-chat{
-    overflow-y: scroll;
+
     position: relative;
     height: 80%;
     background: linear-gradient(to top, #3f87a6, #ebf8e1, #f69d3c);
@@ -221,15 +221,16 @@ a.no-underline {
     border-bottom: none;
 }
 #active-chat-list {
-    list-style: none;
-    position: absolute;
-    bottom: 0;
     display: flex;
     flex-direction: column-reverse;
+    height: 100%;
     width: 100%;
-    padding: 0;
     margin: 0;
-}
+    padding: 0;
+    list-style: none;
+  }
+  
+
 .message {
     position: relative;
 }
