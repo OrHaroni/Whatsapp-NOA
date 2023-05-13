@@ -26,12 +26,11 @@ return output;
 
 
 function Register() {
-  const username = useRef(null);
-  const password = useRef(null);
-  const displayname = useRef(null);
-  const img = useRef(null);
-  const chatList = null;
-  const [userList, setUserList] = useUserList();
+  const ClickEnter = (event) => {
+    if (event.key === 'Enter') {
+      ClickRegister();
+    }
+  };
 
   const ClickRegister = () => {
     var usernametxt = username.current.value;
@@ -55,6 +54,15 @@ function Register() {
     //One of the things get wrong, 
   };
 
+
+  const username = useRef(null);
+  const password = useRef(null);
+  const displayname = useRef(null);
+  const img = useRef(null);
+  const chatList = null;
+  const [userList, setUserList] = useUserList();
+
+  
     const ClickLogin = () => {
       root.render(<Login />);
     }
@@ -69,11 +77,11 @@ function Register() {
       <div className="form-container p-4 rounded in-register">
         <header className="reg-head">Create an account</header><br></br>
         <label htmlFor="exampleFormControlInput1" className="form-label">Username</label><br></br>
-        <input ref={username} type="Username" className="form-control" ></input> <br></br>
+        <input onKeyDown={ClickEnter} ref={username} type="Username" className="form-control" ></input> <br></br>
         <label htmlFor="inputPassword5" className="form-label">Password</label><br></br>
-        <input ref={password} type="password" className="form-control" aria-labelledby="passwordHelpBlock"></input><br></br>
+        <input onKeyDown={ClickEnter} ref={password} type="password" className="form-control" aria-labelledby="passwordHelpBlock"></input><br></br>
         <label htmlFor="exampleFormControlInput1" className="form-label">Display Name</label><br></br>
-        <input ref={displayname} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
+        <input onKeyDown={ClickEnter} ref={displayname} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
         <label htmlFor="formFile" className="form-label">Picture</label><br></br>
         <input ref={img} className="form-control" type="file"></input><br></br>
         <img src={default_picture} className="prof-pic"></img>
