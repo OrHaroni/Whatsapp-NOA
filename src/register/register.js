@@ -30,32 +30,31 @@ function Register() {
   };
 
   const ClickRegister = () => {
-    var usernametxt = username.current.value;
-    var passwordtxt = password.current.value;
-    var displaytxt = displayname.current.value;
-    var imgurl = img.current.value;
-    if(isUserExist(userList, usernametxt) || usernametxt === '')
+    var username = usernamev.current.value;
+    var password = passwordv.current.value;
+    var name = displaynamev.current.value;
+    var img = imgv.current.value;
+    if(isUserExist(userList, username) || username === '')
     {
       alert("Username is taken, try different one.");
-    } else if(isDisNameExist(userList, displaytxt) || displaytxt === ''){
+    } else if(isDisNameExist(userList, name) || name === ''){
       alert("Display name is taken, try different one.");
     }
     else{
       //Add the User and enter him to the chat.
-      const user = { id: String(userList.length + 1), usernametxt, passwordtxt, displaytxt, imgurl, chatList };
+      const user = { id: String(userList.length + 1), username, password, name, img, chatList };
       userList.push(user);
       console.log(userList);
-      
-    root.render(<Chat user={user}/>);
+      root.render(<Chat user={user}/>);
     }
     //One of the things get wrong, 
   };
 
 
-  const username = useRef(null);
-  const password = useRef(null);
-  const displayname = useRef(null);
-  const img = useRef(null);
+  const usernamev = useRef(null);
+  const passwordv = useRef(null);
+  const displaynamev = useRef(null);
+  const imgv = useRef(null);
   const chatList = null;
 
   
@@ -73,13 +72,13 @@ function Register() {
       <div className="form-container p-4 rounded in-register">
         <header className="reg-head">Create an account</header><br></br>
         <label htmlFor="exampleFormControlInput1" className="form-label">Username</label><br></br>
-        <input onKeyDown={ClickEnter} ref={username} type="Username" className="form-control" ></input> <br></br>
+        <input onKeyDown={ClickEnter} ref={usernamev} type="Username" className="form-control" ></input> <br></br>
         <label htmlFor="inputPassword5" className="form-label">Password</label><br></br>
-        <input onKeyDown={ClickEnter} ref={password} type="password" className="form-control" aria-labelledby="passwordHelpBlock"></input><br></br>
+        <input onKeyDown={ClickEnter} ref={passwordv} type="password" className="form-control" aria-labelledby="passwordHelpBlock"></input><br></br>
         <label htmlFor="exampleFormControlInput1" className="form-label">Display Name</label><br></br>
-        <input onKeyDown={ClickEnter} ref={displayname} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
+        <input onKeyDown={ClickEnter} ref={displaynamev} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
         <label htmlFor="formFile" className="form-label">Picture</label><br></br>
-        <input ref={img} className="form-control" type="file"></input><br></br>
+        <input ref={imgv} className="form-control" type="file"></input><br></br>
         <img src={default_picture} className="prof-pic"></img>
           <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Register</button>
           <button id="have-acc" onClick={ClickLogin} type="submit" className="btn btn-primary our-btn">I already have an account</button>

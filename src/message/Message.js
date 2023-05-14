@@ -3,7 +3,11 @@
   
 
   //Returning the HTML of a message.
-function Message(props) {
+  function Message(props) {
+    const now = new Date();
+    //Getting the current hour and minute
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
 
     if (props.sender == "me") {
         return (
@@ -12,6 +16,7 @@ function Message(props) {
                 <div className="card text-white bg-primary mb-3" style={{ maxWidth: '18rem', left: '10%' }}>
                     <div className="card-body">
                         <p className="card-text">{props.messageText}</p>
+                        <small>{currentHour}:{currentMinute}</small>
                     </div>
                 </div>
             </li>
@@ -25,6 +30,7 @@ function Message(props) {
                     <div className="card-body">
                         <h5 className="card-title">{props.sender}</h5>
                         <p className="card-text">{props.messageText}</p>
+                        <small>{currentHour}:{currentMinute}</small>
                     </div>
                 </div>
             </li>
