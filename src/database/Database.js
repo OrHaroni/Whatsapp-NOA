@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import or_pic from '../pictures/or-haroni-profile.jpg';
 import naor_pic from '../pictures/naor-nahman-profile.jpg';
 import three_pic from '../pictures/Three-musketeers.jpg';
 
 
 
-export const useUserList = () => {
-  const [userList, setUserList] = useState([
+ export const userList = ([
     {
       id: "1",
       username: "or8641",
@@ -50,16 +48,8 @@ export const useUserList = () => {
   }
   ]);
 
-  // Function that adds a user to the list
-  const addUser = (user) => {
-    setUserList(userList =>[...userList, user]);
-    // Adding one to get the next id number
-  };
-
   // Returning a user (variable) by the id
-  const getUserById = (id) => {
+  export const getUserById = (id) => {
     return userList.find((user) => user.id === id);
   };
 
-  return [userList, addUser, getUserById];
-};

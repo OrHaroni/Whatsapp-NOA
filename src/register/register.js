@@ -4,9 +4,9 @@ import Login from '../login/Login';
 import Chat from '../chat/chat';
 import { root } from '../index.js'
 import logo from "../pictures/LOGO.png"
-import default_picture from "../pictures/naor-nahman-profile.jpg"
-import { useUserList } from '../database/Database.js';
+import default_picture from "../pictures/naor-nahman-profile.jpg";
 import { isUserExist } from '../login/Login';
+import { userList } from '../database/Database';
 
 
 
@@ -19,9 +19,6 @@ export function isDisNameExist(userList, name){
   })
 return output;
 };
-
-
-
 
 
 
@@ -46,7 +43,7 @@ function Register() {
     else{
       //Add the User and enter him to the chat.
       const user = { id: String(userList.length + 1), usernametxt, passwordtxt, displaytxt, imgurl, chatList };
-      setUserList([...userList, user]);
+      userList.push(user);
       console.log(userList);
       
     root.render(<Chat user={user}/>);
@@ -60,7 +57,6 @@ function Register() {
   const displayname = useRef(null);
   const img = useRef(null);
   const chatList = null;
-  const [userList, setUserList] = useUserList();
 
   
     const ClickLogin = () => {

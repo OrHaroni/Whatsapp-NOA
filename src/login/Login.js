@@ -4,7 +4,7 @@ import Chat from '../chat/chat';
 import Register from '../register/register';
 import { root } from '../index.js'
 import logo from '../pictures/LOGO.png'
-import { useUserList } from '../database/Database.js';
+import { userList } from '../database/Database';
 
 export function isUserExist(userList, name){
   var output = false;
@@ -26,7 +26,6 @@ function isCorrectPass(userList,username, password){
 };
 
 function Login() {
-  const [userList, setUserList, getUserById] = useUserList();
   const username = useRef(null);
   const password = useRef(null);
 

@@ -7,7 +7,7 @@ import three_pic from '../pictures/Three-musketeers.jpg';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
-import { useUserList } from '../database/Database';
+import { userList } from '../database/Database';
 
 function Chat(props) {
 
@@ -33,6 +33,7 @@ function Chat(props) {
   };
 
   const ClickSend = () => {
+    const currentTime = new Date();
     if (textbox.current.value !== '') {
       var message = {
         sender: "me",
@@ -41,7 +42,7 @@ function Chat(props) {
       };
       chat?.messageList?.push(message);
       textbox.current.value = '';
-      root.render(<Chat user={user} />);
+      setChat(chat => ({ ...chat, date: currentTime }));
     }
   };
 
@@ -78,11 +79,10 @@ function Chat(props) {
   //Getting the active user by the id
   const user = props.user;
 
-    //Getting the chat that we want to display by the name of the chat we want to open.
-    const [chat, setChat] = useState(props.user.chatList?.[0]);
+    //Starting with nothing inside chat. 
+    //When clicked, we will set the chat.
+    const [chat, setChat] = useState();
     var reversedList = chat?.messageList?.slice().reverse() || [];
-
-    const [userList, setUserList, getUserById] = useUserList();
 
   const textbox = useRef();
 
