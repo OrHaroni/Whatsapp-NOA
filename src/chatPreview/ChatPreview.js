@@ -3,7 +3,11 @@ import '../noa.css';
 
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
-
+  //Getting the current date, hour and minute
+  const now = new Date();
+  const currentDate = now.toLocaleDateString('en-GB');
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
   const id = "chat-" + props.id;
 
     return(
@@ -15,7 +19,7 @@ function ChatPreview(props) {
                   <span className="chat-tag-label">{props.name}</span>
                 </div>
                 <div>
-                  <span className="chat-tag-label">{props.date}</span>
+                  <span className="chat-tag-label">{currentDate}, {currentHour}:{currentMinute}</span>
                 </div>
               </li>
     );
