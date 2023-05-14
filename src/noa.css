@@ -4,7 +4,8 @@ ul {
   }
   
 .upper-bg{
-    background-color:#ffccbc;
+    background-color: #00887a;
+    background-size: cover;
     height: 100px;
     width: 100%;
 }
@@ -17,7 +18,9 @@ ul {
     height: 75%;
 }
 .body{
-    background-color: #d3e3fc;
+    background-image:url("pictures/mitch-harris-cPZ21gvclO8-unsplash.jpg");
+    background-size: cover;
+    border: #ffffff;
 }
 .contacts-list{
     position: relative;
@@ -54,6 +57,7 @@ ul {
 .in-chat{
     height: 800px; 
     max-width: 70%;
+    background-color: rgb(204, 211, 202);
 }
 .reg-head{
     font-size: 25px;
@@ -74,32 +78,34 @@ ul {
     background-color: gray;
 }
 #user-in-chat-left{
+    background-color: rgb(211, 212, 215);
     position: relative;
     width: 50%;
     height: 100%;
     float: left;
-    border: 1px solid black;
+    border: 1px solid gray;
     border-bottom: none;
     border-right: none;
 }
 #user-in-chat-right{
     position: relative;
+    background-color: rgb(211, 212, 215);
     width: 50%;
     height: 100%;
     float: left;
-    border: 1px solid black;
+    border: 1px solid gray;
     border-bottom: none;
     border-left: none;
 }
 #chat-list{
     position: relative;
-    border: 1px solid black;
+    border: 1px solid gray;
     height: 90%;
 }
 .chat-tag{
     position: relative;
     height: 15%;
-    border: 1px solid black;
+    border: 1px solid gray;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -169,7 +175,7 @@ li > div{
 #current-chat-info{
     position: relative;
     height: 10%;
-    border: 1px solid black;
+    border: 1px solid gray;
     border-left: none;
     border-bottom: none;
 }
@@ -183,7 +189,7 @@ li > div{
 #send-area{
     position: relative;
     height: 10%;
-    border: 1px solid black;
+    border: 1px solid gray;
     border-left: none;
 }
 #chat-input{
@@ -212,11 +218,11 @@ a.no-underline {
     text-decoration: none;
   }
   #active-chat{
-
     position: relative;
     height: 80%;
-    background: linear-gradient(to top, #3f87a6, #ebf8e1, #f69d3c);
-    border: 1px solid black;
+    background-image:url("pictures/relaxing-02.jpg");
+    background-size: cover;
+    border: 1px solid gray;
     border-left: none;
     border-bottom: none;
 }
@@ -247,7 +253,7 @@ a.no-underline {
     right: 22%;
     height: 18%;
     bottom: 2%;
-    border: 1px solid black;
+    border: 1px solid gray;
 }
 #have-acc{
     position: relative;
@@ -258,4 +264,10 @@ a.no-underline {
     position: relative;
     top: 0;
     left: 1%;
+}
+.friend-mes{
+    right: 6%!important;
+}
+.my-mes{
+    left: 4%!important;
 }

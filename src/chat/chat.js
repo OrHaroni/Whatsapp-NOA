@@ -44,17 +44,17 @@ function Chat(props) {
   const HoverIn = (event) => {
     const selectedItem = event.currentTarget;
     //If its not the active chat
-    if(selectedItem.style.backgroundColor != "gray"){
-    selectedItem.style.backgroundColor = "Blue";
+    if(selectedItem.style.backgroundColor != "rgb(122, 130, 159)"){
+    selectedItem.style.backgroundColor = "#c2bebe";
     }
   }
   const HoverOut = (event) => {
     const selectedItem = event.currentTarget;
-    if(selectedItem.style.backgroundColor != "gray"){
+    if(selectedItem.style.backgroundColor != "rgb(122, 130, 159)"){
       selectedItem.style.backgroundColor = "White";
       }
       else{
-        selectedItem.style.backgroundColor = "gray";
+        selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
       }
   }
 
@@ -88,15 +88,15 @@ function Chat(props) {
       item.style.backgroundColor = "white";
     });
 
-    // // Set the background color of the clicked li element to gray
+    // // Set the background color of the clicked li element to rgb(122, 130, 159)
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.id; // Access the "id" attribute using dataset
 
     //Getting only the number out of the id
     selectedId = selectedId.match(/\d+$/)[0];
 
-    //Changing the active chat background color to be gray
-    selectedItem.style.backgroundColor = "gray";
+    //Changing the active chat background color to be rgb(122, 130, 159)
+    selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
 
     //Getting the chat with the id we want.
     const selectedChat = user.chatList.find((chat) => chat.id == selectedId);
