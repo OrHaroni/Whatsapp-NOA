@@ -15,13 +15,13 @@ var numOfChats = 3;
 export const AddChatPreview = (user, Chatname) => {
   if(user.name !== Chatname){
   //Checking if there is a user with this name
-  var ConUser = userList.find((user) => user.name === Chatname)
+  var ConUser = userList.filter((user) => user.name === Chatname)
+  
   if(ConUser){
     const chat = {
       id: numOfChats++,
       img: ConUser.img,
       name: ConUser.name,
-      Date: "Adar Please Fix",
       messageList: []
     }
     user.chatList.push(chat);

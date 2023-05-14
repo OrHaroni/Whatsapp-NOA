@@ -33,7 +33,8 @@ function Register() {
     var username = usernamev.current.value;
     var password = passwordv.current.value;
     var name = displaynamev.current.value;
-    var img = imgv.current.value;
+    var img = imgv.current.value
+    const chatList = [];
     if(isUserExist(userList, username) || username === '')
     {
       alert("Username is taken, try different one.");
