@@ -3,6 +3,7 @@ import '../noa.css';
 
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
+  //Getting the current date, hour and minute
   const now = new Date();
   const currentDate = now.toLocaleDateString('en-GB');
   const currentHour = now.getHours();
