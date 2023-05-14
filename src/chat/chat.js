@@ -8,8 +8,36 @@ import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
+import Modal from '../ModalAddChat/Modal';
+
+var numOfChats = 3;
+
+export const AddChatPreview = (user, Chatname) => {
+  if(user.name !== Chatname){
+  //Checking if there is a user with this name
+  var ConUser = userList.find((user) => user.name === Chatname)
+  if(ConUser){
+    const chat = {
+      id: numOfChats++,
+      img: ConUser.img,
+      name: ConUser.name,
+      Date: "Adar Please Fix",
+      messageList: []
+    }
+    user.chatList.push(chat);
+  }
+  else{
+    alert("user doesnt exist");
+  }
+}
+else{
+  alert("Cant add yourself");
+}
+ console.log(user.chatList);
+}
 
 function Chat(props) {
+  const [modalOpen, setModalOpen] = useState(false);
 
   const HoverIn = (event) => {
     const selectedItem = event.currentTarget;
@@ -52,7 +80,6 @@ function Chat(props) {
     }
   };
   const ClickPreview = (event) => {
-    console.log("Click!");
     // Reset the background color of all li elements to white
     const selectedItems = event.currentTarget.parentElement.querySelectorAll("li");
     selectedItems.forEach((item) => {
@@ -71,7 +98,6 @@ function Chat(props) {
 
     //Getting the chat with the id we want.
     const selectedChat = user.chatList.find((chat) => chat.id == selectedId);
-    console.log(selectedChat);
 
     //Setting the new chat.
     setChat(selectedChat);
@@ -85,9 +111,6 @@ function Chat(props) {
     var reversedList = chat?.messageList?.slice().reverse() || [];
 
   const textbox = useRef();
-
-  console.log("This is all users");
-  console.log(userList);
 
 
 
@@ -106,24 +129,11 @@ function Chat(props) {
             </div>
             <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.name}</span>
             <div id="user-in-chat-right">
-              <img type="button" src={addbtn} alt="image" id="add-btn" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal" />
-              <div className="modal fade" id="imageModal" tabIndex={-1} aria-labelledby="imageModalLabel" aria-hidden="true">
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="imageModalLabel">Add new contact</h5>
-                      <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" />
-                    </div>
-                    <div className="modal-body">
-                      <label htmlFor="identifier">Contact's identifier:</label>
-                      <input type="text" id="identifier" name="identifier" />
-                    </div>
-                    <div className="modal-footer">
-                      <button type="button" className="btn btn-outline-secondary our-btn">Add</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <img onClick={() => {
+                setModalOpen(true);
+              }}
+                type="button" src={addbtn} alt="image" id="add-btn" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal" />
+              {modalOpen && <Modal setOpenModal={setModalOpen} user={user} />}
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
