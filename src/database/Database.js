@@ -15,12 +15,22 @@ export const useUserList = () => {
       img: or_pic,
       chatList: [
         {
+          id : 1,
+          img: or_pic,
+          name: "Test",
+          date: "2 Tests Ago",
+          messageList: [{ sender: "me", messageText: "Message from Test", img: or_pic },
+          { sender: "Naor Nahman", messageText: "Hello Or. My name is Naor", img: naor_pic }],
+        },
+        {
+          id : 2,
           img: naor_pic,
           name: "Naor Nahman",
           date: "2 Days Ago",
           messageList: [{ sender: "me", messageText: "Message from DB", img: or_pic }],
         },
-        {
+        { 
+          id: 3,
           img: three_pic,
           name: "Noomik",
           date: "12 Days Ago",
@@ -31,6 +41,13 @@ export const useUserList = () => {
         },
       ],
     },
+    {id: "2",
+    username: "test",
+    password : "1234",
+    name : "Test The Boy",
+    img: or_pic,
+    chatList: []
+  }
   ]);
 
   // Function that adds a user to the list

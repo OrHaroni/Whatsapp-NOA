@@ -10,12 +10,24 @@ import Message from '../message/Message.js';
 import { useUserList } from '../database/Database';
 
 function Chat(props) {
-    //Getting the active user by the id
-    const user = props.user;
 
-    //Getting the chat that we want to display by the name of the chat we want to open.
-    var chat = user.chatList?.[0];
-    var reversedList = chat.messageList.slice().reverse();
+  const HoverIn = (event) => {
+    const selectedItem = event.currentTarget;
+    //If its not the active chat
+    if(selectedItem.style.backgroundColor != "gray"){
+    selectedItem.style.backgroundColor = "Blue";
+    }
+  }
+  const HoverOut = (event) => {
+    const selectedItem = event.currentTarget;
+    if(selectedItem.style.backgroundColor != "gray"){
+      selectedItem.style.backgroundColor = "White";
+      }
+      else{
+        selectedItem.style.backgroundColor = "gray";
+      }
+  }
+
   const ClickLogout = () => {
     root.render(<Login />);
   };
@@ -27,7 +39,7 @@ function Chat(props) {
         messageText: textbox.current.value,
         img: user.img
       };
-      user.chatList[0].messageList.push(message);
+      chat?.messageList?.push(message);
       textbox.current.value = '';
       root.render(<Chat user={user} />);
     }
@@ -39,22 +51,45 @@ function Chat(props) {
     }
   };
   const ClickPreview = (event) => {
+    console.log("Click!");
     // Reset the background color of all li elements to white
     const selectedItems = event.currentTarget.parentElement.querySelectorAll("li");
     selectedItems.forEach((item) => {
       item.style.backgroundColor = "white";
     });
 
-    // Set the background color of the clicked li element to gray
+    // // Set the background color of the clicked li element to gray
     const selectedItem = event.currentTarget;
+    var selectedId = selectedItem.id; // Access the "id" attribute using dataset
+
+    //Getting only the number out of the id
+    selectedId = selectedId.match(/\d+$/)[0];
+
+    //Changing the active chat background color to be gray
     selectedItem.style.backgroundColor = "gray";
-    chat = user.chatList[selectedItem.name];
+
+    //Getting the chat with the id we want.
+    const selectedChat = user.chatList.find((chat) => chat.id == selectedId);
+    console.log(selectedChat);
+
+    //Setting the new chat.
+    setChat(selectedChat);
   };
-  const [userList, setUserList, getUserById] = useUserList();
+  //Getting the active user by the id
+  const user = props.user;
+
+    //Getting the chat that we want to display by the name of the chat we want to open.
+    const [chat, setChat] = useState(props.user.chatList?.[0]);
+    var reversedList = chat?.messageList?.slice().reverse() || [];
+
+    const [userList, setUserList, getUserById] = useUserList();
+
+  const textbox = useRef();
+
   console.log("This is all users");
   console.log(userList);
 
-  const textbox = useRef();
+
 
   return (
     <>
@@ -92,19 +127,19 @@ function Chat(props) {
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
-            {user.chatList ? user.chatList.map((message) => (
-              <ChatPreview onClick={ClickPreview} img={message.img} name={message.name} date={message.date} />
+            {user.chatList ? user.chatList?.map((chatpreview) => (
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} img={chatpreview.img} name={chatpreview.name} date={chatpreview.date} id={chatpreview.id} />
             )) : null}
           </ul>
         </div>
         <div id="chat" className="chat-container">
           <div id="current-chat-info">
             <img src={three_pic} className="rounded-circle profile-pic-in-div" />
-            <span id="chat-name">The three musketeers</span>
+            <span id="chat-name">{chat?.name}</span>
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {reversedList ? reversedList.map((message) => (
+              {reversedList ? reversedList?.map((message) => (
                 <Message sender={message.sender} messageText={message.messageText} img={message.img} />
               )) : null}
             </ul>
