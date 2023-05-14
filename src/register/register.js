@@ -4,7 +4,6 @@ import Login from '../login/Login';
 import Chat from '../chat/chat';
 import { root } from '../index.js'
 import logo from "../pictures/LOGO.png"
-import default_picture from "../pictures/naor-nahman-profile.jpg";
 import { isUserExist } from '../login/Login';
 import { userList } from '../database/Database';
 
@@ -28,12 +27,18 @@ function Register() {
       ClickRegister();
     }
   };
+  // function to check if the user choose a picture, if yes show it, otherwise, show nothing.
+  function showImage() {
+    if (image) {
+      return <img src={image} className="prof-pic"></img>;
+    }
+  }
 
   const ClickRegister = () => {
     var username = usernamev.current.value;
     var password = passwordv.current.value;
     var name = displaynamev.current.value;
-    var img = imgv.current.value
+    var img = image;
     const chatList = [];
     if(isUserExist(userList, username) || username === '')
     {
@@ -55,13 +60,28 @@ function Register() {
   const usernamev = useRef(null);
   const passwordv = useRef(null);
   const displaynamev = useRef(null);
-  const imgv = useRef(null);
-  const chatList = null;
 
   
     const ClickLogin = () => {
       root.render(<Login />);
     }
+
+
+    // the image state
+    const[image, setImage] = useState(null);
+
+    //Convert the image to base64 and make it a string
+    function convertToBase64(e) {
+     console.log("e");
+     var reader= new FileReader();
+     reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        setImage(reader.result);
+      }
+      reader.onerror = (error) => {
+      }
+    }
+
 
   return (
     <>
@@ -79,10 +99,10 @@ function Register() {
         <label htmlFor="exampleFormControlInput1" className="form-label">Display Name</label><br></br>
         <input onKeyDown={ClickEnter} ref={displaynamev} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
         <label htmlFor="formFile" className="form-label">Picture</label><br></br>
-        <input ref={imgv} className="form-control" type="file"></input><br></br>
-        <img src={default_picture} className="prof-pic"></img>
-          <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Register</button>
-          <button id="have-acc" onClick={ClickLogin} type="submit" className="btn btn-primary our-btn">I already have an account</button>
+        <input onChange={convertToBase64} className="form-control" type="file"></input><br></br>
+        {showImage()}
+        <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Register</button>
+        <button id="have-acc" onClick={ClickLogin} type="submit" className="btn btn-primary our-btn">I already have an account</button>
       </div>
     </div>
    </>
