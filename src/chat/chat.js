@@ -15,15 +15,17 @@ var numOfChats = 3;
 export const AddChatPreview = (user, Chatname) => {
   if(user.name !== Chatname){
   //Checking if there is a user with this name
-  var ConUser = userList.filter((user) => user.name === Chatname)
-  
-  if(ConUser){
+  let ConUser = userList.filter((user) => user.name === Chatname)
+  console.log("This is the user")
+  console.log(ConUser);
+  if(ConUser[0]){
     const chat = {
       id: numOfChats++,
-      img: ConUser.img,
-      name: ConUser.name,
+      img: ConUser[0].img,
+      name: ConUser[0].name,
       messageList: []
     }
+    console.log(chat);
     user.chatList.push(chat);
   }
   else{
@@ -144,7 +146,7 @@ function Chat(props) {
         </div>
         <div id="chat" className="chat-container">
           <div id="current-chat-info">
-            <img src={three_pic} className="rounded-circle profile-pic-in-div" />
+            <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
             <span id="chat-name">{chat?.name}</span>
           </div>
           <div id="active-chat" className="chat-history">
