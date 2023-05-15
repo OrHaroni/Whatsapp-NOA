@@ -43,7 +43,7 @@
     background-color: #000000;
 }
 .in-register{
-    height: 550px; 
+    height: 602px; 
     max-width: 750px;
 }
 .in-chat{
@@ -198,8 +198,15 @@ li > div{
 #send-btn{
     left:50%;
 }
+.modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
   .modal-dialog {
-    top: 35%;
+    margin: 0 auto;
+    max-width: 800px;
   }
   .no-underline {
     text-decoration: none;
@@ -211,6 +218,7 @@ li > div{
 a.no-underline {
     text-decoration: none;
   }
+
 #active-chat-list {
     position: absolute;
     bottom: 0;
@@ -238,3 +246,4 @@ a.no-underline {
     bottom: 2%;
     border: 1px solid black;
 }
+
