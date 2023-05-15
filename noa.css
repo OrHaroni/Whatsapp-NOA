@@ -208,13 +208,16 @@ li > div{
     margin: 0 auto;
     max-width: 800px;
   }
-  
-.modal-body img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
+  .no-underline {
+    text-decoration: none;
+  }
+  .in-Login{
+    height: 350px; 
+    max-width: 750px;
 }
+a.no-underline {
+    text-decoration: none;
+  }
 
 #active-chat-list {
     position: absolute;
@@ -235,4 +238,12 @@ li > div{
 .recieve {
     transform: rotate(180deg);
 }
-  
+.prof-pic{
+    position: relative;
+    float: right;
+    right: 22%;
+    height: 18%;
+    bottom: 2%;
+    border: 1px solid black;
+}
+
