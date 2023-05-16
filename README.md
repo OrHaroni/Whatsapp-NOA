@@ -21,4 +21,9 @@ chat list has info on the chat and a list of messages.
 
 To save images in our database, we converted the image to a string of bytes and convert it at our will.
 
+## How to start
+First you need to register as a new user, you can do that easily from the register page.
+Next, you can log in with your username and password to the chat page.
+At the top you can add *ONLY REGISTERED USERS* to open a chat with, when logged out, your whole chats and conversations are saved.
+
 Have fun looking at our project, Whatsapp-NOA(Naor Or Adar).
