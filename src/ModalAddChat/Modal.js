@@ -31,7 +31,7 @@ function Modal({ setOpenModal, user }) {
                     <h1>Add new contact</h1>
                 </div>
                 <div className="body">
-                    <span className="label-text">Contact's identifier:</span>
+                    <span className="label-text">Contact's name: </span>
                     <input onKeyDown={ClickEnter} ref={modaltxt} type="Modal-txt" id="identifier" name="identifier"></input>
 
                 </div>
