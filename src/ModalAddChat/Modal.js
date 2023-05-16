@@ -2,6 +2,9 @@ import React, { useRef } from 'react';
 import './Modal.css';
 import '../noa.css';
 import { AddChatPreview } from '../chat/chat.js';
+import { isDisNameExist } from '../register/register';
+import { sendSwal } from '../chat/chat';
+import { userList } from '../database/Database';
 
 
 
@@ -13,7 +16,6 @@ function Modal({ setOpenModal, user }) {
             AddChatPreview(user, modaltxt.current.value);
         }
     }
-
     const modaltxt = useRef();
     return (
         <div className="modalBackground">
@@ -32,7 +34,7 @@ function Modal({ setOpenModal, user }) {
                 </div>
                 <div className="body">
                     <span className="label-text">Contact's identifier:</span>
-                    <input onKeyDown={ClickEnter} ref={modaltxt} type="Modal-txt" id="identifier" name="identifier"></input>
+                    <input onKeyUp={ClickEnter} ref={modaltxt} type="Modal-txt" id="identifier" name="identifier"></input>
 
                 </div>
                 <div className="footer our-btn">

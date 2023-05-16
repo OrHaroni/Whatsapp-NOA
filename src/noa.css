@@ -271,3 +271,10 @@ a.no-underline {
 .my-mes{
     left: 4%!important;
 }
+.image-container {
+    width: 100%;
+    height: 100%;
+    background-image: url("pictures/maarten-deckers-8RU1Ei3KcPw-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+  }
