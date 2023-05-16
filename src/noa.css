@@ -220,7 +220,7 @@ a.no-underline {
   #active-chat{
     position: relative;
     height: 80%;
-    background-image:url("pictures/relaxing-02.jpg");
+    background-image:url("pictures/pexels-petr-ganaj-4032662.jpg");
     background-size: cover;
     border: 1px solid gray;
     border-left: none;
@@ -269,7 +269,15 @@ a.no-underline {
     right: 6%!important;
 }
 .my-mes{
+    color: #00887a;
     left: 4%!important;
+
+    background-color: #00887a!important;
+}
+.bg-primary{
+    background-color: #00887a!important;
+}
+
 }
 .image-container {
     width: 100%;
@@ -278,3 +286,4 @@ a.no-underline {
     background-size: cover;
     background-position: center;
   }
+

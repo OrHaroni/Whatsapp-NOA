@@ -12,6 +12,8 @@ import Modal from '../ModalAddChat/Modal';
 
 var numOfChats = 0;
 
+const myFriends =[];
+
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
   Swal.fire({
@@ -21,6 +23,14 @@ export function sendSwal(message, icon) {
 }
 
 export const AddChatPreview = (user, Chatname) => {
+  const isChatnameInFriends = myFriends.includes(Chatname);
+  if(!isChatnameInFriends){
+    myFriends.push(Chatname);
+  }
+  else{
+    alert("Chat already exists");
+    return;
+  }
   if(user.name !== Chatname){
   //Checking if there is a user with this name
   let ConUser = userList.filter((user) => user.name === Chatname)
@@ -73,11 +83,17 @@ function Chat(props) {
 
   const ClickSend = () => {
     const currentTime = new Date();
+    const datev = currentTime.toLocaleDateString('en-GB');
+    const hourv = currentTime.getHours();
+    const minutev = currentTime.getMinutes();
     if (textbox.current.value !== '') {
       var message = {
         sender: "me",
         messageText: textbox.current.value,
-        img: user.img
+        img: user.img,
+        date : datev,
+        hour : hourv,
+        minute : minutev
       };
       chat?.messageList?.push(message);
       textbox.current.value = '';
@@ -130,14 +146,14 @@ function Chat(props) {
     if (ChatClicked) {
       return (
         <>
-          <div id="current-chat-warning">
+                    <div id="current-chat-info">
             <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
             <span id="chat-name">{chat?.name}</span>
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
               {reversedList ? reversedList?.map((message) => (
-                <Message sender={message.sender} messageText={message.messageText} img={message.img} />
+                <Message sender={message.sender} messageText={message.messageText} img={message.img} hour={message.hour} minute={message.minute}/>
               )) : null}
             </ul>
           </div>
@@ -184,7 +200,7 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {user.chatList ? user.chatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} img={chatpreview.img} name={chatpreview.name} date={chatpreview.date} id={chatpreview.id} />
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messageList={chatpreview.messageList} img={chatpreview.img} name={chatpreview.name} id={chatpreview.id} />
             )) : null}
           </ul>
         </div>
