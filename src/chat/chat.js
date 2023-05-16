@@ -3,12 +3,12 @@ import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
 import logo from '../pictures/LOGO.png';
-import three_pic from '../pictures/Three-musketeers.jpg';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
+
 
 var numOfChats = 0;
 
@@ -28,14 +28,12 @@ export const AddChatPreview = (user, Chatname) => {
     myFriends.push(Chatname);
   }
   else{
-    alert("Chat already exists");
+    sendSwal("Chat already exists", "warning");
     return;
   }
   if(user.name !== Chatname){
   //Checking if there is a user with this name
   let ConUser = userList.filter((user) => user.name === Chatname)
-  console.log("This is the user")
-  console.log(ConUser);
   if(ConUser[0]){
     const chat = {
       id: numOfChats++,
@@ -43,7 +41,6 @@ export const AddChatPreview = (user, Chatname) => {
       name: ConUser[0].name,
       messageList: []
     }
-    console.log(chat);
     user.chatList.push(chat);
   }
   else{
@@ -53,7 +50,6 @@ export const AddChatPreview = (user, Chatname) => {
 else{
   sendSwal("Cant add yourself", "warning");
 }
- console.log(user.chatList);
 }
 
 function Chat(props) {
@@ -171,7 +167,7 @@ function Chat(props) {
     else {
       return (
         //return the default image untill the user choose a chat to talk to. the image in the noa.css file
-          <div class="image-container"></div>
+          <div className="image-container"></div>
       );
     }
   }

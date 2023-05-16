@@ -45,14 +45,14 @@ function Login() {
     }
     else if (isUserExist(userList, username.current.value)) {
       var user = userList.find((user) => user.username === username.current.value);
-      if (isCorrectPass(userList, user.current.value, password.current.value)) {
+      if (isCorrectPass(userList, username.current.value, password.current.value)) {
+
         root.render(<Chat user={user} />)
       }
     }
     else {
       sendSwal("Incorect username or\and password, please try again.", "warning");
     }
-
 
   };
   const ClickRegister = () => {

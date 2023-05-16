@@ -70,7 +70,6 @@ function Register() {
       //Add the User and enter him to the chat.
       const user = { id: String(userList.length + 1), username, password, name, img, chatList };
       userList.push(user);
-      console.log(userList);
       root.render(<Chat user={user} />);
     }
     //One of the things get wrong, 
@@ -92,7 +91,6 @@ function Register() {
 
   //Convert the image to base64 and make it a string
   function convertToBase64(e) {
-    console.log("e");
     var reader = new FileReader();
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
