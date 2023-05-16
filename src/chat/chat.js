@@ -12,7 +12,6 @@ import Modal from '../ModalAddChat/Modal';
 
 var numOfChats = 0;
 
-const myFriends =[];
 
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
@@ -23,14 +22,12 @@ export function sendSwal(message, icon) {
 }
 
 export const AddChatPreview = (user, Chatname) => {
-  const isChatnameInFriends = myFriends.includes(Chatname);
-  if(!isChatnameInFriends){
-    myFriends.push(Chatname);
-  }
-  else{
-    sendSwal("Chat already exists", "warning");
+  for (const item of user.chatList) {
+  if(item.name === Chatname){
+    sendSwal("You already have chat with this user", "warning");
     return;
   }
+}
   if(user.name !== Chatname){
   //Checking if there is a user with this name
   let ConUser = userList.filter((user) => user.name === Chatname)
@@ -38,7 +35,7 @@ export const AddChatPreview = (user, Chatname) => {
     const chat = {
       id: numOfChats++,
       img: ConUser[0].img,
-      name: ConUser[0].name,
+      name: Chatname,
       messageList: []
     }
     user.chatList.push(chat);
