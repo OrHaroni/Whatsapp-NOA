@@ -3,21 +3,37 @@ import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
 import logo from '../pictures/LOGO.png';
-import three_pic from '../pictures/Three-musketeers.jpg';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
 
-var numOfChats = 3;
+
+var numOfChats = 0;
+
+const myFriends =[];
+
+export function sendSwal(message, icon) {
+  /* eslint-disable no-undef */
+  Swal.fire({
+    text: message,
+    icon: icon,
+  });
+}
 
 export const AddChatPreview = (user, Chatname) => {
+  const isChatnameInFriends = myFriends.includes(Chatname);
+  if(!isChatnameInFriends){
+    myFriends.push(Chatname);
+  }
+  else{
+    sendSwal("Chat already exists", "warning");
+    return;
+  }
   if(user.name !== Chatname){
   //Checking if there is a user with this name
   let ConUser = userList.filter((user) => user.name === Chatname)
-  console.log("This is the user")
-  console.log(ConUser);
   if(ConUser[0]){
     const chat = {
       id: numOfChats++,
@@ -25,21 +41,20 @@ export const AddChatPreview = (user, Chatname) => {
       name: ConUser[0].name,
       messageList: []
     }
-    console.log(chat);
     user.chatList.push(chat);
   }
   else{
-    alert("user doesnt exist");
+    sendSwal("user doesnt exist", "warning");
   }
 }
 else{
-  alert("Cant add yourself");
+  sendSwal("Cant add yourself", "warning");
 }
- console.log(user.chatList);
 }
 
 function Chat(props) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [ChatClicked, setChatClicked] = useState(null);
 
   const HoverIn = (event) => {
     const selectedItem = event.currentTarget;
@@ -64,11 +79,17 @@ function Chat(props) {
 
   const ClickSend = () => {
     const currentTime = new Date();
+    const datev = currentTime.toLocaleDateString('en-GB');
+    const hourv = currentTime.getHours();
+    const minutev = currentTime.getMinutes();
     if (textbox.current.value !== '') {
       var message = {
         sender: "me",
         messageText: textbox.current.value,
-        img: user.img
+        img: user.img,
+        date : datev,
+        hour : hourv,
+        minute : minutev
       };
       chat?.messageList?.push(message);
       textbox.current.value = '';
@@ -82,6 +103,8 @@ function Chat(props) {
     }
   };
   const ClickPreview = (event) => {
+    //change the state of the chat because the user entered the first chat
+    setChatClicked(true);
     // Reset the background color of all li elements to white
     const selectedItems = event.currentTarget.parentElement.querySelectorAll("li");
     selectedItems.forEach((item) => {
@@ -114,7 +137,40 @@ function Chat(props) {
 
   const textbox = useRef();
 
-
+  function ifChatClicked() {
+    // if the user clicked on a chat, show the chat
+    if (ChatClicked) {
+      return (
+        <>
+                    <div id="current-chat-info">
+            <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
+            <span id="chat-name">{chat?.name}</span>
+          </div>
+          <div id="active-chat" className="chat-history">
+            <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
+              {reversedList ? reversedList?.map((message) => (
+                <Message sender={message.sender} messageText={message.messageText} img={message.img} hour={message.hour} minute={message.minute}/>
+              )) : null}
+            </ul>
+          </div>
+          <div id="send-area">
+            <div id="chat-input" className="input-group">
+              <input onKeyDown={ClickEnter} ref={textbox} type="text" className="form-control" placeholder="New message here..." />
+              <div className="input-group-append">
+                <button onClick={ClickSend} className="btn btn-outline-secondary our-btn" type="button">Send</button>
+              </div>
+            </div>
+          </div>
+        </>
+      );
+    }
+    else {
+      return (
+        //return the default image untill the user choose a chat to talk to. the image in the noa.css file
+          <div className="image-container"></div>
+      );
+    }
+  }
 
   return (
     <>
@@ -140,30 +196,12 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {user.chatList ? user.chatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} img={chatpreview.img} name={chatpreview.name} date={chatpreview.date} id={chatpreview.id} />
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messageList={chatpreview.messageList} img={chatpreview.img} name={chatpreview.name} id={chatpreview.id} />
             )) : null}
           </ul>
         </div>
         <div id="chat" className="chat-container">
-          <div id="current-chat-info">
-            <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
-            <span id="chat-name">{chat?.name}</span>
-          </div>
-          <div id="active-chat" className="chat-history">
-            <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {reversedList ? reversedList?.map((message) => (
-                <Message sender={message.sender} messageText={message.messageText} img={message.img} />
-              )) : null}
-            </ul>
-          </div>
-          <div id="send-area">
-            <div id="chat-input" className="input-group">
-              <input onKeyDown={ClickEnter} ref={textbox} type="text" className="form-control" placeholder="New message here..." />
-              <div className="input-group-append">
-                <button onClick={ClickSend} className="btn btn-outline-secondary our-btn" type="button">Send</button>
-              </div>
-            </div>
-          </div>
+              {ifChatClicked()}
         </div>
       </div>
     </>
