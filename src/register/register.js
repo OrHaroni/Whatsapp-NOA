@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from 'react';
 import '../noa.css';
 import Login from '../login/Login';
@@ -21,8 +22,6 @@ export function isDisNameExist(userList, name) {
   return output;
 };
 
-
-
 function Register() {
   const ClickEnter = (event) => {
     if (event.key === 'Enter') {
@@ -36,7 +35,25 @@ function Register() {
     }
   }
 
-  const ClickRegister = () => {
+  //Function that talks with the server.
+  const registerServer = async (data) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/Users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      console.log(response.status);
+      return response.status;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+
+  const ClickRegister = async () => {
     var username = usernamev.current.value;
     var password = passwordv.current.value;
     var name = displaynamev.current.value;
@@ -48,29 +65,37 @@ function Register() {
     else {
       img = image;
     }
-
-    const chatList = [];
-    if (isUserExist(userList, username)) {
-      sendSwal("username if taken, try a different one", "warning");
+    const data = {"username":username,"password": password,"displayName": name,"profilePic": "asdasd"};
+    const statusNum = await registerServer(data);
+    console.log("this is status:" + statusNum);
+    //Checking if the response is good!
+    if(statusNum == 200){
+      const chatList = [];
+      if (isUserExist(userList, username)) {
+        sendSwal("username if taken, try a different one", "warning");
+      }
+      else if (username === '') {
+        sendSwal("Please insert username", "warning");
+  
+      }
+      else if (password === '') {
+        sendSwal("Please insert password", "warning");
+      }
+      else if (isDisNameExist(userList, name)) {
+        sendSwal("Display name is taken, try different one.", "warning");
+      }
+      else if(name === ''){
+        sendSwal("Please insert display name", "warning");
+      }
+      else {
+        //Add the User and enter him to the chat.
+        const user = { id: String(userList.length + 1), username, password, name, img, chatList };
+        userList.push(user);
+        root.render(<Login />);
+      }
     }
-    else if (username === '') {
-      sendSwal("Please insert username", "warning");
-
-    }
-    else if (password === '') {
-      sendSwal("Please insert password", "warning");
-    }
-    else if (isDisNameExist(userList, name)) {
-      sendSwal("Display name is taken, try different one.", "warning");
-    }
-    else if(name === ''){
-      sendSwal("Please insert display name", "warning");
-    }
-    else {
-      //Add the User and enter him to the chat.
-      const user = { id: String(userList.length + 1), username, password, name, img, chatList };
-      userList.push(user);
-      root.render(<Chat user={user} />);
+    else{
+      sendSwal("Incorect status number!","warning");
     }
     //One of the things get wrong, 
   };

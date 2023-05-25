@@ -6,6 +6,7 @@ import { root } from '../index.js'
 import logo from '../pictures/LOGO.png'
 import { userList } from '../database/Database';
 import { sendSwal } from '../chat/chat';
+import { startSession } from 'mongoose';
 
 export function isUserExist(userList, name) {
   var output = false;
@@ -36,18 +37,37 @@ function Login() {
     }
   };
 
-  const ClickLogin = () => {
-    if (username.current.value === '') {
-      sendSwal("Please insert username", "warning");
-    }
-    else if (password.current.value === '') {
-      sendSwal("Please insert password", "warning");
-    }
-    else if (isUserExist(userList, username.current.value)) {
-      var user = userList.find((user) => user.username === username.current.value);
-      if (isCorrectPass(userList, username.current.value, password.current.value)) {
+  const LoginServer = async (data) => {
+    const res = await fetch('http://localhost:5000/api/Tokens', {
+      'method' : 'post',
+      "headers" : {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(data)
+    });
+    console.log(res.status);
+    return res.status;
+  }
 
-        root.render(<Chat user={user} />)
+  const ClickLogin = async () => {
+    const u = username.current.value;
+    const p = password.current.value;
+    const data = { "username" : u,"password" :p};
+
+    const statusNum = await LoginServer(data);
+    if(statusNum === 200){
+      if (username.current.value === '') {
+        sendSwal("Please insert username", "warning");
+      }
+      else if (password.current.value === '') {
+        sendSwal("Please insert password", "warning");
+      }
+      else if (isUserExist(userList, username.current.value)) {
+        var user = userList.find((user) => user.username === username.current.value);
+        if (isCorrectPass(userList, username.current.value, password.current.value)) {
+  
+          root.render(<Chat user={user} />)
+        }
       }
     }
     else {
