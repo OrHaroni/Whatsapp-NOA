@@ -5,15 +5,18 @@ import { AddChatPreview } from '../chat/chat.js';
 import { isDisNameExist } from '../register/register';
 import { sendSwal } from '../chat/chat';
 import { userList } from '../database/Database';
+import { addChat } from '../models/chat';
 
 
 
-function Modal({ setOpenModal, user }) {
+function Modal({ setOpenModal, token }) {
 
     const ClickEnter = (event) => {
         if (event.key === 'Enter') {
             setOpenModal(false);
-            AddChatPreview(user, modaltxt.current.value);
+            //Adding the user to the server
+            addChat({"token" : token, "username": modaltxt.current.value});
+            //AddChatPreview(user, modaltxt.current.value);
         }
     }
     const modaltxt = useRef();
@@ -42,7 +45,8 @@ function Modal({ setOpenModal, user }) {
                     <button
                         onClick={() => {
                             setOpenModal(false);
-                            AddChatPreview(user, modaltxt.current.value);
+                            addChat({"token" : token, "username": modaltxt.current.value});
+                            //AddChatPreview(user, modaltxt.current.value);
                         }}
                         id="Modal-btn"
                     >

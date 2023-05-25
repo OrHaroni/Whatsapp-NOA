@@ -5,7 +5,7 @@ import '../noa.css';
 function ChatPreview(props) {
   const id = "chat-" + props.id;
 
-  if (props.messageList.length > 0) {
+  if (props.messageList) {
     const lastMessage = props.messageList[props.messageList.length - 1];
     const date = lastMessage.date;
     const hour = lastMessage.hour;

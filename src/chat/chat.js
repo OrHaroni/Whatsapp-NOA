@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
@@ -8,6 +8,7 @@ import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
+import { getUserPersonel, getUserChats, addChat, getChat } from '../models/chat';
 
 
 var numOfChats = 0;
@@ -23,51 +24,58 @@ export function sendSwal(message, icon) {
 
 export const AddChatPreview = (user, Chatname) => {
   for (const item of user.chatList) {
-  if(item.name === Chatname){
-    sendSwal("You already have chat with this user", "warning");
-    return;
-  }
-}
-  if(user.name !== Chatname){
-  //Checking if there is a user with this name
-  let ConUser = userList.filter((user) => user.name === Chatname)
-  if(ConUser[0]){
-    const chat = {
-      id: numOfChats++,
-      img: ConUser[0].img,
-      name: Chatname,
-      messageList: []
+    if (item.name === Chatname) {
+      sendSwal("You already have chat with this user", "warning");
+      return;
     }
-    user.chatList.push(chat);
   }
-  else{
-    sendSwal("user doesnt exist", "warning");
+  if (user.name !== Chatname) {
+    //Checking if there is a user with this name
+    let ConUser = userList.filter((user) => user.name === Chatname)
+    if (ConUser[0]) {
+      const chat = {
+        id: numOfChats++,
+        img: ConUser[0].img,
+        name: Chatname,
+        messageList: []
+      }
+      user.chatList.push(chat);
+    }
+    else {
+      sendSwal("user doesnt exist", "warning");
+    }
   }
-}
-else{
-  sendSwal("Cant add yourself", "warning");
-}
+  else {
+    sendSwal("Cant add yourself", "warning");
+  }
 }
 
 function Chat(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
+  const [userChatList, setUserChatList] = useState([]);
+  //updating the userChatPreviewList from the server
+  useEffect(() => {
+    getUserChats({ token: props.token }).then((fetchedUserChatList) => {
+      setUserChatList(fetchedUserChatList);
+    });
+  }, [props.token]);
 
   const HoverIn = (event) => {
     const selectedItem = event.currentTarget;
     //If its not the active chat
-    if(selectedItem.style.backgroundColor != "rgb(122, 130, 159)"){
-    selectedItem.style.backgroundColor = "#c2bebe";
+    if (selectedItem.style.backgroundColor != "rgb(122, 130, 159)") {
+      selectedItem.style.backgroundColor = "#c2bebe";
     }
   }
   const HoverOut = (event) => {
     const selectedItem = event.currentTarget;
-    if(selectedItem.style.backgroundColor != "rgb(122, 130, 159)"){
+    if (selectedItem.style.backgroundColor != "rgb(122, 130, 159)") {
       selectedItem.style.backgroundColor = "White";
-      }
-      else{
-        selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
-      }
+    }
+    else {
+      selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
+    }
   }
 
   const ClickLogout = () => {
@@ -84,9 +92,9 @@ function Chat(props) {
         sender: "me",
         messageText: textbox.current.value,
         img: user.img,
-        date : datev,
-        hour : hourv,
-        minute : minutev
+        date: datev,
+        hour: hourv,
+        minute: minutev
       };
       chat?.messageList?.push(message);
       textbox.current.value = '';
@@ -118,19 +126,25 @@ function Chat(props) {
     //Changing the active chat background color to be rgb(122, 130, 159)
     selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
 
-    //Getting the chat with the id we want.
-    const selectedChat = user.chatList.find((chat) => chat.id == selectedId);
-
+    //updating the userChatPreviewList from the server
     //Setting the new chat.
-    setChat(selectedChat);
-  };
-  //Getting the active user by the id
-  const user = props.user;
+    getChat({ "token": activeUserToken, "id": selectedId }).then((fetchedChat) => {
+      setChat(fetchedChat);
+    });
 
-    //Starting with nothing inside chat. 
-    //When clicked, we will set the chat.
-    const [chat, setChat] = useState();
-    var reversedList = chat?.messageList?.slice().reverse() || [];
+
+  };
+
+  //Getting the active user and token from log in
+  const user = props.user;
+  const activeUserToken = props.token;
+
+
+  //Starting with nothing inside chat. 
+  //When clicked, we will set the chat.
+  const [chat, setChat] = useState(null);
+  var reversedList = Array.isArray(chat) ? chat.slice().reverse() : [];
+
 
   const textbox = useRef();
 
@@ -139,14 +153,14 @@ function Chat(props) {
     if (ChatClicked) {
       return (
         <>
-                    <div id="current-chat-info">
+          <div id="current-chat-info">
             <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
             <span id="chat-name">{chat?.name}</span>
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
               {reversedList ? reversedList?.map((message) => (
-                <Message sender={message.sender} messageText={message.messageText} img={message.img} hour={message.hour} minute={message.minute}/>
+                <Message me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
               )) : null}
             </ul>
           </div>
@@ -164,7 +178,7 @@ function Chat(props) {
     else {
       return (
         //return the default image untill the user choose a chat to talk to. the image in the noa.css file
-          <div className="image-container"></div>
+        <div className="image-container"></div>
       );
     }
   }
@@ -180,25 +194,25 @@ function Chat(props) {
         <div id="contacts-list" className="contacts-list">
           <header id="contacts-header" className="user-in-chat">
             <div id="user-in-chat-left">
-              <img src={user.img} className="rounded-circle profile-pic-in-div" />
+              <img src={user.profilePic} className="rounded-circle profile-pic-in-div" />
             </div>
-            <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.name}</span>
+            <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.displayName}</span>
             <div id="user-in-chat-right">
               <img onClick={() => {
                 setModalOpen(true);
               }}
                 type="button" src={addbtn} alt="image" id="add-btn" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal" />
-              {modalOpen && <Modal setOpenModal={setModalOpen} user={user} />}
+              {modalOpen && <Modal setOpenModal={setModalOpen} token={activeUserToken} />}
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
-            {user.chatList ? user.chatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messageList={chatpreview.messageList} img={chatpreview.img} name={chatpreview.name} id={chatpreview.id} />
-            )) : null}
+            {userChatList.map((chatpreview) => (
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messageList={chatpreview.messageList} img={chatpreview.user.profilePic} name={chatpreview.user.displayName} id={chatpreview.id} />
+            ))}
           </ul>
         </div>
         <div id="chat" className="chat-container">
-              {ifChatClicked()}
+          {ifChatClicked()}
         </div>
       </div>
     </>

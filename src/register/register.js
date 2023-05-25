@@ -1,14 +1,14 @@
-
 import React, { useState, useRef } from 'react';
 import '../noa.css';
 import Login from '../login/Login';
-import Chat from '../chat/chat';
 import { root } from '../index.js'
 import logo from "../pictures/LOGO.png"
 import { isUserExist } from '../login/Login';
 import { userList } from '../database/Database';
 import defaultUserPic from '../pictures/user-profile.png';
 import { sendSwal } from '../chat/chat';
+import { registerServer } from '../models/register.js';
+
 
 
 
@@ -34,23 +34,6 @@ function Register() {
       return <img src={image} className="prof-pic"></img>;
     }
   }
-
-  //Function that talks with the server.
-  const registerServer = async (data) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/Users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      console.log(response.status);
-      return response.status;
-    } catch (error) {
-      console.error(error);
-    }
-  };
   
 
   const ClickRegister = async () => {
@@ -65,7 +48,7 @@ function Register() {
     else {
       img = image;
     }
-    const data = {"username":username,"password": password,"displayName": name,"profilePic": "asdasd"};
+    const data = {"username":username,"password": password,"displayName": name,"profilePic": convertToBase64(img)};
     const statusNum = await registerServer(data);
     console.log("this is status:" + statusNum);
     //Checking if the response is good!
@@ -93,6 +76,9 @@ function Register() {
         userList.push(user);
         root.render(<Login />);
       }
+    }
+    else if(statusNum == 409){
+      sendSwal("This user is already exist!", "warning");
     }
     else{
       sendSwal("Incorect status number!","warning");
