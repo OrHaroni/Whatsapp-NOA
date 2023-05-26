@@ -48,7 +48,7 @@ function Register() {
     else {
       img = image;
     }
-    const data = {"username":username,"password": password,"displayName": name,"profilePic": convertToBase64(img)};
+    const data = {"username":username,"password": password,"displayName": name,"profilePic": img};
     const statusNum = await registerServer(data);
     console.log("this is status:" + statusNum);
     //Checking if the response is good!

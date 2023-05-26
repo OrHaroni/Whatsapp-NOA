@@ -22,32 +22,11 @@ export function sendSwal(message, icon) {
   });
 }
 
-export const AddChatPreview = (user, Chatname) => {
-  for (const item of user.chatList) {
-    if (item.name === Chatname) {
-      sendSwal("You already have chat with this user", "warning");
-      return;
-    }
-  }
-  if (user.name !== Chatname) {
-    //Checking if there is a user with this name
-    let ConUser = userList.filter((user) => user.name === Chatname)
-    if (ConUser[0]) {
-      const chat = {
-        id: numOfChats++,
-        img: ConUser[0].img,
-        name: Chatname,
-        messageList: []
-      }
-      user.chatList.push(chat);
-    }
-    else {
-      sendSwal("user doesnt exist", "warning");
-    }
-  }
-  else {
-    sendSwal("Cant add yourself", "warning");
-  }
+export const AddChatPreview = (chat, setUserChatList) => {
+
+      // Update the userChatList state with the new chat preview
+      setUserChatList((prevChatList) => [...prevChatList, chat]);
+
 }
 
 function Chat(props) {
@@ -198,11 +177,11 @@ function Chat(props) {
             </div>
             <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.displayName}</span>
             <div id="user-in-chat-right">
-              <img onClick={() => {
+              <img onClick={async () => {
                 setModalOpen(true);
               }}
                 type="button" src={addbtn} alt="image" id="add-btn" className="rounded-circle" data-bs-toggle="modal" data-bs-target="#imageModal" />
-              {modalOpen && <Modal setOpenModal={setModalOpen} token={activeUserToken} />}
+              {modalOpen && <Modal setOpenModal={setModalOpen} token={activeUserToken} func={setUserChatList} />}
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">

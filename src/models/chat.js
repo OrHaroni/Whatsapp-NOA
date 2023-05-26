@@ -45,7 +45,8 @@ const addChat = async ({"token" : token, "username" : user}) => {
             'body': JSON.stringify({"username": user})
         });
         //Returning the user's chat list
-        return await response.json();
+        const r = await response.json();
+        return r;
     } catch (error) {
         console.error(error);
     }
