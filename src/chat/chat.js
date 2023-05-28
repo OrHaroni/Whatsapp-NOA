@@ -29,6 +29,8 @@ export const AddChatPreview = (chat, setUserChatList) => {
 }
 
 function Chat(props) {
+  //state of the id of the opened chat.
+  const [activeChatId, setActiveChatId] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
   const [userChatList, setUserChatList] = useState([]);
@@ -60,23 +62,21 @@ function Chat(props) {
     root.render(<Login />);
   };
 
-  const ClickSend = () => {
+  const ClickSend = async () => {
     const currentTime = new Date();
     const datev = currentTime.toLocaleDateString('en-GB');
     const hourv = currentTime.getHours();
     const minutev = currentTime.getMinutes();
     if (textbox.current.value !== '') {
-      var message = {
-        sender: "me",
-        messageText: textbox.current.value,
-        img: user.img,
-        date: datev,
-        hour: hourv,
-        minute: minutev
-      };
-      chat?.messageList?.push(message);
+      const msg = await sendMessage({"id" : activeChatId, "token" : activeUserToken, "msg" : textbox.current.value});
       textbox.current.value = '';
-      setChat(chat => ({ ...chat, date: currentTime }));
+      // Update the chat messages state by adding the new message
+    setChat(prevChat => {
+      const updatedChat = { ...prevChat }; // Create a copy of the chat object
+      updatedChat.messages.push(msg); // Add the new message to the messages array
+      return updatedChat;
+    });
+  
     }
   };
 
@@ -85,7 +85,7 @@ function Chat(props) {
       ClickSend();
     }
   };
-  const ClickPreview = (event) => {
+  const ClickPreview = async (event) => {
     //change the state of the chat because the user entered the first chat
     setChatClicked(true);
     // Reset the background color of all li elements to white
@@ -100,31 +100,27 @@ function Chat(props) {
 
     //Getting only the number out of the id
     selectedId = selectedId.match(/\d+$/)[0];
+    setActiveChatId(selectedId);
 
     //Changing the active chat background color to be rgb(122, 130, 159)
     selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
 
     //updating the userChatPreviewList from the server
     //Setting the new chat.
-    getChat({ "token": activeUserToken, "id": selectedId }).then((fetchedChat) => {
-      setChat(fetchedChat);
-    });
-
-
+    console.log("before get chat");
+    var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
+    setChat(tmpChat);
   };
 
   //Getting the active user and token from log in
   const user = props.user;
   const activeUserToken = props.token;
 
-
   //Starting with nothing inside chat. 
   //When clicked, we will set the chat.
   const [chat, setChat] = useState(null);
-  var reversedList = Array.isArray(chat) ? chat.slice().reverse() : [];
-
-
   const textbox = useRef();
+  const reversedList = chat?.messages?.slice().reverse();
 
   function ifChatClicked() {
     // if the user clicked on a chat, show the chat
@@ -137,9 +133,9 @@ function Chat(props) {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {reversedList ? reversedList?.map((message) => (
+              {reversedList?.map((message) => (
                 <Message me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
-              )) : null}
+              ))}
             </ul>
           </div>
           <div id="send-area">

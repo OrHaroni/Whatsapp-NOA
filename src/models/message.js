@@ -2,7 +2,7 @@
 const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
     try {
         const response = await fetch('http://localhost:5000/api/Chats/' + id + "/Messages", {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 "authorization": "Bearer " + token,
                 'Content-Type': 'application/json',
@@ -10,7 +10,7 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
             'body': JSON.stringify({"msg": msg})
         });
         //Returning the user: username, displayname and img
-        return [await response.json(), response.status];
+        return await response.json();
     } catch (error) {
         console.error(error);
     }

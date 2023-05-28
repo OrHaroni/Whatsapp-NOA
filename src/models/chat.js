@@ -55,7 +55,7 @@ const addChat = async ({"token" : token, "username" : user}) => {
 //Function that returns a chat by its id
 const getChat = async ({"token" : token, "id" : id}) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/' + id + '/Messages', {
+        const response = await fetch('http://localhost:5000/api/Chats/' + id, {
             method: 'GET',
             headers: {
                 "authorization": "Bearer " + token,
@@ -63,7 +63,8 @@ const getChat = async ({"token" : token, "id" : id}) => {
             },
         });
         //Returning the chat with this id
-        return await response.json();
+        var r = await response.json();
+        return r;
     } catch (error) {
         console.error(error);
     }

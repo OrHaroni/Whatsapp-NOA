@@ -8,8 +8,6 @@ const loginServer = async (data) => {
     });
     let token = await res.text();
     let statusNum = res.status;
-    console.log( token);
-    console.log(statusNum);
     //returning the status number and ID!!
     return [statusNum, token];
   }
