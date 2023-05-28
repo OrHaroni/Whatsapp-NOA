@@ -11,8 +11,6 @@ import Modal from '../ModalAddChat/Modal';
 import { getUserPersonel, getUserChats, addChat, getChat } from '../models/chat';
 
 
-var numOfChats = 0;
-
 
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
