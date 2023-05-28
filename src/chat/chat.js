@@ -9,6 +9,7 @@ import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
 import { getUserPersonel, getUserChats, addChat, getChat } from '../models/chat';
+import { sendMessage, getMessages } from '../models/message';
 
 
 
