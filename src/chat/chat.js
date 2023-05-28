@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import  ReactDOM  from 'react-dom';
 import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
@@ -11,8 +12,6 @@ import Modal from '../ModalAddChat/Modal';
 import { getUserPersonel, getUserChats, addChat, getChat } from '../models/chat';
 import { sendMessage, getMessages } from '../models/message';
 
-
-
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
   Swal.fire({
@@ -23,8 +22,8 @@ export function sendSwal(message, icon) {
 
 export const AddChatPreview = (chat, setUserChatList) => {
 
-      // Update the userChatList state with the new chat preview
-      setUserChatList((prevChatList) => [...prevChatList, chat]);
+  // Update the userChatList state with the new chat preview
+  setUserChatList((prevChatList) => [...prevChatList, chat]);
 
 }
 
@@ -34,14 +33,69 @@ function Chat(props) {
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
   const [userChatList, setUserChatList] = useState([]);
+  const [chat, setChat] = useState(null);
+  const [activeChatIndex, setActiveChatIndex] = useState(null);
+  const textbox = useRef();
 
-  //updating the userChatPreviewList from the server
+//Getting for the first time all the users from the server
   useEffect(() => {
-    getUserChats({ token: props.token }).then((fetchedUserChatList) => {
-      setUserChatList(fetchedUserChatList);
-    });
-  }, [props.token]);
+    const fetchUserChatList = async () => {
+      try {
+        const fetchedUserChatList = await getUserChats({ token: props.token });
+        setUserChatList(fetchedUserChatList);
+        sortListPreview();
+        if(activeChatId !== 0){
+        paintAll(activeChatId);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserChatList();
+  }, [chat]);
 
+  //Updating the chatpreview's by date
+  function sortListPreview(){
+    // Sort the userChatList based on lastMessage.created
+    setUserChatList(prevChatList => {
+      const updatedChatList = [...prevChatList];
+      updatedChatList.sort((a, b) => {
+        // Check if lastMessage exists for both items
+        if (a.lastMessage && b.lastMessage) {
+          const dateA = new Date(a.lastMessage.created);
+          const dateB = new Date(b.lastMessage.created);
+          return dateB - dateA;
+        }
+
+        // Handle cases where lastMessage is null or undefined
+        if (!a.lastMessage && b.lastMessage) {
+          return 1; // b comes before a
+        }
+
+        if (a.lastMessage && !b.lastMessage) {
+          return -1; // a comes before b
+        }
+
+        return 0; // Both lastMessage are null or undefined
+      });
+
+      return updatedChatList;
+    });
+
+  };
+
+  //Paint all li in white except for the li with id 
+  function paintAll(id) {
+    const list = document.querySelectorAll('.chat-tag');
+    list.forEach((li) => {
+      if(li.id === id){
+        li.style.backgroundColor = "rgb(122, 130, 159)";
+      }
+      else{
+        li.style.backgroundColor = 'white';
+      }
+    });
+  }
   const HoverIn = (event) => {
     const selectedItem = event.currentTarget;
     //If its not the active chat
@@ -69,15 +123,14 @@ function Chat(props) {
     const hourv = currentTime.getHours();
     const minutev = currentTime.getMinutes();
     if (textbox.current.value !== '') {
-      const msg = await sendMessage({"id" : activeChatId, "token" : activeUserToken, "msg" : textbox.current.value});
+      const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
       // Update the chat messages state by adding the new message
-    setChat(prevChat => {
-      const updatedChat = { ...prevChat }; // Create a copy of the chat object
-      updatedChat.messages.push(msg); // Add the new message to the messages array
-      return updatedChat;
-    });
-  
+      setChat(prevChat => {
+        const updatedChat = { ...prevChat }; // Create a copy of the chat object
+        updatedChat.messages.push(msg); // Add the new message to the messages array
+        return updatedChat;
+      });
     }
   };
 
@@ -117,11 +170,9 @@ function Chat(props) {
   const user = props.user;
   const activeUserToken = props.token;
 
-  //Starting with nothing inside chat. 
-  //When clicked, we will set the chat.
-  const [chat, setChat] = useState(null);
-  const textbox = useRef();
+  //reversing the messages list
   const reversedList = chat?.messages?.slice().reverse();
+
 
   function ifChatClicked() {
     // if the user clicked on a chat, show the chat
@@ -181,9 +232,8 @@ function Chat(props) {
             </div>
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
-            {userChatList.map((chatpreview) => (
-              console.log(chatpreview),
-              <ChatPreview key={chatpreview.id}in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={chatpreview.lastMessage} img={chatpreview.user.profilePic} name={chatpreview.user.displayName} id={chatpreview.id} />
+            {userChatList?.map((chatpreview) => (
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={chatpreview.lastMessage} img={chatpreview.user.profilePic} name={chatpreview.user.displayName} id={chatpreview.id}/>
             ))}
           </ul>
         </div>
