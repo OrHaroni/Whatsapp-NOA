@@ -4,8 +4,7 @@ import '../noa.css';
 
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
-  const id = "chat-" + props.id;
-  console.log(props.messageList);
+  const id =  props.id;
   if (props.lastMessage) {
     var datetimeString = props.lastMessage.created;
     var dateObj = new Date(datetimeString);

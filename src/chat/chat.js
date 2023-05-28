@@ -44,15 +44,19 @@ function Chat(props) {
         const fetchedUserChatList = await getUserChats({ token: props.token });
         setUserChatList(fetchedUserChatList);
         sortListPreview();
-        if(activeChatId !== 0){
-        paintAll(activeChatId);
-        }
       } catch (error) {
         console.error(error);
       }
     };
     fetchUserChatList();
-  }, [chat]);
+    }, [chat]);
+
+    //painting the active every time even when changing to the top
+    useEffect(() => {
+      if (activeChatId !== 0) {
+        paintAll(activeChatId);
+      }
+    }, [activeChatId, paintAll]);
 
   //Updating the chatpreview's by date
   function sortListPreview(){
@@ -81,7 +85,6 @@ function Chat(props) {
 
       return updatedChatList;
     });
-
   };
 
   //Paint all li in white except for the li with id 
@@ -131,6 +134,7 @@ function Chat(props) {
         updatedChat.messages.push(msg); // Add the new message to the messages array
         return updatedChat;
       });
+      paintAll(activeChatId); // Call paintAll after sending a message
     }
   };
 
@@ -142,11 +146,6 @@ function Chat(props) {
   const ClickPreview = async (event) => {
     //change the state of the chat because the user entered the first chat
     setChatClicked(true);
-    // Reset the background color of all li elements to white
-    const selectedItems = event.currentTarget.parentElement.querySelectorAll("li");
-    selectedItems.forEach((item) => {
-      item.style.backgroundColor = "white";
-    });
 
     // // Set the background color of the clicked li element to rgb(122, 130, 159)
     const selectedItem = event.currentTarget;
@@ -156,12 +155,8 @@ function Chat(props) {
     selectedId = selectedId.match(/\d+$/)[0];
     setActiveChatId(selectedId);
 
-    //Changing the active chat background color to be rgb(122, 130, 159)
-    selectedItem.style.backgroundColor = "rgb(122, 130, 159)";
-
     //updating the userChatPreviewList from the server
     //Setting the new chat.
-    console.log("before get chat");
     var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
     setChat(tmpChat);
   };
