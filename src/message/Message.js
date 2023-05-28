@@ -4,7 +4,10 @@
 
   //Returning the HTML of a message.
   function Message(props) {
-
+    var datetimeString = props.time;
+    var dateObj = new Date(datetimeString);
+    var hour = dateObj.getHours();
+    var minutes = dateObj.getMinutes();
     //Checking who is the sender of this message
     if (props.sender == props.me) {
         return (
@@ -13,7 +16,7 @@
                 <div className="my-mess card text-white bg-primary mb-3 " style={{ maxWidth: '18rem', left: '10%' }}>
                     <div className="card-body">
                         <p className="card-text">{props.messageText}</p>
-                        <small>{props.time}</small>
+                        <small>{hour}:{minutes}</small>
                     </div>
                 </div>
             </li>
