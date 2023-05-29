@@ -9,8 +9,8 @@ import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
-import { getUserPersonel, getUserChats, addChat, getChat } from '../models/chat';
-import { sendMessage, getMessages } from '../models/message';
+import { getUserPersonel, getUserChats, addChat, getChat } from '../serverCalls/chat';
+import { sendMessage, getMessages } from '../serverCalls/message';
 
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
@@ -27,7 +27,7 @@ export const AddChatPreview = (chat, setUserChatList) => {
 
 }
 
-function Chat(props) {
+ function Chat(props) {
   //state of the id of the opened chat.
   const [activeChatId, setActiveChatId] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
@@ -168,6 +168,21 @@ function Chat(props) {
   //reversing the messages list
   const reversedList = chat?.messages?.slice().reverse();
 
+  //Getting the other user of the chat img
+  function getOtherUserPic(chat, user) {
+    if (chat?.users[0]?.username === user.username) {
+      return chat?.users[1]?.profilePic;
+    }
+    return chat?.users[0]?.profilePic;
+  }
+
+  //Getting the other user of the chat username
+  function getOtherUserDisplayName(chat, user) {
+    if (chat?.users[0]?.username === user.username) {
+      return chat?.users[1]?.displayName;
+    }
+    return chat?.users[0]?.displayName;
+  }
 
   function ifChatClicked() {
     // if the user clicked on a chat, show the chat
@@ -175,8 +190,8 @@ function Chat(props) {
       return (
         <>
           <div id="current-chat-info">
-            <img src={chat?.img} className="rounded-circle profile-pic-in-div" />
-            <span id="chat-name">{chat?.name}</span>
+            <img src={getOtherUserPic(chat, user)} className="rounded-circle profile-pic-in-div" />
+            <span id="chat-name">{getOtherUserDisplayName(chat, user)}</span>
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
@@ -228,8 +243,9 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
+               chatpreview.user ?
               <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={chatpreview.lastMessage} img={chatpreview.user.profilePic} name={chatpreview.user.displayName} id={chatpreview.id}/>
-            ))}
+              : null) )}
           </ul>
         </div>
         <div id="chat" className="chat-container">

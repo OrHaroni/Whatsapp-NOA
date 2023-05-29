@@ -7,8 +7,8 @@ import logo from '../pictures/LOGO.png'
 import { userList } from '../database/Database';
 import { sendSwal } from '../chat/chat';
 import { startSession } from 'mongoose';
-import { loginServer } from '../models/login.js'
-import { getUserPersonel } from '../models/chat';
+import { loginServer } from '../serverCalls/login.js'
+import { getUserPersonel } from '../serverCalls/chat';
 
 export function isUserExist(userList, name) {
   var output = false;

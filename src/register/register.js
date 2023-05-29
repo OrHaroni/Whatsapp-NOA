@@ -7,7 +7,7 @@ import { isUserExist } from '../login/Login';
 import { userList } from '../database/Database';
 import defaultUserPic from '../pictures/user-profile.png';
 import { sendSwal } from '../chat/chat';
-import { registerServer } from '../models/register.js';
+import { registerServer } from '../serverCalls/register.js';
 
 
 
