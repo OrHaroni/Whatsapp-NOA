@@ -1,5 +1,4 @@
-const userService = require('../servies/user');
-
+const userService = require('../servies/user.js');
 
 const createUser = async (req, res) => {
     console.log("in controller");
@@ -10,6 +9,17 @@ const createUser = async (req, res) => {
     res.json(await userService.createUser({"username" : username, "password" : password, "displayName" : displayName, "profilePic": profilePic}));
 };
 
+const login = async (req ,res) => {
+    const u = req.query.username;
+    const p = req.query.password;
+    const ret = await userService.getUser(u, p);
+    if(ret){
+        res.status(200).json(ret);
+    }else{
+        res.status(401);
+    }
+    
+}
 module.exports = {
-    createUser
+    createUser, login
 };

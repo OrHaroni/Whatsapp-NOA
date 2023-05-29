@@ -43,31 +43,31 @@ function Login() {
   const ClickLogin = async () => {
     const u = username.current.value;
     const p = password.current.value;
-    const data = { "username": u, "password": p };
+    let user;
+    let statusCode;
 
-    //the function returns 2 values
-    const [statusNum, userToken] = await loginServer(data);
-    if (statusNum === 200) {
-      //getting more data or the user
-      const userData = await getUserPersonel({ "username": u, "token": userToken });
-      root.render(<Chat user={userData} token={userToken} />)
-      if (username.current.value === '') {
-        sendSwal("Please insert username", "warning");
-      }
-      else if (password.current.value === '') {
-        sendSwal("Please insert password", "warning");
-      }
-      else if (isUserExist(userList, username.current.value)) {
-        var user = userList.find((user) => user.username === username.current.value);
-        if (isCorrectPass(userList, username.current.value, password.current.value)) {
-          //send with the users token!
-          root.render(<Chat user={userData} token={userToken} />)
-        }
-      }
+    //returns the user and status code
+    await fetch(`http://localhost:8080/login?username=${u}&password=${p}`).then(response => response.json().then(data => {
+      user = data;
+      statusCode = response.status;
+    })
+      .catch(error => {
+        console.error(error);
+      }));
 
+
+    if (username.current.value === '') {
+      sendSwal("Please insert username", "warning");
+    }
+    else if (password.current.value === '') {
+      sendSwal("Please insert password", "warning");
+    }     //if there is user.
+    else if (statusCode === 200) {
+      // send with the users token!
+      root.render(<Chat user={user}/>)
     }
     else {
-      sendSwal("Incorect username or\\and password, please try again.", "warning");
+      sendSwal("No such user exists", "warning");
     }
 
   };
@@ -86,11 +86,11 @@ function Login() {
         <div className="form-container p-4 rounded in-Login">
           <header className="reg-head">Login</header><br></br>
           <label htmlFor="exampleFormControlInput1" className="form-label">Username</label><br></br>
-          <input onKeyDown={ClickEnter} type="Display Name" className="form-control" ref={username}></input><br></br>
+          <input name="username" onKeyDown={ClickEnter} type="Display Name" className="form-control" ref={username}></input><br></br>
           <label htmlFor="inputPassword5" className="form-label">Password</label><br></br>
-          <input onKeyDown={ClickEnter} type="password" className="form-control" aria-labelledby="passwordHelpBlock" ref={password}></input><br></br>
-          <button onClick={ClickLogin} id="buttonLogin" type="submit" className="btn btn-primary our-btn">Login</button>
-          <button onClick={ClickRegister} id="not-reg" type="submit" className="btn btn-primary our-btn">Not register? Click here to sign up</button>
+          <input name="password" onKeyDown={ClickEnter} type="password" className="form-control" aria-labelledby="passwordHelpBlock" ref={password}></input><br></br>
+          <button onClick={ClickLogin} id="buttonLogin" type="submit" value="login" className="btn btn-primary our-btn">Login</button>
+          <button onClick={ClickRegister} id="not-reg" type="submit" value="register" className="btn btn-primary our-btn">Not register? Click here to sign up</button>
         </div>
       </div>
     </>

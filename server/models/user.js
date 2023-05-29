@@ -1,9 +1,14 @@
+const users = [
+    {username: "123", password: "123", displayName: "123", profilePic: "123"}
+];
+
+
 const mongoose = require('mongoose');
 // const defaultPic = require('../../src/pictures');
 
 const Schema = mongoose.Schema;
 
-const UserPassNameser = new Schema({
+const UserPassName = new Schema({
     username: {
         type: String,
         require: true
@@ -49,5 +54,5 @@ const User = new Schema({
 });
 
 module.exports = {
-    UserPassNameser, UserPass, User
+    UserPassName, UserPass, User, users
 }
