@@ -4,7 +4,7 @@ const getUserPersonel = async ({ "username": username, "token": token }) => {
         const response = await fetch('http://localhost:8080/api/Users/' + username, {
             method: 'GET',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
         });
@@ -39,7 +39,7 @@ const addChat = async ({"token" : token, "username" : user}) => {
         const response = await fetch('http://localhost:8080/api/Chats/', {
             method: 'POST',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
             'body': JSON.stringify({"username": user})
@@ -58,7 +58,7 @@ const getChat = async ({"token" : token, "id" : id}) => {
         const response = await fetch('http://localhost:8080/api/Chats/' + id, {
             method: 'GET',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
         });

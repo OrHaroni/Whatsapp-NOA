@@ -1,15 +1,18 @@
 const mongoose = require('mongoose');
 // const defaultPic = require('../../src/pictures');
-const Message  = require('./message.js');
 
 const Schema = mongoose.Schema;
 
-const Chat = new Schema({
+const Message = new Schema({
     id: {
         type: Number,
         require: true
     },
-    users: [{
+    created: {
+        type: Date,
+        require: true
+    },
+    sender: {
         username: {
             type: String,
             require: true
@@ -22,22 +25,10 @@ const Chat = new Schema({
             type: String
         }
     },
-    {
-        username: {
-            type: String,
-            require: true
-        },
-        displayName: {
-            type: String,
-            require: true
-        },
-        profilePic: {
-            type: String
-        }
-    }],
-    messages:[{
-        type: Message
-    }]
+    content: {
+        type: String,
+        require: true
+    }
 })
 
-module.exports = mongoose.model('Chat', Chat);
+module.exports = mongoose.model('Message', Message);

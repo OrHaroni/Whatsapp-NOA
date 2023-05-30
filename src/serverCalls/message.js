@@ -4,7 +4,7 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
         const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'POST',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
             'body': JSON.stringify({"msg": msg})
@@ -22,7 +22,7 @@ const getMessages = async ({ "id": id, "token": token }) => {
         const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'GET',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
         });
