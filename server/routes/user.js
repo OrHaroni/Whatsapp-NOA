@@ -5,7 +5,9 @@ const userController = require('../controllers/user')
 //Register
 router.route('/api/Users').post(userController.createUser);
 
-router.get('/login', userController.login);
+//Login
+router.route('/api/Tokens').post(userController.login);
+
 
 
 

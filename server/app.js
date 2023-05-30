@@ -4,8 +4,6 @@ var app = express();
 
 const userRouts = require('./routes/user');
 
-
-
 // Middleware for parsing JSON bodies
 app.use(express.json());
 
@@ -29,7 +27,8 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.CONECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
-});
+}).then(()=>console.log('connected'))
+.catch(e=>console.log(e));
 app.use(express.static('../public'));
 app.use('/', userRouts);
 app.listen(process.env.PORT);
