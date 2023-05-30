@@ -1,18 +1,3 @@
-const users = [
-    { username: '123', password: '123', displayName: '123', profilePic: 123, ChatList: [{
-        id: 3,
-        user: {
-          username: 14141411,
-          displayName: "naor",
-          profilePic: "NOT REAL PIC"
-        },
-        lastMessage: null 
-        }],  }, 
-    
-    { username: '124', password: '124', displayName: '124', profilePic: 124, ChatList: [],  },
-  ];
-  
-
 const mongoose = require('mongoose');
 // const defaultPic = require('../../src/pictures');
 

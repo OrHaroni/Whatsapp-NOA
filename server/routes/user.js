@@ -3,15 +3,10 @@ const router = express.Router();
 const userController = require('../controllers/user')
 
 //Register
-router.route('/api/Users').post(userController.createUser);
+router.route('/').post(userController.createUser);
 
 //get User pesonel by username
-router.route('/api/Users/:username').get(userController.getUserPersonel);
-
-//Login
-router.route('/api/Tokens').post(userController.login);
-
-
+router.route('/:username').get(userController.getUserPersonel);
 
 
 module.exports = router;

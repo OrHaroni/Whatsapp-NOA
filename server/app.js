@@ -2,7 +2,9 @@
 const express = require('express');
 var app = express();
 
-const userRouts = require('./routes/user');
+const userRouts = require('./routes/user.js');
+const chatRouts= require('./routes/chat.js');
+const tokenRouts= require('./routes/token.js');
 
 // Middleware for parsing JSON bodies
 app.use(express.json());
@@ -35,13 +37,10 @@ app.post('/api/Chats', async (req, res) => {
     console.log("/api/chats post");
     res.end();
 })
-app.get('/api/Chats', async (req, res) => {
-    console.log("/api/chats get");
-    res.end();
-})
-app.use('/', userRouts);
 
-const key = "Some super secret key shhhhhhhhhhhhhhhhh!!!!!"
+app.use('/api/Users', userRouts);
+app.use('/api/Tokens', tokenRouts);
+app.use('/api/Chats', chatRouts);
 
 app.listen(8080);
 
