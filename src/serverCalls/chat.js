@@ -26,7 +26,10 @@ const getUserChats = async ({"token": token}) => {
             },
         });
         //Returning the user's chat list
-        return await response.json();
+        console.log("respffffffffffffffffffffffffffonse");
+        const i = await (response.json());
+        console.log(i);
+        return i;
     } catch (error) {
         console.error(error);
     }
@@ -46,6 +49,7 @@ const addChat = async ({"token" : token, "username" : user}) => {
         });
         //Returning the user's chat list
         const r = await response.json();
+
         return [r, response.status];
     } catch (error) {
         console.error(error);

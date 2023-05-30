@@ -7,7 +7,6 @@ const createUser = async (username, password, displayName, profilePic) => {
   if (profilePic) {
     user.profilePic = profilePic;
   }
-  console.log(user);
   return await user.save();
 }
 
@@ -22,8 +21,8 @@ const getUser = async (username, password) => {
 
 const findUserByUsername = async (username) => {
   try {
-    console.log("in findUserByUsername");
-    return await UserPassName.findOne({ username}).exec();
+    const  user =  await UserPassName.findOne({ username}).exec();
+    return user;
   } catch (error) {
     console.log("there is an error!");
     console.error(error);
