@@ -15,8 +15,8 @@ router.route('/:id').delete(chatController.deleteChat);
 
 //send a message to the id chat
 router.route('/:id/messages').post(chatController.sendMessage);
-// //Returns array of messages of chat
-// router.route('/:id/messages').get(chatController.getMessageArray);
+//Returns array of messages of chat
+router.route('/:id/messages').get(chatController.getMessageArray);
 
 
 module.exports = router;

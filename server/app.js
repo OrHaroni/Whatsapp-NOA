@@ -33,10 +33,6 @@ mongoose.connect("mongodb://127.0.0.1:27017" , {
 }).then(()=>console.log('connected'))
 .catch(e=>console.log(e));
 app.use(express.static('../public'));
-app.post('/api/Chats', async (req, res) => {
-    console.log("/api/chats post");
-    res.end();
-})
 
 app.use('/api/Users', userRouts);
 app.use('/api/Tokens', tokenRouts);

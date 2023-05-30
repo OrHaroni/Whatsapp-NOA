@@ -5,15 +5,20 @@ const numChat = 0;
 const numMessage = 0;
 
 const CreateChat = async (me, username) => {
+    console.log("In creat chat services");
+    //Removing password field
+    const firstUser = {username: me.username, displayName: me.displayName, profilePic: me.profilePic };
+    const secondUser = {username: username.username, displayName: username.displayName, profilePic: username.profilePic };
+
     console.log("in service");
-    const user = new Chat({ id: numChat, users: [me, username], messages: [] });
+    connsole.log(firstUser);
+    console.log(secondUser);
+    const user = new Chat({ id: numChat, users: [firstUser, secondUser], messages: [] });
     numChat++;
-    console.log(user);
     return await user.save();
 }
 
 const getAllChats = async (username) => {
-    console.log("in service getAllChats");
     return await Chat.find({
         users: {
             $elemMatch: {
@@ -50,7 +55,7 @@ const sendMessage = async (username, id , msg) => {
     const chat = await getChatById(username, id);
     const sender = getUserInfo(chat, username);
     const message = new Message({id : numMessage, created : new Date().toISOString(),sender : sender, content : msg });
-
+    numMessage++;
     //Inserting this message into the chat list
     Chat.findOneAndUpdate(
         { $push: { messages: message } },
