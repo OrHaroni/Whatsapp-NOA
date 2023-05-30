@@ -31,4 +31,9 @@ mongoose.connect(process.env.CONECTION_STRING, {
 .catch(e=>console.log(e));
 app.use(express.static('../public'));
 app.use('/', userRouts);
+
+const key = "Some super secret key shhhhhhhhhhhhhhhhh!!!!!"
+
 app.listen(process.env.PORT);
+
+

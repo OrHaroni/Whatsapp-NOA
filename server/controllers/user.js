@@ -1,4 +1,5 @@
 const userService = require('../servies/user.js');
+const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {
     console.log("in controller");
@@ -10,11 +11,13 @@ const createUser = async (req, res) => {
 };
 
 const login = async (req ,res) => {
-    const u = req.query.username;
-    const p = req.query.password;
-    const ret = await userService.getUser(u, p);
-    if(ret){
-        res.status(200).json(ret);
+    const u = req.body.username;
+    const p = req.body.password;
+    const user = await userService.getUser(u, p);
+    if(user){
+        const token = jwt.sign({ username : u}, "key");
+        console.log(token);
+        res.status(200).json(token);
     }else{
         res.status(401);
     }
