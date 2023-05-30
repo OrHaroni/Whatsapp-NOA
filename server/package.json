@@ -18,10 +18,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "SET NODE_ENV=local && node app.js",
+    "test": "SET NODE_ENV=test && node app.js"
   },
   "eslintConfig": {
     "extends": [

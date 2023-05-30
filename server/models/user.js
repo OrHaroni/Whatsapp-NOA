@@ -38,31 +38,4 @@ const UserPassName = new Schema({
 
 });
 
-const UserPass = new Schema({
-    username: {
-        type: String,
-        require: true
-    },
-    password: {
-        type: String,
-        require: true
-    }
-});
-
-const User = new Schema({
-    username: {
-        type: String,
-        require: true
-    },
-    displayName: {
-        type: String,
-        require: true
-    },
-    profilePic: {
-        type: String,
-    }
-});
-
-module.exports = {
-    UserPassName, UserPass, User, users
-}
+module.exports = mongoose.model('UserPassName', UserPassName);
