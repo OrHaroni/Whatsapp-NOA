@@ -2,7 +2,6 @@ const userService = require('../servies/user.js');
 const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {
-    console.log("in controller");
     const username = req.body.username;
     const password = req.body.password;
     const displayName = req.body.displayName;
@@ -10,20 +9,31 @@ const createUser = async (req, res) => {
     res.json(await userService.createUser(username, password, displayName, profilePic));
 };
 
-const login = async (req ,res) => {
+const login = async (req, res) => {
     const u = req.body.username;
     const p = req.body.password;
     const user = await userService.getUser(u, p);
+    if (user) {
+      const token = jwt.sign({ username: u }, "key");
+      res.json(token);
+    } else {
+      res.status(401).json({ error: "Invalid username or password" });
+    }
+  };
+  
+const getUserPersonel = async (req,res) => {
+    console.log("asfdasfasfsa");
+    const u = req.params.username;
+    console.log(u);
+    const user = await userService.findUserByUsername(u);
+    console.log(user);
     if(user){
-        const token = jwt.sign({ username : u}, "key");
-        console.log(token);
-        res.status(200).json(token);
+        res.status(200).json({username : user.username, displayName : user.displayName, profilePic:user.profilePic});
     }else{
         res.status(401);
     }
-    
 }
 
 module.exports = {
-    createUser, login
+    createUser, login, getUserPersonel
 };

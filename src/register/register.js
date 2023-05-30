@@ -9,9 +9,6 @@ import defaultUserPic from '../pictures/user-profile.png';
 import { sendSwal } from '../chat/chat';
 import { registerServer } from '../serverCalls/register.js';
 
-
-
-
 export function isDisNameExist(userList, name) {
   var output = false;
   userList.forEach(user => {

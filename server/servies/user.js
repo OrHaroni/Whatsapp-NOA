@@ -12,18 +12,25 @@ const createUser = async (username, password, displayName, profilePic) => {
 }
 
 const getUser = async (username, password) => {
-  console.log("in getUser");
-  const user = UserPassName.find((item) => item.username === username && item.password === password);
-  if (user) {
-    console.log("worked");
-    //needs to return token
-    return user;
-  } else {
-    console.log("no good");
-    return null;
+  try {
+    return await UserPassName.findOne({ username, password }).exec();
+  } catch (error) {
+    console.log("there is an error!");
+    console.error(error);
   }
 };
 
+const findUserByUsername = async (username) => {
+  try {
+    console.log("in findUserByUsername");
+    return await UserPassName.findOne({ username}).exec();
+  } catch (error) {
+    console.log("there is an error!");
+    console.error(error);
+  }
+};
+
+
 module.exports = {
-  createUser, getUser
+  createUser, getUser, findUserByUsername
 }

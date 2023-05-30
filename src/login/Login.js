@@ -36,35 +36,34 @@ function Login() {
     }
   };
   const ClickLogin = async () => {
-    const u = username.current.value;
-    const p = password.current.value;
-    const data = { "username": u, "password": p };
-    //the function returns 2 values
-    const [statusNum, userToken] = await loginServer(data);
-    if (statusNum === 200) {
-      console.log("Login success");
-      //getting more data or the user
-      const userData = await getUserPersonel({ "username": u, "token": userToken });
-      // print the user data
-      root.render(<Chat user={userData} token={userToken} />)
-      if (username.current.value === '') {
-        sendSwal("Please insert username", "warning");
-      }
-      else if (password.current.value === '') {
-        sendSwal("Please insert password", "warning");
-      }
-      else if (isUserExist(userList, username.current.value)) {
-        var user = userList.find((user) => user.username === username.current.value);
-        if (isCorrectPass(userList, username.current.value, password.current.value)) {
-          //send with the users token!
-          root.render(<Chat user={userData} token={userToken} />)
-        }
-      }
+    if (username.current.value === '') {
+      sendSwal("Please insert username", "warning");
     }
-    else {
-      sendSwal("Incorect username or\\and password, please try again.", "warning");
-    }
-  };
+    else if (password.current.value === '') {
+      sendSwal("Please insert password", "warning");
+    } else {
+      const u = username.current.value;
+      const p = password.current.value;
+      const data = { "username": u, "password": p };
+      //the function returns 2 values
+      const [statusNum, userToken] = await loginServer(data);
+      console.log("backkkk");
+      console.log(statusNum);
+      if (statusNum === 200) {
+        console.log("Login success");
+        //getting more data or the user
+        const userData = await getUserPersonel({ "username": u, "token": userToken });
+        console.log(userData);
+        console.log(userData);
+        // print the user data
+        root.render(<Chat user={userData} token={userToken} />)
+
+      }
+      else {
+        sendSwal("Incorect username or\\and password, please try again.", "warning");
+      }
+    };
+  }
   const ClickRegister = () => {
     root.render(<Register />);
   };
