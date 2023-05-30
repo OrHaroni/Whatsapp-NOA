@@ -21,7 +21,7 @@ const getUserChats = async ({"token": token}) => {
         const response = await fetch('http://localhost:8080/api/Chats/', {
             method: 'GET',
             headers: {
-                "authorization": "Bearer " + token,
+                "authorization": token,
                 'Content-Type': 'application/json',
             },
         });
