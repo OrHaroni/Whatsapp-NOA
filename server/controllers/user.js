@@ -22,7 +22,6 @@ const login = async (req, res) => {
   };
   
 const getUserPersonel = async (req,res) => {
-    console.log("asfdasfasfsa");
     const u = req.params.username;
     console.log(u);
     const user = await userService.findUserByUsername(u);

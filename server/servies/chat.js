@@ -46,18 +46,30 @@ const deleteChat = async (username, id) => {
 
 const sendMessage = async (username, id , msg) => {
     console.log("in service send message");
+    //Creating a new message into Message DB
     const chat = await getChatById(username, id);
-    const sender = getSender(chat);
+    const sender = getUserInfo(chat, username);
     const message = new Message({id : numMessage, created : new Date().toISOString(),sender : sender, content : msg });
 
-    Chat.findOneAndUpdate
+    //Inserting this message into the chat list
+    Chat.findOneAndUpdate(
+        { $push: { messages: message } },
+        { new: true }, // Return the updated document
+        (error, updatedChat) => {
+          if (error) {
+            console.error(error);
+          } else {
+            console.log(updatedChat);
+          }
+        }
+      );
 }
 
 module.exports = {
     CreateChat, getAllChats, getChatById, deleteChat, sendMessage
 };
 
-function getSender(chat, me){
+function getUserInfo(chat, me){
 
     if(chat.users[0].username === me){
         return chat.users[0];

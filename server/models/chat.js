@@ -35,9 +35,12 @@ const Chat = new Schema({
             type: String
         }
     }],
-    messages:[{
-        type: Message
-    }]
+    messages: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'Message'
+        }
+      ]
 })
 
 module.exports = mongoose.model('Chat', Chat);
