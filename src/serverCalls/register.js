@@ -3,7 +3,7 @@
 //Function that talks with the server.
 const registerServer = async (data) => {
     try {
-      const response = await fetch('http://localhost:5000/api/Users', {
+      const response = await fetch('http://localhost:8008/api/Users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

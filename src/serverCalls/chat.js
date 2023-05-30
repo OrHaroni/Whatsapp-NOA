@@ -1,7 +1,7 @@
 //Function that returns a user Personal data.
 const getUserPersonel = async ({ "username": username, "token": token }) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Users/' + username, {
+        const response = await fetch('http://localhost:8080/api/Users/' + username, {
             method: 'GET',
             headers: {
                 "authorization": "Bearer " + token,
@@ -18,7 +18,7 @@ const getUserPersonel = async ({ "username": username, "token": token }) => {
 //Function that returns a user's chat list.
 const getUserChats = async ({"token": token}) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/', {
+        const response = await fetch('http://localhost:8080/api/Chats/', {
             method: 'GET',
             headers: {
                 "authorization": "Bearer " + token,
@@ -36,7 +36,7 @@ const getUserChats = async ({"token": token}) => {
 //Function that adds a chat to a user's chat
 const addChat = async ({"token" : token, "username" : user}) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/', {
+        const response = await fetch('http://localhost:8080/api/Chats/', {
             method: 'POST',
             headers: {
                 "authorization": "Bearer " + token,
@@ -55,7 +55,7 @@ const addChat = async ({"token" : token, "username" : user}) => {
 //Function that returns a chat by its id
 const getChat = async ({"token" : token, "id" : id}) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/' + id, {
+        const response = await fetch('http://localhost:8080/api/Chats/' + id, {
             method: 'GET',
             headers: {
                 "authorization": "Bearer " + token,

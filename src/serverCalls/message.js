@@ -1,7 +1,7 @@
 //Function that returns list of messages for a specific chat id
 const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/' + id + "/Messages", {
+        const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'POST',
             headers: {
                 "authorization": "Bearer " + token,
@@ -19,7 +19,7 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
 //Function that returns list of messages for a specific chat id
 const getMessages = async ({ "id": id, "token": token }) => {
     try {
-        const response = await fetch('http://localhost:5000/api/Chats/' + id + "/Messages", {
+        const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'GET',
             headers: {
                 "authorization": "Bearer " + token,
