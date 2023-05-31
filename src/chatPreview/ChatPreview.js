@@ -5,8 +5,9 @@ import '../noa.css';
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
   const id =  props.id;
-  if (props.lastMessage) {
-    var datetimeString = props.lastMessage.created;
+  const lastmessage = getLastMessage(props.messages);
+  if (lastmessage) {
+    var datetimeString = lastmessage.created;
     var dateObj = new Date(datetimeString);
     var hour = dateObj.getHours();
     var minutes = dateObj.getMinutes();
@@ -30,7 +31,7 @@ function ChatPreview(props) {
           <span className="chat-tag-label">{hour}:{minutes}, {dateString}</span>
         </div>
         <div className='pre-chat-con'>
-          <span className="chat-tag-label" style={{ textAlign: "center" }}>{props.lastMessage.content}</span>
+          <span className="chat-tag-label" style={{ textAlign: "center" }}>{lastmessage}</span>
         </div>
 
       </li>
@@ -55,3 +56,21 @@ function ChatPreview(props) {
 }
 
 export default ChatPreview;
+
+
+function getLastMessage(messages) {
+  if(messages){
+  let highestId = -Infinity;
+  let lastMessage = null;
+
+  messages.forEach(message => {
+    if (message.id > highestId) {
+      highestId = message.id;
+      lastMessage = message;
+    }
+  });
+
+  return lastMessage;
+}
+return "";
+}

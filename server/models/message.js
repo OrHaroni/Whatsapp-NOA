@@ -6,7 +6,8 @@ const Schema = mongoose.Schema;
 const Message = new Schema({
     id: {
         type: Number,
-        require: true
+        require: true,
+        unique: true
     },
     created: {
         type: Date,

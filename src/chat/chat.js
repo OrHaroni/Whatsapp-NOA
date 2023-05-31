@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import  ReactDOM  from 'react-dom';
+import ReactDOM from 'react-dom';
 import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js';
@@ -21,27 +21,27 @@ export function sendSwal(message, icon) {
 }
 
 
-export const AddChatPreview = (ChatSchema, setUserChatList) => { 
-  // Update the userChatList state with the new chat preview
-  console.log("ChatSchema in AddChatPreview: ");
-  console.log(ChatSchema);
+export const AddChatPreview = (chat, setUserChatList) => {
+  // // Update the userChatList state with the new chat preview
+  // console.log("ChatSchema in AddChatPreview: ");
+  // console.log(ChatSchema);
 
-  console.log(ChatSchema.users[1]);
-  const otherUser = ChatSchema.users[1];
-  const chat = {
-    id: ChatSchema.id,
-    username: otherUser.username,
-    lastMessage: "hey",
-    messages: ChatSchema.messages,
-    displayName: otherUser.displayName,
-    profilePic: otherUser.profilePic
-  };
-  console.log("chat in AddChatPreview: ");
-  console.log(chat);
+  // console.log(ChatSchema.users[1]);
+  // const otherUser = ChatSchema.users[1];
+  // const chat = {
+  //   id: ChatSchema.id,
+  //   username: otherUser.username,
+  //   lastMessage: "hey",
+  //   messages: ChatSchema.messages,
+  //   displayName: otherUser.displayName,
+  //   profilePic: otherUser.profilePic
+  // };
+  // console.log("chat in AddChatPreview: ");
+  // console.log(chat);
   setUserChatList((prevChatList) => [...prevChatList, chat]);
 }
 
- function Chat(props) {
+function Chat(props) {
   //state of the id of the opened chat.
   const [activeChatId, setActiveChatId] = useState(0)
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,7 +51,7 @@ export const AddChatPreview = (ChatSchema, setUserChatList) => {
   const [activeChatIndex, setActiveChatIndex] = useState(null);
   const textbox = useRef();
 
-//Getting for the first time all the users from the server
+  //Getting for the first time all the users from the server
   useEffect(() => {
     const fetchUserChatList = async () => {
       try {
@@ -63,17 +63,17 @@ export const AddChatPreview = (ChatSchema, setUserChatList) => {
       }
     };
     fetchUserChatList();
-    }, [chat]);
+  }, [chat]);
 
-    //painting the active every time even when changing to the top
-    useEffect(() => {
-      if (activeChatId !== 0) {
-        paintAll(activeChatId);
-      }
-    }, [activeChatId, paintAll]);
+  //painting the active every time even when changing to the top
+  useEffect(() => {
+    if (activeChatId !== 0) {
+      paintAll(activeChatId);
+    }
+  }, [activeChatId, paintAll]);
 
   //Updating the chatpreview's by date
-  function sortListPreview(){
+  function sortListPreview() {
     // Sort the userChatList based on lastMessage.created
     setUserChatList(prevChatList => {
       const updatedChatList = [...prevChatList];
@@ -105,10 +105,10 @@ export const AddChatPreview = (ChatSchema, setUserChatList) => {
   function paintAll(id) {
     const list = document.querySelectorAll('.chat-tag');
     list.forEach((li) => {
-      if(li.id === id){
+      if (li.id === id) {
         li.style.backgroundColor = "rgb(122, 130, 159)";
       }
-      else{
+      else {
         li.style.backgroundColor = 'white';
       }
     });
@@ -210,7 +210,7 @@ export const AddChatPreview = (ChatSchema, setUserChatList) => {
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
               {reversedList?.map((message) => (
-                <Message key={message.id}me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
+                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
               ))}
             </ul>
           </div>
@@ -257,9 +257,8 @@ export const AddChatPreview = (ChatSchema, setUserChatList) => {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
-               chatpreview.user ?
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={chatpreview.lastMessage} img={chatpreview.user.profilePic} name={chatpreview.user.displayName} id={chatpreview.id}/>
-              : null) )}
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messages={chatpreview.messages} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id} />
+            ))}
           </ul>
         </div>
         <div id="chat" className="chat-container">

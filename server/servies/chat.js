@@ -1,18 +1,30 @@
 const Chat = require('../models/chat.js');
+const ChatCounter = require('../models/chat.js');
 const Message = require('../models/message.js')
 
-var numChat = 0;
-var numMessage = 0;
+var chatCounter;
+
 
 const CreateChat = async (me, username) => {
+    if(ChatCounter.findOne().count){
     console.log("In create chat services");
+    updateCounter();
+    console.log(ChatCounter.findOne().count);
     //Removing password field
     const firstUser = {username: me.username, displayName: me.displayName, profilePic: me.profilePic };
     const secondUser = {username: username.username, displayName: username.displayName, profilePic: username.profilePic };
-    const user = new Chat({ id: numChat, users: [firstUser, secondUser], messages: [] });
-    console.log("in CreateChat in chat.js in servies " +user);
-    numChat++;
-    return await user.save();
+    //console.log(firstUser);
+    //console.log(secondUser);
+    const chat = new Chat({ id: ChatCounter.count, users: [firstUser, secondUser], messages: [] });
+    console.log("in CreateChat in chat.js in servies ");
+    return await chat.save();
+    }
+    else{
+        console.log("Create new one")
+        chatCounter = new ChatCounter();
+        await chatCounter.save();
+        CreateChat(me, username);
+    }
 }
 
 const getAllChats = async (username) => {
@@ -78,4 +90,11 @@ function getUserInfo(chat, me){
     }
     return chat.users[1];
 
+}
+
+function updateCounter(){
+    ChatCounter.findOneAndUpdate(
+        { $inc: { count: 1 } },
+        { new: true, upsert: true }
+      )
 }
