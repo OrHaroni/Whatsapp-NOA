@@ -168,6 +168,8 @@ function Chat(props) {
 
   //Getting the other user of the chat img
   function getOtherUserPic(chat, user) {
+    console.log("chat is :");
+    console.log(chat);
     if (chat?.users[0]?.username === user.username) {
       return chat?.users[1]?.profilePic;
     }
@@ -193,9 +195,10 @@ function Chat(props) {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {reversedList?.map((message) => (
+              {console.log(chat?.messages)}
+              {chat?.messages ? chat?.messages?.map((message) => (
                 <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
-              ))}
+              )): null}
             </ul>
           </div>
           <div id="send-area">

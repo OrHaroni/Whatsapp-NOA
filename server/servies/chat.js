@@ -10,9 +10,6 @@ const CreateChat = async (me, username) => {
 
     const newID = await getID();
     const chat = new Chat({id : newID, users: [firstUser, secondUser], messages: [] });
-    console.log("Chat Object:");
-    console.log(chat);
-  
     return await chat.save();
   };
   
@@ -31,12 +28,13 @@ const getAllChats = async (username) => {
 
 const getChatById = async (username, id) => {
     const chatList = await getAllChats(username);
-    chatList.forEach(item => {
-        if (item.id === id) {
-            return item;
+    var chat = null
+      chatList.forEach(item => {
+        if (item.id == id) {
+            chat = item;
         }
     });
-    return null;
+    return chat;
 }
 
 const deleteChat = async (username, id) => {
@@ -52,21 +50,26 @@ const sendMessage = async (username, id, msg) => {
     console.log("in service send message");
     //Creating a new message into Message DB
     const chat = await getChatById(username, id);
+    console.log("chat:");
+    console.log(chat);
     const sender = getUserInfo(chat, username);
+    console.log("sender:");
+    console.log(sender);
     const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
+    console.log("message:");
+    console.log(message);
     numMessage++;
     //Inserting this message into the chat list
-    Chat.findOneAndUpdate(
-        { $push: { messages: message } },
-        { new: true }, // Return the updated document
-        (error, updatedChat) => {
-            if (error) {
-                console.error(error);
-            } else {
-                console.log(updatedChat);
-            }
-        }
-    );
+    try {
+        return await Chat.findOneAndUpdate(
+            {},
+            { $push: { messages: message } },
+            { new: true }
+          ).exec();
+      } catch (error) {
+        console.log("there is an error!");
+        console.error(error);
+      }
 }
 
 module.exports = {
@@ -74,12 +77,10 @@ module.exports = {
 };
 
 function getUserInfo(chat, me) {
-
     if (chat.users[0].username === me) {
         return chat.users[0];
     }
     return chat.users[1];
-
 }
 
 async function getID(){
