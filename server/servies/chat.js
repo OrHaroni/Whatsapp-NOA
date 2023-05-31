@@ -1,19 +1,23 @@
 const Chat = require('../models/chat.js');
+const Counter = require('../models/Counter.js');
 const Message = require('../models/message.js')
 
-var numChat = 0;
 var numMessage = 0;
 
 const CreateChat = async (me, username) => {
-    console.log("In create chat services");
-    //Removing password field
-    const firstUser = {username: me.username, displayName: me.displayName, profilePic: me.profilePic };
-    const secondUser = {username: username.username, displayName: username.displayName, profilePic: username.profilePic };
-    const chat = new Chat({ id: numChat, users: [firstUser, secondUser], messages: [] });
+    const firstUser = { username: me.username, displayName: me.displayName, profilePic: me.profilePic };
+    const secondUser = { username: username.username, displayName: username.displayName, profilePic: username.profilePic };
+
+    const newID = await getID();
+    const chat = new Chat({id : newID, users: [firstUser, secondUser], messages: [] });
+    console.log("Chat Object:");
     console.log(chat);
-    numChat++;
+  
     return await chat.save();
-}
+  };
+  
+  
+  
 
 const getAllChats = async (username) => {
     return await Chat.find({
@@ -46,36 +50,46 @@ const deleteChat = async (username, id) => {
     return null;
 }
 
-const sendMessage = async (username, id , msg) => {
+const sendMessage = async (username, id, msg) => {
     console.log("in service send message");
     //Creating a new message into Message DB
     const chat = await getChatById(username, id);
     const sender = getUserInfo(chat, username);
-    const message = new Message({id : numMessage, created : new Date().toISOString(),sender : sender, content : msg });
+    const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
     numMessage++;
     //Inserting this message into the chat list
     Chat.findOneAndUpdate(
         { $push: { messages: message } },
         { new: true }, // Return the updated document
         (error, updatedChat) => {
-          if (error) {
-            console.error(error);
-          } else {
-            console.log(updatedChat);
-          }
+            if (error) {
+                console.error(error);
+            } else {
+                console.log(updatedChat);
+            }
         }
-      );
+    );
 }
 
 module.exports = {
     CreateChat, getAllChats, getChatById, deleteChat, sendMessage
 };
 
-function getUserInfo(chat, me){
+function getUserInfo(chat, me) {
 
-    if(chat.users[0].username === me){
+    if (chat.users[0].username === me) {
         return chat.users[0];
     }
     return chat.users[1];
 
+}
+
+async function getID(){
+    console.log("In create chat services");
+    let chatCounter = await Counter.findOneAndUpdate(
+      { name: "chat" },
+      { $inc: { count: 1 } },
+      { new: true, upsert: true }
+    );
+return await chatCounter.count;;
 }
