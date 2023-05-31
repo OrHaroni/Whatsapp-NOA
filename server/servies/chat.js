@@ -16,9 +16,6 @@ const CreateChat = async (me, username) => {
     return await chat.save();
   };
   
-  
-  
-
 const getAllChats = async (username) => {
     return await Chat.find({
         users: {
@@ -31,7 +28,7 @@ const getAllChats = async (username) => {
 
 const getChatById = async (username, id) => {
     console.log("in service getChatById");
-    const chatList = getAllChats(username);
+    const chatList = await getAllChats(username);
     chatList.forEach(item => {
         if (item.id === id) {
             return item;

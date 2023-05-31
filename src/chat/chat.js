@@ -21,8 +21,16 @@ export function sendSwal(message, icon) {
 }
 
 
-export const AddChatPreview = (chat, setUserChatList) => {
-  setUserChatList((prevChatList) => [...prevChatList, chat]);
+export const AddChatPreview = (chat, setUserChatList, status) => {
+  if (status === 200) {
+    setUserChatList((prevChatList) => [...prevChatList, chat]);
+  } else if (status === 404) {
+    sendSwal("User isnt found", "warning");
+  } else if (status === 501) {
+    sendSwal("Cant add youself", "warning");
+  } else if (status === 500) {
+    sendSwal("You already have chat with this user", "warning");
+  }
 }
 
 function Chat(props) {

@@ -9,7 +9,23 @@ const CreateChat = async (req, res) => {
         const username = req.body.username;
         const firstUser = await userService.findUserByUsername(me);
         const secondUser = await userService.findUserByUsername(username);
-        res.json(await chatService.CreateChat(firstUser, secondUser));
+        if (secondUser === null) {
+            //there isnt a user
+            res.status(404).json(null);
+        }
+        //Checking I try to add myself
+        else if (firstUser.username === secondUser.username) {
+            //Invalid access to server
+            res.status(501).json({});
+        }
+        //Checking if a chat between those 2 already exist
+        else if (await checkIfThereIsChat(firstUser.username, secondUser.username)) {
+            //Invalid access to server
+            res.status(500).json({});
+        }
+        else {
+            res.json(await chatService.CreateChat(firstUser, secondUser));
+        }
     }
     catch (error) {
         console.error(error);
@@ -81,11 +97,11 @@ const getMessageArray = async (req, res) => {
         const id = req.params;
         return await getChatById(username, id).messages;
     }
-    catch(error) {
+    catch (error) {
         console.error(error);
         res.status(404);
     }
- }
+}
 
 module.exports = {
     CreateChat, getAllChats, getChatById, deleteChat, sendMessage, getMessageArray
@@ -94,3 +110,17 @@ module.exports = {
 function decode(token) {
     return jwt.verify(token, "key").username;
 }
+
+async function checkIfThereIsChat(firstUsername, secondUsername) {
+    const chatList = await chatService.getAllChats(firstUsername);
+    
+    let hasChat = false;
+    chatList.some(item => {
+      if (item.users[0].username === secondUsername || item.users[1].username === secondUsername) {
+        hasChat = true;
+        return true; // exit the loop early
+      }
+    });
+  
+    return hasChat;
+  }
