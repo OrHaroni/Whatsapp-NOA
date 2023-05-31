@@ -210,7 +210,7 @@ function Chat(props) {
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
               {reversedList?.map((message) => (
-                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
+                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={message.sender.profilePic} time={message.created} />
               ))}
             </ul>
           </div>
