@@ -35,12 +35,7 @@ const Chat = new Schema({
             type: String
         }
     },],
-    messages: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Message'
-        }
-    ]
+    messages: [Message]
 })
 
 

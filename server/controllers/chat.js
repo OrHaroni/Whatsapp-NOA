@@ -76,11 +76,11 @@ const deleteChat = async (req, res) => {
 const sendMessage = async (req, res) => {
     try {
         const username = decode(req.headers.authorization);
-        const id = req.params;
+        const id = req.params.id;
         const msg = req.body.msg;
         //Check if chat exist and a chat of user
         if (chatService.getChatById(username, id)) {
-            res.status(200).json(await chatService.sendMessage(username, id.id, msg));
+            res.status(200).json(await chatService.sendMessage(username, id, msg));
         } else {
             //404 tells that not found this chat.
             res.status(404);

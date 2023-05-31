@@ -34,7 +34,7 @@ export const AddChatPreview = (chat, setUserChatList, status) => {
 
 function Chat(props) {
   //state of the id of the opened chat.
-  const [activeChatId, setActiveChatId] = useState(0)
+  const [activeChatId, setActiveChatId] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
   const [userChatList, setUserChatList] = useState([]);
@@ -206,7 +206,7 @@ function Chat(props) {
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
               {console.log(chat?.messages)}
               {chat?.messages ? chat?.messages?.map((message) => (
-                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={message.img} time={message.created} />
+                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={user.profilePic} time={message.created} />
               )): null}
             </ul>
           </div>

@@ -53,13 +53,14 @@ const sendMessage = async (username, id, msg) => {
     console.log("sender:");
     console.log(sender);
     const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
+    await message.save();
     console.log("message:");
     console.log(message);
     numMessage++;
     //Inserting this message into the chat list
     try {
         return await Chat.findOneAndUpdate(
-            {},
+            {id : id},
             { $push: { messages: message } },
             { new: true }
           ).exec();
