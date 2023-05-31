@@ -20,11 +20,25 @@ export function sendSwal(message, icon) {
   });
 }
 
-export const AddChatPreview = (chat, setUserChatList) => {
 
+export const AddChatPreview = (ChatSchema, setUserChatList) => { 
   // Update the userChatList state with the new chat preview
-  setUserChatList((prevChatList) => [...prevChatList, chat]);
+  console.log("ChatSchema in AddChatPreview: ");
+  console.log(ChatSchema);
 
+  console.log(ChatSchema.users[1]);
+  const otherUser = ChatSchema.users[1];
+  const chat = {
+    id: ChatSchema.id,
+    username: otherUser.username,
+    lastMessage: "hey",
+    messages: ChatSchema.messages,
+    displayName: otherUser.displayName,
+    profilePic: otherUser.profilePic
+  };
+  console.log("chat in AddChatPreview: ");
+  console.log(chat);
+  setUserChatList((prevChatList) => [...prevChatList, chat]);
 }
 
  function Chat(props) {

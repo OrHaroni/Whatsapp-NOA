@@ -7,8 +7,8 @@ const CreateChat = async (req, res) => {
         console.log("In creat chat controller");
         const me = decode(req.headers.authorization);
         const username = req.body.username;
-        const firstUser = userService.findUserByUsername(me);
-        const secondUser = userService.findUserByUsername(username);
+        const firstUser = await userService.findUserByUsername(me);
+        const secondUser = await userService.findUserByUsername(username);
         res.json(await chatService.CreateChat(firstUser, secondUser));
     }
     catch (error) {

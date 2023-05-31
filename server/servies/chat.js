@@ -1,19 +1,16 @@
 const Chat = require('../models/chat.js');
 const Message = require('../models/message.js')
 
-const numChat = 0;
-const numMessage = 0;
+var numChat = 0;
+var numMessage = 0;
 
 const CreateChat = async (me, username) => {
-    console.log("In creat chat services");
+    console.log("In create chat services");
     //Removing password field
     const firstUser = {username: me.username, displayName: me.displayName, profilePic: me.profilePic };
     const secondUser = {username: username.username, displayName: username.displayName, profilePic: username.profilePic };
-
-    console.log("in service");
-    connsole.log(firstUser);
-    console.log(secondUser);
     const user = new Chat({ id: numChat, users: [firstUser, secondUser], messages: [] });
+    console.log("in CreateChat in chat.js in servies " +user);
     numChat++;
     return await user.save();
 }
