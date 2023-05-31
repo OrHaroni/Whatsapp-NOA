@@ -23,9 +23,7 @@ const login = async (req, res) => {
   
 const getUserPersonel = async (req,res) => {
     const u = req.params.username;
-    console.log(u);
     const user = await userService.findUserByUsername(u);
-    console.log(user);
     if(user){
         res.status(200).json({username : user.username, displayName : user.displayName, profilePic:user.profilePic});
     }else{

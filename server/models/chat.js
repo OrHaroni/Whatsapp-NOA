@@ -5,16 +5,10 @@ const Message = require('./message.js');
 const Schema = mongoose.Schema;
 
 const Chat = new Schema({
-    id: {
-        type: Number,
-        require: true,
-        unique: true
-    },
     users: [{
         username: {
             type: String,
-            require: true,
-            unique: true
+            require: true
         },
         displayName: {
             type: String,
@@ -27,8 +21,7 @@ const Chat = new Schema({
     {
         username: {
             type: String,
-            require: true,
-            unique: true
+            require: true
         },
         displayName: {
             type: String,
@@ -46,16 +39,15 @@ const Chat = new Schema({
     ]
 })
 
-const ChatCounter = new mongoose.Schema({
+const Counter = new mongoose.Schema({
     model: {
         type: String,
         required: true
     },
     count: {
-        type: Number,
-        default: 0
+        type: Number
     }
 });
-const Counter = mongoose.model('Counter', ChatCounter);
+const count = mongoose.model('Counter', Counter);
 
 module.exports = mongoose.model('Chat', Chat);
