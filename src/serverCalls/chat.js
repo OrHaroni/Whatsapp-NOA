@@ -68,6 +68,8 @@ const getChat = async ({"token" : token, "id" : id}) => {
         });
         //Returning the chat with this id
         var r = await response.json();
+        console.log("the chat we get from server is :");
+        console.log(r);
         return r;
     } catch (error) {
         console.error(error);
