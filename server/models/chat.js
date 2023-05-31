@@ -36,8 +36,31 @@ const Chat = new Schema({
         }
     },],
     messages: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Message'
+        id: {
+            type: Number,
+            require: true
+        },
+        created: {
+            type: Date,
+            require: true
+        },
+        sender: {
+            username: {
+                type: String,
+                require: true
+            },
+            displayName: {
+                type: String,
+                require: true
+            },
+            profilePic: {
+                type: String
+            }
+        },
+        content: {
+            type: String,
+            require: true
+        }
     }]
 })
 

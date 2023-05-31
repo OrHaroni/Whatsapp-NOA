@@ -53,17 +53,17 @@ const sendMessage = async (username, id, msg) => {
     console.log("sender:");
     console.log(sender);
     const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
-    await message.save();
-    console.log("message:");
-    console.log(message);
     numMessage++;
+    const tmp = { id: numMessage, created: new Date().toISOString(), sender: sender, content: msg };
     //Inserting this message into the chat list
     try {
-        return await Chat.findOneAndUpdate(
+         await Chat.findOneAndUpdate(
             {id : id},
-            { $push: { messages: message } },
+            { $push: { messages: tmp } },
             { new: true }
           ).exec();
+          await message.save();
+          return tmp;
       } catch (error) {
         console.log("there is an error!");
         console.error(error);

@@ -126,21 +126,13 @@ function Chat(props) {
   };
 
   const ClickSend = async () => {
-    const currentTime = new Date();
-    const datev = currentTime.toLocaleDateString('en-GB');
-    const hourv = currentTime.getHours();
-    const minutev = currentTime.getMinutes();
     if (textbox.current.value !== '') {
       const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
       console.log("msg is :") ;
       console.log(msg);
       // Update the chat messages state by adding the new message
-      setChat(prevChat => {
-        const updatedChat = { ...prevChat }; // Create a copy of the chat object
-        updatedChat.messages.push(msg); // Add the new message to the messages array
-        return updatedChat;
-      });
+      setChat(await getChat({"token": activeUserToken, "id" : activeChatId}));
       paintAll(activeChatId); // Call paintAll after sending a message
     }
   };
@@ -173,7 +165,8 @@ function Chat(props) {
   const activeUserToken = props.token;
 
   //reversing the messages list
-  const reversedList = chat?.messages;
+  const reversedList = chat?.messages.slice().reverse();
+
 
   //Getting the other user of the chat img
   function getOtherUserPic(chat, user) {
@@ -193,7 +186,7 @@ function Chat(props) {
     return chat?.users[0]?.displayName;
   }
 
-  function getLastMessage(messages) {
+  function getLastMessageCreated(messages) {
     if(messages){
     let highestId = -Infinity;
     let lastMessage = null;
@@ -205,7 +198,23 @@ function Chat(props) {
       }
     });
   
-    return lastMessage;
+    return lastMessage?.created;
+  }
+  return "";
+  }
+  function getLastMessagecontent(messages) {
+    if(messages){
+    let highestId = -Infinity;
+    let lastMessage = null;
+  
+    messages.forEach(message => {
+      if (message.id > highestId) {
+        highestId = message.id;
+        lastMessage = message;
+      }
+    });
+  
+    return lastMessage?.content;
   }
   return "";
   }
@@ -233,7 +242,6 @@ function Chat(props) {
     time={message.created}
   />
 )) : null}
-
             </ul>
           </div>
           <div id="send-area">
@@ -279,8 +287,8 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={getLastMessage(chatpreview.messages).content} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
-              created={getLastMessage(chatpreview.messages).created} />
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={getLastMessagecontent(chatpreview.messages)} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
+              created={getLastMessageCreated(chatpreview.messages)} />
             ))}
           </ul>
         </div>

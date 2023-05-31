@@ -30,7 +30,7 @@
                     <div className="card-body">
                         <h5 className="card-title">{senderDisplayName}</h5>
                         <p className="card-text">{messageText}</p>
-                        <small>{time}</small>
+                        <small>{hour}:{minutes}</small>
                     </div>
                 </div>
             </li>
