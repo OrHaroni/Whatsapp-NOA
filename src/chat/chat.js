@@ -173,7 +173,7 @@ function Chat(props) {
   const activeUserToken = props.token;
 
   //reversing the messages list
-  const reversedList = chat?.messages?.slice().reverse();
+  const reversedList = chat?.messages;
 
   //Getting the other user of the chat img
   function getOtherUserPic(chat, user) {
@@ -193,6 +193,23 @@ function Chat(props) {
     return chat?.users[0]?.displayName;
   }
 
+  function getLastMessage(messages) {
+    if(messages){
+    let highestId = -Infinity;
+    let lastMessage = null;
+  
+    messages.forEach(message => {
+      if (message.id > highestId) {
+        highestId = message.id;
+        lastMessage = message;
+      }
+    });
+  
+    return lastMessage;
+  }
+  return "";
+  }
+
   function ifChatClicked() {
     // if the user clicked on a chat, show the chat
     if (ChatClicked) {
@@ -204,10 +221,19 @@ function Chat(props) {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-              {console.log(chat?.messages)}
-              {chat?.messages ? chat?.messages?.map((message) => (
-                <Message key={message.id} me={user.username} sender={message.sender.username} messageText={message.content} img={user.profilePic} time={message.created} />
-              )): null}
+            {reversedList ? reversedList?.map((message) => (
+  <Message
+    id={message.id}
+    me={user.username}
+    senderUsername={message.sender?.username} // Extract the necessary properties
+    senderProfilePic={message.sender?.profilePic}
+    senderDisplayName={message.sender?.displayName}
+    messageText={message.content}
+    img={user.profilePic}
+    time={message.created}
+  />
+)) : null}
+
             </ul>
           </div>
           <div id="send-area">
@@ -253,7 +279,8 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} messages={chatpreview.messages} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id} />
+              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={getLastMessage(chatpreview.messages).content} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
+              created={getLastMessage(chatpreview.messages).created} />
             ))}
           </ul>
         </div>

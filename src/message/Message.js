@@ -3,19 +3,19 @@
   
 
   //Returning the HTML of a message.
-  function Message(props) {
-    var datetimeString = props.time;
+  function Message({ id, me, senderUsername, senderProfilePic, senderDisplayName, messageText, img, time }) {
+    var datetimeString = time;
     var dateObj = new Date(datetimeString);
     var hour = dateObj.getHours();
     var minutes = dateObj.getMinutes();
     //Checking who is the sender of this message
-    if (props.sender == props.me) {
+    if (senderUsername == me) {
         return (
-            <li  key={props.key}className="clearfix">
-                <img src={props.img} className="rounded-circle profile-pic-in-div" />
+            <li  key={id}className="clearfix">
+                <img src={img} className="rounded-circle profile-pic-in-div" />
                 <div className="my-mess card text-white bg-primary mb-3 " style={{ maxWidth: '18rem', left: '10%' }}>
                     <div className="card-body">
-                        <p className="card-text">{props.messageText}</p>
+                        <p className="card-text">{messageText}</p>
                         <small>{hour}:{minutes}</small>
                     </div>
                 </div>
@@ -24,13 +24,13 @@
     }
     else {
         return (
-            <li key={props.key}>
-                <img src={props.img} className="rounded-circle sender-pic-in-div" />
+            <li key={id}>
+                <img src={senderProfilePic} className="rounded-circle sender-pic-in-div" />
                 <div className="friend-mes card text-white bg-secondary mb-3  " style={{ maxWidth: '18rem', float: 'right', right: '10%' }}>
                     <div className="card-body">
-                        <h5 className="card-title">{props.sender}</h5>
-                        <p className="card-text">{props.messageText}</p>
-                        <small>{props.content}</small>
+                        <h5 className="card-title">{senderDisplayName}</h5>
+                        <p className="card-text">{messageText}</p>
+                        <small>{time}</small>
                     </div>
                 </div>
             </li>

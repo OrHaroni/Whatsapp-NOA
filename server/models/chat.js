@@ -35,7 +35,10 @@ const Chat = new Schema({
             type: String
         }
     },],
-    messages: [Message]
+    messages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Message'
+    }]
 })
 
 
