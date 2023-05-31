@@ -9,8 +9,9 @@ const CreateChat = async (me, username) => {
     //Removing password field
     const firstUser = {username: me.username, displayName: me.displayName, profilePic: me.profilePic };
     const secondUser = {username: username.username, displayName: username.displayName, profilePic: username.profilePic };
-    const chat = new Chat({ id: 1, users: [firstUser, secondUser], messages: [] });
+    const chat = new Chat({ id: numChat, users: [firstUser, secondUser], messages: [] });
     console.log(chat);
+    numChat++;
     return await chat.save();
 }
 
