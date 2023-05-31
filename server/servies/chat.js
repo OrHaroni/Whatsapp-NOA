@@ -13,9 +13,6 @@ const CreateChat = async (me, username) => {
     return await chat.save();
   };
   
-  
-  
-
 const getAllChats = async (username) => {
     return await Chat.find({
         users: {
