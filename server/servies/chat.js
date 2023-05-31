@@ -2,13 +2,11 @@ const Chat = require('../models/chat.js');
 const Counter = require('../models/Counter.js');
 const Message = require('../models/message.js')
 
-var numMessage = 0;
-
 const CreateChat = async (me, username) => {
     const firstUser = { username: me.username, displayName: me.displayName, profilePic: me.profilePic };
     const secondUser = { username: username.username, displayName: username.displayName, profilePic: username.profilePic };
 
-    const newID = await getID();
+    const newID = await getChatID();
     const chat = new Chat({id : newID, users: [firstUser, secondUser], messages: [] });
     return await chat.save();
   };
@@ -52,9 +50,9 @@ const sendMessage = async (username, id, msg) => {
     const sender = getUserInfo(chat, username);
     console.log("sender:");
     console.log(sender);
-    const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
-    numMessage++;
-    const tmp = { id: numMessage, created: new Date().toISOString(), sender: sender, content: msg };
+    let generateID = await getMessageID();
+    const message = new Message({ id: generateID, created: new Date().toISOString(), sender: sender, content: msg });
+    const tmp = { id: generateID, created: new Date().toISOString(), sender: sender, content: msg };
     //Inserting this message into the chat list
     try {
          await Chat.findOneAndUpdate(
@@ -81,7 +79,7 @@ function getUserInfo(chat, me) {
     return chat.users[1];
 }
 
-async function getID(){
+async function getChatID(){
     console.log("In create chat services");
     let chatCounter = await Counter.findOneAndUpdate(
       { name: "chat" },
@@ -89,4 +87,13 @@ async function getID(){
       { new: true, upsert: true }
     );
 return await chatCounter.count;;
+}
+async function getMessageID(){
+    console.log("In create chat services");
+    let messageCounter = await Counter.findOneAndUpdate(
+      { name: "chat" },
+      { $inc: { count: 1 } },
+      { new: true, upsert: true }
+    );
+return await messageCounter.count;;
 }
