@@ -33,7 +33,9 @@ const getChatById = async (req, res) => {
     try {
         const username = decode(req.headers.authorization);
         const id = req.params;
-        res.status(200).json(await chatService.getChatById(username, id));
+        console.log("In getChatById controller id ::::::");
+        console.log(id);
+        res.status(200).json(await chatService.getChatById(username, id.id));
     } catch (error) {
         console.error(error);
         res.status(404);
@@ -62,9 +64,15 @@ const sendMessage = async (req, res) => {
         const username = decode(req.headers.authorization);
         const id = req.params;
         const msg = req.body.msg;
+        console.log("server sendMessage msg :::");
+        console.log(msg);
+        console.log("server sendMessage id  :::");
+        console.log(id.id);
+        console.log("server sendMessage username :::");
+        console.log(username);
         //Check if chat exist and a chat of user
         if (getChatById(username, id)) {
-            res.status(200).json(await chatService.sendMessage(username, id, msg));
+            res.status(200).json(await chatService.sendMessage(username, id.id, msg));
         } else {
             //404 tells that not found this chat.
             res.status(404);

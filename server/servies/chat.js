@@ -30,14 +30,12 @@ const getAllChats = async (username) => {
 }
 
 const getChatById = async (username, id) => {
-    console.log("in service getChatById");
-    const chatList = getAllChats(username);
+    const chatList = await getAllChats(username);
     chatList.forEach(item => {
         if (item.id === id) {
             return item;
         }
     });
-    console.log("Didnt find a chat with this id: " + id + " , return null!");
     return null;
 }
 
