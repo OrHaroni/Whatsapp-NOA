@@ -1,32 +1,13 @@
 import '../noa.css';
-import React, { useState, useRef } from 'react';
+import React, {useRef } from 'react';
 import Chat from '../chat/chat';
 import Register from '../register/register';
 import { root } from '../index.js'
 import logo from '../pictures/LOGO.png'
-import { userList } from '../database/Database';
 import { sendSwal } from '../chat/chat';
-import { startSession } from 'mongoose';
 import { loginServer } from '../serverCalls/login.js'
 import { getUserPersonel } from '../serverCalls/chat';
 
-export function isUserExist(userList, name) {
-  var output = false;
-  userList.forEach(user => {
-    if (user.username === name) {
-      output = true;
-    }
-  })
-  return output;
-};
-function isCorrectPass(userList, username, password) {
-  var output = false;
-  let user = userList.find((user) => user.username === username);
-  if (user.password === password) {
-    output = true;
-  }
-  return output;
-};
 function Login() {
   const username = useRef(null);
   const password = useRef(null);
@@ -70,7 +51,7 @@ function Login() {
   return (
     <>
       <div className="upper-bg">
-        <img src={logo} className="logo"></img>
+        <img src={logo} className="logo" alt="Logo"></img>
       </div>
       <div className="background d-flex justify-content-center align-items-center">
         <div className="form-container p-4 rounded in-Login">

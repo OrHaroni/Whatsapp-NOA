@@ -17,7 +17,7 @@ function Modal({ setOpenModal, token, func }) {
             setOpenModal(false);
             var txt = modaltxt.current.value;
             //Adding the user to the server
-            var [returnVal, status] = await addChat({"token" : token, "username": txt});
+            var [returnVal, status] = await addChat({token, txt});
             console.log(status);
             AddChatPreview(returnVal, func, status);
         }

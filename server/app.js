@@ -26,8 +26,9 @@ const customENV = require('custom-env');
 customENV.env(process.env.NODE_ENV, '../config');
 
 console.log(process.env.PORT);
+console.log(process.env.CONECTION_STRING);
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017/DB" , {
+mongoose.connect(process.env.CONECTION_STRING , {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(()=>console.log('connected'))
@@ -38,6 +39,6 @@ app.use('/api/Users', userRouts);
 app.use('/api/Tokens', tokenRouts);
 app.use('/api/Chats', chatRouts);
 
-app.listen(8080);
+app.listen(process.env.PORT);
 
 
