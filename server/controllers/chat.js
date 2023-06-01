@@ -56,13 +56,24 @@ const getChatById = async (req, res) => {
     }
 }
 
+async function getChatByIdWithoutAutho(username, id){
+    try {
+       return await chatService.getChatById(username, id);
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
 const deleteChat = async (req, res) => {
     try {
         const username = decode(req.headers.authorization);
-        const id = req.params;
+        const id = req.params.id;
         //Check if chat exist and a chat of user
-        if (getChatById(username, id)) {
-            res.status(200).json(await chatService.deleteChat(username, id));
+        var tmpChat = await getChatByIdWithoutAutho(username, id);
+        if (tmpChat) {
+            await chatService.deleteChat(username, id)
+            res.status(200);
         } else {
             //404 tells that not found this chat.
             res.status(404);

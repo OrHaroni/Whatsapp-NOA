@@ -7,10 +7,10 @@ const CreateChat = async (me, username) => {
     const secondUser = { username: username.username, displayName: username.displayName, profilePic: username.profilePic };
 
     const newID = await getChatID();
-    const chat = new Chat({id : newID, users: [firstUser, secondUser], messages: [] });
+    const chat = new Chat({ id: newID, users: [firstUser, secondUser], messages: [] });
     return await chat.save();
-  };
-  
+};
+
 const getAllChats = async (username) => {
     return await Chat.find({
         users: {
@@ -24,7 +24,7 @@ const getAllChats = async (username) => {
 const getChatById = async (username, id) => {
     const chatList = await getAllChats(username);
     var chat = null
-      chatList.forEach(item => {
+    chatList.forEach(item => {
         if (item.id == id) {
             chat = item;
         }
@@ -33,12 +33,15 @@ const getChatById = async (username, id) => {
 }
 
 const deleteChat = async (username, id) => {
-    console.log("in service deleteChat");
-    Chat.deleteOne({
-        id: id
-    })
-    console.log("Didnt find a chat with this id: " + id + " , return null!");
-    return null;
+    try {
+        console.log("in service deleteChat");
+        await Chat.deleteOne({
+            id: id
+        })
+    }
+    catch (error) {
+        console.log("Didnt find a chat with this id: " + id + " , return null!");
+    }
 }
 
 const sendMessage = async (username, id, msg) => {
@@ -55,17 +58,17 @@ const sendMessage = async (username, id, msg) => {
     const tmp = { id: generateID, created: new Date().toISOString(), sender: sender, content: msg };
     //Inserting this message into the chat list
     try {
-         await Chat.findOneAndUpdate(
-            {id : id},
+        await Chat.findOneAndUpdate(
+            { id: id },
             { $push: { messages: tmp } },
             { new: true }
-          ).exec();
-          await message.save();
-          return tmp;
-      } catch (error) {
+        ).exec();
+        await message.save();
+        return tmp;
+    } catch (error) {
         console.log("there is an error!");
         console.error(error);
-      }
+    }
 }
 
 module.exports = {
@@ -79,21 +82,21 @@ function getUserInfo(chat, me) {
     return chat.users[1];
 }
 
-async function getChatID(){
+async function getChatID() {
     console.log("In create chat services");
     let chatCounter = await Counter.findOneAndUpdate(
-      { name: "chat" },
-      { $inc: { count: 1 } },
-      { new: true, upsert: true }
+        { name: "chat" },
+        { $inc: { count: 1 } },
+        { new: true, upsert: true }
     );
-return await chatCounter.count;;
+    return await chatCounter.count;;
 }
-async function getMessageID(){
+async function getMessageID() {
     console.log("In create chat services");
     let messageCounter = await Counter.findOneAndUpdate(
-      { name: "chat" },
-      { $inc: { count: 1 } },
-      { new: true, upsert: true }
+        { name: "chat" },
+        { $inc: { count: 1 } },
+        { new: true, upsert: true }
     );
-return await messageCounter.count;;
+    return await messageCounter.count;;
 }

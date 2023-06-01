@@ -12,16 +12,6 @@ import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../
 import { sendMessage, getMessages } from '../serverCalls/message';
 
 
-
-export function removeChat(event, token){
-  const selectedItem = event.currentTarget;
-  var selectedId = selectedItem.parentNode.id;
-  console.log("the id of the chat we want to delete is : ");
-  console.log(selectedId);
-  deleteChat({token, id: selectedId});
-}
-
-
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
   Swal.fire({
@@ -44,13 +34,14 @@ export const AddChatPreview = (chat, setUserChatList, status) => {
 
 function Chat(props) {
   //state of the id of the opened chat.
+  const [deleteButtonClicked, setDeleteButtonClicked] = useState(false);
   const [activeChatId, setActiveChatId] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
   const [userChatList, setUserChatList] = useState([]);
   const [chat, setChat] = useState(null);
-  const [activeChatIndex, setActiveChatIndex] = useState(null);
   const textbox = useRef();
+
 
   //Getting for the first time all the users from the server
   useEffect(() => {
@@ -71,7 +62,20 @@ function Chat(props) {
     if (activeChatId !== 0) {
       paintAll(activeChatId);
     }
-  }, [activeChatId, paintAll]);
+  }, [activeChatId, deleteButtonClicked, paintAll]);
+
+  useEffect(() => {
+    const fetchUserChatList = async () => {
+      try {
+        const fetchedUserChatList = await getUserChats({ token: props.token });
+        setUserChatList(fetchedUserChatList);
+        sortListPreview();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserChatList();
+  }, [deleteButtonClicked])
 
   //Updating the chatpreview's by date
   function sortListPreview() {
@@ -152,7 +156,19 @@ function Chat(props) {
       ClickSend();
     }
   };
+
+  const ClickDelete = async (event) => {
+    event.stopPropagation();
+    const selectedItem = event.currentTarget;
+    var selectedId = selectedItem.parentNode.id;
+    console.log("the id of the chat we want to delete is : ");
+    console.log(selectedId);
+    setDeleteButtonClicked(true);
+    await deleteChat(activeUserToken, selectedId);
+    
+}
   const ClickPreview = async (event) => {
+    if(!deleteButtonClicked){
     //change the state of the chat because the user entered the first chat
     setChatClicked(true);
 
@@ -160,14 +176,18 @@ function Chat(props) {
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.id; // Access the "id" attribute using dataset
 
+ 
     //Getting only the number out of the id
     selectedId = selectedId.match(/\d+$/)[0];
     setActiveChatId(selectedId);
 
+    console.log("in preview!!");
     //updating the userChatPreviewList from the server
     //Setting the new chat.
     var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
     setChat(tmpChat);
+    }
+    setDeleteButtonClicked(false);
   };
 
   //Getting the active user and token from log in
@@ -312,14 +332,18 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
+              <li onClick={ClickPreview} onMouseEnter={HoverIn} onMouseLeave={HoverOut} className="chat-tag" id={chatpreview.id}>
               <ChatPreview
-               in={HoverIn} out={HoverOut} onClick={ClickPreview}
                 lastMessage={getLastMessagecontent(chatpreview.messages)}
                 img={getOtherUserPic(chatpreview, user)}
-                name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
+                name={getOtherUserDisplayName(chatpreview, user)}
                 created={getLastMessageCreated(chatpreview.messages)}
                 token={activeUserToken}
+                deleteButtonClicked={deleteButtonClicked}
+                setDeleteButtonClicked={setDeleteButtonClicked}
                 />
+                <button onClick={ClickDelete} type="button" class="btn btn-danger delete-b">X</button>
+              </li>
             ))}
           </ul>
         </div>

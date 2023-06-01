@@ -9,14 +9,13 @@ import { AddChatPreview } from '../chat/chat.js';
 
 function Modal({ setOpenModal, token, func }) {
 
-    
+
 
     const ClickEnter = async (event) => {
         if (event.key === 'Enter') {
             setOpenModal(false);
             var txt = modaltxt.current.value;
-            //Adding the user to the server
-            var [returnVal, status] = await addChat({token, txt});
+            var [returnVal, status] = await addChat({ "token": token, "username": txt });
             AddChatPreview(returnVal, func, status);
         }
     }
@@ -48,7 +47,7 @@ function Modal({ setOpenModal, token, func }) {
                         onClick={async () => {
                             setOpenModal(false);
                             var txt = modaltxt.current.value;
-                            var [returnVal,status] = await addChat({"token" : token, "username": txt});
+                            var [returnVal, status] = await addChat({ "token": token, "username": txt });
                             AddChatPreview(returnVal, func, status);
                         }}
                         id="Modal-btn"
