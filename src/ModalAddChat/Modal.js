@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import './Modal.css';
 import '../noa.css';
-import { sendSwal } from '../chat/chat';
 import { addChat } from '../serverCalls/chat';
 import { AddChatPreview } from '../chat/chat.js';
 

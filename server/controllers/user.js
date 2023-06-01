@@ -2,12 +2,20 @@ const userService = require('../servies/user.js');
 const jwt = require('jsonwebtoken');
 
 const createUser = async (req, res) => {
-    const username = req.body.username;
-    const password = req.body.password;
-    const displayName = req.body.displayName;
-    const profilePic = req.body.profilePic;
-    res.json(await userService.createUser(username, password, displayName, profilePic));
+  const username = req.body.username;
+  const password = req.body.password;
+  const displayName = req.body.displayName;
+  const profilePic = req.body.profilePic;
+
+  const user = await userService.findUserByUsername(username);
+  if (!user) {
+    res.status(200).json(await userService.createUser(username, password, displayName, profilePic));
+  }else{
+    res.status(409).json(user);
+  }
 };
+
+
 
 const login = async (req, res) => {
     const u = req.body.username;
