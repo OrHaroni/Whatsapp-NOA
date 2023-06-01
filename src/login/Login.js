@@ -9,6 +9,12 @@ import { sendSwal } from '../chat/chat';
 import { startSession } from 'mongoose';
 import { loginServer } from '../serverCalls/login.js'
 import { getUserPersonel } from '../serverCalls/chat';
+import { io } from 'socket.io-client';
+// Initialize the socket connection
+// this io is the io from the index.html file on the public folder
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+const socket = io('http://localhost:8080', { transports: ['websocket'] });
+
 
 export function isUserExist(userList, name) {
   var output = false;
@@ -47,14 +53,12 @@ function Login() {
       const data = { "username": u, "password": p };
       //the function returns 2 values
       const [statusNum, userToken] = await loginServer(data);
-      console.log("backkkk");
-      console.log(statusNum);
       if (statusNum === 200) {
         console.log("Login success");
+        // sending the server message that the user is connected using the socketIO
+        socket.emit('userConnected', u);
         //getting more data or the user
         const userData = await getUserPersonel({ "username": u, "token": userToken });
-        console.log(userData);
-        console.log(userData);
         // print the user data
         root.render(<Chat user={userData} token={userToken} />)
 

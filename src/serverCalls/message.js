@@ -11,7 +11,7 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
             },
             'body': JSON.stringify({"msg": msg})
         });
-        //Returning the user: username, displayname and img
+        //Returning message
         const i = await response.json();
         console.log("the message we get from server is :");
         console.log(i);
