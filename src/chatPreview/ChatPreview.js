@@ -1,12 +1,7 @@
-
-import '../noa.css';
-
-
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
-  const id =  props.id;
-  if (props.lastMessage) {
 
+  if (props.lastMessage) {
     const formatDate = (dateString) => {
       const date = new Date(dateString);
       
@@ -26,7 +21,7 @@ function ChatPreview(props) {
     const formattedDate = formatDate(props.created);
 
     return (
-      <li onClick={props.onClick} onMouseEnter={props.in} onMouseLeave={props.out} className="chat-tag" id={id}>
+<>
         <div>
           <img src={props.img} className="rounded-circle chat-profile-pic" />
         </div>
@@ -40,13 +35,13 @@ function ChatPreview(props) {
           <span className="chat-tag-label" style={{ textAlign: "center" }}>{formattedDate}</span>
         </div>
 
-      </li>
+      </>
     );
   }
 
   else {
     return (
-      <li onClick={props.onClick} onMouseEnter={props.in} onMouseLeave={props.out} className="chat-tag" id={id}>
+      <>
         <div>
           <img src={props.img} className="rounded-circle chat-profile-pic" />
         </div>
@@ -56,7 +51,7 @@ function ChatPreview(props) {
         <div>
           <span className="chat-tag-label"></span>
         </div>
-      </li>
+      </>
     );
   }
 }

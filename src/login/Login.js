@@ -1,12 +1,10 @@
 import '../noa.css';
-import React, { useState, useRef } from 'react';
+import React, {useRef } from 'react';
 import Chat from '../chat/chat';
 import Register from '../register/register';
 import { root } from '../index.js'
 import logo from '../pictures/LOGO.png'
-import { userList } from '../database/Database';
 import { sendSwal } from '../chat/chat';
-import { startSession } from 'mongoose';
 import { loginServer } from '../serverCalls/login.js'
 import { getUserPersonel } from '../serverCalls/chat';
 import { io } from 'socket.io-client';
@@ -16,23 +14,6 @@ import { io } from 'socket.io-client';
 const socket = io('http://localhost:8080', { transports: ['websocket'] });
 
 
-export function isUserExist(userList, name) {
-  var output = false;
-  userList.forEach(user => {
-    if (user.username === name) {
-      output = true;
-    }
-  })
-  return output;
-};
-function isCorrectPass(userList, username, password) {
-  var output = false;
-  let user = userList.find((user) => user.username === username);
-  if (user.password === password) {
-    output = true;
-  }
-  return output;
-};
 function Login() {
   const username = useRef(null);
   const password = useRef(null);
@@ -57,6 +38,7 @@ function Login() {
         console.log("Login success");
         // sending the server message that the user is connected using the socketIO
         socket.emit('userConnected', u);
+
         //getting more data or the user
         const userData = await getUserPersonel({ "username": u, "token": userToken });
         // print the user data
@@ -74,7 +56,7 @@ function Login() {
   return (
     <>
       <div className="upper-bg">
-        <img src={logo} className="logo"></img>
+        <img src={logo} className="logo" alt="Logo"></img>
       </div>
       <div className="background d-flex justify-content-center align-items-center">
         <div className="form-container p-4 rounded in-Login">

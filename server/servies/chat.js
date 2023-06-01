@@ -4,17 +4,15 @@ const Message = require('../models/message.js');
 const usingSocket = require('../app.js');
 const connectedUsers =require('../models/connectedUsers.js');
 
-
-var numMessage = 0;
 const CreateChat = async (me, username) => {
     const firstUser = { username: me.username, displayName: me.displayName, profilePic: me.profilePic };
     const secondUser = { username: username.username, displayName: username.displayName, profilePic: username.profilePic };
 
-    const newID = await getID();
-    const chat = new Chat({id : newID, users: [firstUser, secondUser], messages: [] });
+    const newID = await getChatID();
+    const chat = new Chat({ id: newID, users: [firstUser, secondUser], messages: [] });
     return await chat.save();
-  };
-  
+};
+
 const getAllChats = async (username) => {
     return await Chat.find({
         users: {
@@ -28,7 +26,7 @@ const getAllChats = async (username) => {
 const getChatById = async (username, id) => {
     const chatList = await getAllChats(username);
     var chat = null
-      chatList.forEach(item => {
+    chatList.forEach(item => {
         if (item.id == id) {
             chat = item;
         }
@@ -37,21 +35,25 @@ const getChatById = async (username, id) => {
 }
 
 const deleteChat = async (username, id) => {
-    console.log("in service deleteChat");
-    Chat.deleteOne({
-        id: id
-    })
-    console.log("Didnt find a chat with this id: " + id + " , return null!");
-    return null;
+    try {
+        console.log("in service deleteChat");
+        await Chat.deleteOne({
+            id: id
+        })
+    }
+    catch (error) {
+        console.log("Didnt find a chat with this id: " + id + " , return null!");
+    }
 }
 const sendMessage = async (username, id, msg) => {
     console.log("in service send message");
     //Creating a new message into Message DB
     const chat = await getChatById(username, id);
     const sender = getUserInfo(chat, username);
-    const message = new Message({ id: numMessage, created: new Date().toISOString(), sender: sender, content: msg });
+    let generateID = await getMessageID();
+    const message = new Message({ id: generateID, created: new Date().toISOString(), sender: sender, content: msg });
+    const tmp = { id: generateID, created: new Date().toISOString(), sender: sender, content: msg };
     await message.save();
-    const pushMessage = { id: numMessage, created: new Date().toISOString(), sender: sender, content: msg };
     // Sending the message to the other user
     const Receiver = getOtherUserInfo(chat, username);
     // check if the receiver is connected
@@ -61,19 +63,19 @@ const sendMessage = async (username, id, msg) => {
         console.log("receiver user is connected");
         usingSocket.io.to(userConnected.socketId).emit('newMessage', pushMessage);
     }
-    numMessage++;
     //Inserting this message into the chat list
     try {
-        await Chat.findOneAndUpdate(
-            {id : id},
-            { $push: { messages: message } },
+       await Chat.findOneAndUpdate(
+            { id: id },
+            { $push: { messages: tmp } },
             { new: true }
-          ).exec();
-          return pushMessage;
-      } catch (error) {
+        ).exec();
+        await message.save();
+        return tmp;
+      } catch(error){
         console.log("there is an error!");
         console.error(error);
-      }
+    }
 }
 
 module.exports = {
@@ -93,12 +95,21 @@ function getOtherUserInfo(chat, me) {
     return chat.users[0];
 }
 
-async function getID(){
+async function getChatID() {
     console.log("In create chat services");
     let chatCounter = await Counter.findOneAndUpdate(
-      { name: "chat" },
-      { $inc: { count: 1 } },
-      { new: true, upsert: true }
+        { name: "chat" },
+        { $inc: { count: 1 } },
+        { new: true, upsert: true }
     );
-return await chatCounter.count;;
+    return await chatCounter.count;
+}
+async function getMessageID() {
+    console.log("In create chat services");
+    let messageCounter = await Counter.findOneAndUpdate(
+        { name: "chat" },
+        { $inc: { count: 1 } },
+        { new: true, upsert: true }
+    );
+    return await messageCounter.count;;
 }

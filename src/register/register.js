@@ -3,21 +3,11 @@ import '../noa.css';
 import Login from '../login/Login';
 import { root } from '../index.js'
 import logo from "../pictures/LOGO.png"
-import { isUserExist } from '../login/Login';
 import { userList } from '../database/Database';
 import defaultUserPic from '../pictures/user-profile.png';
 import { sendSwal } from '../chat/chat';
 import { registerServer } from '../serverCalls/register.js';
 
-export function isDisNameExist(userList, name) {
-  var output = false;
-  userList.forEach(user => {
-    if (user.name === name) {
-      output = true;
-    }
-  })
-  return output;
-};
 
 function Register() {
   const ClickEnter = (event) => {
@@ -28,10 +18,10 @@ function Register() {
   // function to check if the user choose a picture, if yes show it, otherwise, show nothing.
   function showImage() {
     if (image) {
-      return <img src={image} className="prof-pic"></img>;
+      return <img src={image} className="prof-pic" alt="Profile"></img>;
     }
   }
-  
+
 
   const ClickRegister = async () => {
     var username = usernamev.current.value;
@@ -45,43 +35,35 @@ function Register() {
     else {
       img = image;
     }
-    const data = {"username":username,"password": password,"displayName": name,"profilePic": img};
-    const statusNum = await registerServer(data);
-    console.log("this is status:" + statusNum);
-    //Checking if the response is good!
-    if(statusNum == 200){
+
+    if (username === '') {
+      sendSwal("Please insert username", "warning");
+    }
+    else if (password === '') {
+      sendSwal("Please insert password", "warning");
+    }
+    else if (name === '') {
+      sendSwal("Please insert display name", "warning");
+    }
+    else {
+      const data = { "username": username, "password": password, "displayName": name, "profilePic": img };
+      const statusNum = await registerServer(data);
       const chatList = [];
-      if (isUserExist(userList, username)) {
-        sendSwal("username if taken, try a different one", "warning");
-      }
-      else if (username === '') {
-        sendSwal("Please insert username", "warning");
-  
-      }
-      else if (password === '') {
-        sendSwal("Please insert password", "warning");
-      }
-      else if (isDisNameExist(userList, name)) {
-        sendSwal("Display name is taken, try different one.", "warning");
-      }
-      else if(name === ''){
-        sendSwal("Please insert display name", "warning");
-      }
-      else {
-        //Add the User and enter him to the chat.
+      if (statusNum === 200) {
         const user = { id: String(userList.length + 1), username, password, name, img, chatList };
         userList.push(user);
         root.render(<Login />);
       }
+      else if (statusNum === 409) {
+        sendSwal("This user is already exist!", "warning");
+      }
+      else {
+        sendSwal("Incorect status number!", "warning");
+      }
     }
-    else if(statusNum == 409){
-      sendSwal("This user is already exist!", "warning");
-    }
-    else{
-      sendSwal("Incorect status number!","warning");
-    }
-    //One of the things get wrong, 
+
   };
+
 
 
   const usernamev = useRef(null);
@@ -100,21 +82,21 @@ function Register() {
   //Convert the image to base64 and make it a string
   function convertToBase64(e) {
     var reader = new FileReader();
-    if(e.target.files[0]){
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      setImage(reader.result);
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = () => {
+        setImage(reader.result);
+      }
+      reader.onerror = (error) => {
+      }
     }
-    reader.onerror = (error) => {
-    }
-  }
   }
 
 
   return (
     <>
       <div className="upper-bg">
-        <img src={logo} className="logo"></img>
+        <img src={logo} className="logo" alt="Logo"></img>
       </div>
 
       <div className="background d-flex justify-content-center align-items-center">

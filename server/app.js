@@ -44,6 +44,7 @@ const userRoutes = require('./routes/user.js');
 const chatRoutes = require('./routes/chat.js');
 const tokenRoutes = require('./routes/token.js');
 
+
 // Middleware for parsing JSON bodies
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
@@ -53,8 +54,7 @@ app.use(cors());
 
 // Connecting to MongoDB
 const mongoose = require('mongoose');
-mongoose
-  .connect('mongodb://127.0.0.1:27017', {
+mongoose.connect(process.env.CONECTION_STRING , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -63,11 +63,15 @@ mongoose
 
 app.use(express.static('../public'));
 
+
 app.use('/api/Users', userRoutes);
 app.use('/api/Tokens', tokenRoutes);
 app.use('/api/Chats', chatRoutes);
 
-server.listen(8080);
+app.listen(process.env.PORT);
+
+
+server.listen(process.env.PORT);
 
 module.exports = {
      io

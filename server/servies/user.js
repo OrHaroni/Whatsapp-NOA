@@ -20,11 +20,12 @@ const getUser = async (username, password) => {
 
 const findUserByUsername = async (username) => {
   try {
-    const  user =  await UserPassName.findOne({ username}).exec();
+    const  user =  await UserPassName.findOne({username}).exec();
     return user;
   } catch (error) {
     console.log("there is an error!");
     console.error(error);
+    return null;
   }
 };
 

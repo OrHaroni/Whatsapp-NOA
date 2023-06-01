@@ -7,9 +7,8 @@ import logo from '../pictures/LOGO.png';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
-import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
-import { getUserPersonel, getUserChats, addChat, getChat } from '../serverCalls/chat';
+import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../serverCalls/chat';
 import { sendMessage, getMessages } from '../serverCalls/message';
 import { io } from 'socket.io-client';
 
@@ -18,6 +17,7 @@ import { io } from 'socket.io-client';
 // this io is the io from the index.html file on the public folder
 <script src="http://localhost:8080/socket.io/socket.io.js"></script>
 const socket = io('http://localhost:8080', { transports: ['websocket'] });
+
 
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
@@ -41,65 +41,61 @@ export const AddChatPreview = (chat, setUserChatList, status) => {
 
 function Chat(props) {
   //state of the id of the opened chat.
+  const [deleteButtonClicked, setDeleteButtonClicked] = useState(false);
   const [activeChatId, setActiveChatId] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [ChatClicked, setChatClicked] = useState(null);
   const [userChatList, setUserChatList] = useState([]);
   const [chat, setChat] = useState(null);
-  const [activeChatIndex, setActiveChatIndex] = useState(null);
   const textbox = useRef();
 
 
-  socket.on('newMessage', (message) => {
-    // Handle the new message
-    console.log('New message received:', message);
-    // Update the chat messages state by adding the new message
-    setChat((prevChat) => ({
-      ...prevChat,
-      messages: [...prevChat.messages, message],
-    }));
-    // Call paintAll after receiving a new message
-    paintAll(activeChatId);
-  });
+//Naor's Socket changes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//   socket.on('newMessage', (message) => {
+//     // Handle the new message
+//     console.log('New message received:', message);
+//     // Update the chat messages state by adding the new message
+//     setChat((prevChat) => ({
+//       ...prevChat,
+//       messages: [...prevChat.messages, message],
+//     }));
+//     // Call paintAll after receiving a new message
+//     paintAll(activeChatId);
+//   });
 
-  function findChat(username,otherUsername) {
-    let chat = null;
-    userChatList.forEach((oneChat) => {
-      if ((oneChat.users[0].username === username && oneChat.users[1].username === otherUsername ) || (oneChat.users[0].username === otherUsername && oneChat.users[1].username === username)) {
-        chat = oneChat;
-      }
-    });
-    return chat;
-  }
+//   function findChat(username,otherUsername) {
+//     let chat = null;
+//     userChatList.forEach((oneChat) => {
+//       if ((oneChat.users[0].username === username && oneChat.users[1].username === otherUsername ) || (oneChat.users[0].username === otherUsername && oneChat.users[1].username === username)) {
+//         chat = oneChat;
+//       }
+//     });
+//     return chat;
+//   }
 
       
 
-  // use effect to listen to the socket if he gets a message
-  useEffect(async() => {
-    socket.on('newMessage', (message) => {
-      console.log(message);
-      // search the chat that this message belongs to, by the user message.sender and the activeChatId
-      const chat =  findChat(user?.username,message.sender.username);
-      // check if both the user,the message.sender both connectedUsers
+//   // use effect to listen to the socket if he gets a message
+//   useEffect(async() => {
+//     socket.on('newMessage', (message) => {
+//       console.log(message);
+//       // search the chat that this message belongs to, by the user message.sender and the activeChatId
+//       const chat =  findChat(user?.username,message.sender.username);
+//       // check if both the user,the message.sender both connectedUsers
 
 
 
 
 
-      if (message.chatId === activeChatId) {
-        setChat((prevChat) => {
-          const updatedChat = { ...prevChat };
-          updatedChat.messages.push(message);
-          return updatedChat;
-        });
-      }
-    });
-  }, []);
-
-
-
-
-
+//       if (message.chatId === activeChatId) {
+//         setChat((prevChat) => {
+//           const updatedChat = { ...prevChat };
+//           updatedChat.messages.push(message);
+//           return updatedChat;
+//         });
+//       }
+//     });
+//   }, []);
 
   //Getting for the first time all the users from the server
   useEffect(() => {
@@ -120,7 +116,20 @@ function Chat(props) {
     if (activeChatId !== 0) {
       paintAll(activeChatId);
     }
-  }, [activeChatId, paintAll]);
+  }, [activeChatId, deleteButtonClicked, paintAll]);
+
+  useEffect(() => {
+    const fetchUserChatList = async () => {
+      try {
+        const fetchedUserChatList = await getUserChats({ token: props.token });
+        setUserChatList(fetchedUserChatList);
+        sortListPreview();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserChatList();
+  }, [deleteButtonClicked])
 
   //Updating the chatpreview's by date
   function sortListPreview() {
@@ -128,19 +137,21 @@ function Chat(props) {
     setUserChatList(prevChatList => {
       const updatedChatList = [...prevChatList];
       updatedChatList.sort((a, b) => {
+        const tmpA = getLastMessageCreatedSorting(a.messages);
+        const tmpB = getLastMessageCreatedSorting(b.messages);
         // Check if lastMessage exists for both items
-        if (a.lastMessage && b.lastMessage) {
-          const dateA = new Date(a.lastMessage.created);
-          const dateB = new Date(b.lastMessage.created);
+        if (tmpB && tmpA) {
+          const dateA = new Date(tmpA);
+          const dateB = new Date(tmpB);
           return dateB - dateA;
         }
 
         // Handle cases where lastMessage is null or undefined
-        if (!a.lastMessage && b.lastMessage) {
+        if (!tmpA && tmpB) {
           return 1; // b comes before a
         }
 
-        if (a.lastMessage && !b.lastMessage) {
+        if (tmpA && !tmpB) {
           return -1; // a comes before b
         }
 
@@ -190,8 +201,6 @@ function Chat(props) {
     if (textbox.current.value !== '') {
       const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
-      console.log("msg is :") ;
-      console.log(msg);
       // Update the chat messages state by adding the new message
       setChat(await getChat({"token": activeUserToken, "id" : activeChatId}));
       paintAll(activeChatId); // Call paintAll after sending a message
@@ -203,7 +212,19 @@ function Chat(props) {
       ClickSend();
     }
   };
+
+  const ClickDelete = async (event) => {
+    event.stopPropagation();
+    const selectedItem = event.currentTarget;
+    var selectedId = selectedItem.parentNode.id;
+    console.log("the id of the chat we want to delete is : ");
+    console.log(selectedId);
+    setDeleteButtonClicked(true);
+    await deleteChat(activeUserToken, selectedId);
+    
+}
   const ClickPreview = async (event) => {
+    if(!deleteButtonClicked){
     //change the state of the chat because the user entered the first chat
     setChatClicked(true);
 
@@ -211,14 +232,18 @@ function Chat(props) {
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.id; // Access the "id" attribute using dataset
 
+ 
     //Getting only the number out of the id
     selectedId = selectedId.match(/\d+$/)[0];
     setActiveChatId(selectedId);
 
+    console.log("in preview!!");
     //updating the userChatPreviewList from the server
     //Setting the new chat.
     var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
     setChat(tmpChat);
+    }
+    setDeleteButtonClicked(false);
   };
 
   //Getting the active user and token from log in
@@ -231,8 +256,6 @@ function Chat(props) {
 
   //Getting the other user of the chat img
   function getOtherUserPic(chat, user) {
-    console.log("chat is :");
-    console.log(chat);
     if (chat?.users[0]?.username === user.username) {
       return chat?.users[1]?.profilePic;
     }
@@ -276,6 +299,23 @@ function Chat(props) {
     });
   
     return lastMessage?.content;
+  }
+  return "";
+  }
+
+  function getLastMessageCreatedSorting(messages) {
+    if(messages){
+    let highestId = -Infinity;
+    let lastMessage = null;
+  
+    messages?.forEach(message => {
+      if (message.id > highestId) {
+        highestId = message.id;
+        lastMessage = message;
+      }
+    });
+  
+    return lastMessage?.created;
   }
   return "";
   }
@@ -348,8 +388,18 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={getLastMessagecontent(chatpreview.messages)} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
-              created={getLastMessageCreated(chatpreview.messages)} />
+              <li onClick={ClickPreview} onMouseEnter={HoverIn} onMouseLeave={HoverOut} className="chat-tag" id={chatpreview.id}>
+              <ChatPreview
+                lastMessage={getLastMessagecontent(chatpreview.messages)}
+                img={getOtherUserPic(chatpreview, user)}
+                name={getOtherUserDisplayName(chatpreview, user)}
+                created={getLastMessageCreated(chatpreview.messages)}
+                token={activeUserToken}
+                deleteButtonClicked={deleteButtonClicked}
+                setDeleteButtonClicked={setDeleteButtonClicked}
+                />
+                <button onClick={ClickDelete} type="button" class="btn btn-danger delete-b">X</button>
+              </li>
             ))}
           </ul>
         </div>

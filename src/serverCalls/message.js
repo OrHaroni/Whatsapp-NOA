@@ -1,8 +1,6 @@
 //Function that returns list of messages for a specific chat id
-const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
+const sendMessage = async ({id, token, msg}) => {
     try {
-        console.log("in sendMessage");
-        console.log(token);
         const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'POST',
             headers: {
@@ -13,8 +11,6 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
         });
         //Returning message
         const i = await response.json();
-        console.log("the message we get from server is :");
-        console.log(i);
         return i;
     } catch (error) {
         console.error(error);
@@ -22,7 +18,7 @@ const sendMessage = async ({ "id": id, "token": token, "msg": msg }) => {
 };
 
 //Function that returns list of messages for a specific chat id
-const getMessages = async ({ "id": id, "token": token }) => {
+const getMessages = async ({id, token}) => {
     try {
         const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {
             method: 'GET',
