@@ -10,7 +10,6 @@ const registerServer = async (data) => {
         },
         body: JSON.stringify(data),
       });
-
       return response.status;
     } catch (error) {
       console.error(error);

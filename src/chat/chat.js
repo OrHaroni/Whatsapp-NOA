@@ -7,7 +7,6 @@ import logo from '../pictures/LOGO.png';
 import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
-import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
 import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../serverCalls/chat';
 import { sendMessage, getMessages } from '../serverCalls/message';
@@ -80,19 +79,21 @@ function Chat(props) {
     setUserChatList(prevChatList => {
       const updatedChatList = [...prevChatList];
       updatedChatList.sort((a, b) => {
+        const tmpA = getLastMessageCreatedSorting(a.messages);
+        const tmpB = getLastMessageCreatedSorting(b.messages);
         // Check if lastMessage exists for both items
-        if (a.lastMessage && b.lastMessage) {
-          const dateA = new Date(a.lastMessage.created);
-          const dateB = new Date(b.lastMessage.created);
+        if (tmpB && tmpA) {
+          const dateA = new Date(tmpA);
+          const dateB = new Date(tmpB);
           return dateB - dateA;
         }
 
         // Handle cases where lastMessage is null or undefined
-        if (!a.lastMessage && b.lastMessage) {
+        if (!tmpA && tmpB) {
           return 1; // b comes before a
         }
 
-        if (a.lastMessage && !b.lastMessage) {
+        if (tmpA && !tmpB) {
           return -1; // a comes before b
         }
 
@@ -222,6 +223,23 @@ function Chat(props) {
     });
   
     return lastMessage?.content;
+  }
+  return "";
+  }
+
+  function getLastMessageCreatedSorting(messages) {
+    if(messages){
+    let highestId = -Infinity;
+    let lastMessage = null;
+  
+    messages?.forEach(message => {
+      if (message.id > highestId) {
+        highestId = message.id;
+        lastMessage = message;
+      }
+    });
+  
+    return lastMessage?.created;
   }
   return "";
   }
