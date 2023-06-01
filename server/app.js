@@ -7,12 +7,12 @@ const chatRouts= require('./routes/chat.js');
 const tokenRouts= require('./routes/token.js');
 
 // Middleware for parsing JSON bodies
-app.use(express.json());
+app.use(express.json({limit: '50mb'}));
 
 //Using bodyParser midware to use "body" in POST calls
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({limit: '50mb' ,extended: true }));
 
 
 
@@ -27,7 +27,7 @@ customENV.env(process.env.NODE_ENV, '../config');
 
 console.log(process.env.PORT);
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://127.0.0.1:27017" , {
+mongoose.connect("mongodb://127.0.0.1:27017/DB" , {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(()=>console.log('connected'))

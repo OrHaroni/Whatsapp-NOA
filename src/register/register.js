@@ -100,12 +100,14 @@ function Register() {
   //Convert the image to base64 and make it a string
   function convertToBase64(e) {
     var reader = new FileReader();
+    if(e.target.files[0]){
     reader.readAsDataURL(e.target.files[0]);
     reader.onload = () => {
       setImage(reader.result);
     }
     reader.onerror = (error) => {
     }
+  }
   }
 
 
