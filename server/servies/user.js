@@ -1,7 +1,7 @@
 const UserPassName = require('../models/user.js');
 
 const createUser = async (username, password, displayName, profilePic) => {
-  const user = new UserPassName({ username: username, password: password, displayName: displayName });
+  const user = new  ({ username: username, password: password, displayName: displayName });
   //If there is profile pic
   if (profilePic) {
     user.profilePic = profilePic;

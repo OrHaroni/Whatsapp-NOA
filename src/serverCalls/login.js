@@ -8,7 +8,6 @@ const loginServer = async (data) => {
       'body': JSON.stringify(data)
     });
     let token = await res.json();
-
     let statusNum = res.status;
     //returning the status number and ID!!
     return [statusNum, token];

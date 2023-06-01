@@ -9,7 +9,7 @@ const sendMessage = async ({id, token, msg}) => {
             },
             'body': JSON.stringify({"msg": msg})
         });
-        //Returning the user: username, displayname and img
+        //Returning message
         const i = await response.json();
         return i;
     } catch (error) {

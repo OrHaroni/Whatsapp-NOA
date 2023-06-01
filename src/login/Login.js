@@ -7,6 +7,12 @@ import logo from '../pictures/LOGO.png'
 import { sendSwal } from '../chat/chat';
 import { loginServer } from '../serverCalls/login.js'
 import { getUserPersonel } from '../serverCalls/chat';
+import { io } from 'socket.io-client';
+// Initialize the socket connection
+// this io is the io from the index.html file on the public folder
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+const socket = io('http://localhost:8080', { transports: ['websocket'] });
+
 
 function Login() {
   const username = useRef(null);
@@ -29,6 +35,10 @@ function Login() {
       //the function returns 2 values
       const [statusNum, userToken] = await loginServer(data);
       if (statusNum === 200) {
+        console.log("Login success");
+        // sending the server message that the user is connected using the socketIO
+        socket.emit('userConnected', u);
+
         //getting more data or the user
         const userData = await getUserPersonel({ "username": u, "token": userToken });
         // print the user data

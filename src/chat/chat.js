@@ -10,6 +10,13 @@ import Message from '../message/Message.js';
 import Modal from '../ModalAddChat/Modal';
 import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../serverCalls/chat';
 import { sendMessage, getMessages } from '../serverCalls/message';
+import { io } from 'socket.io-client';
+
+
+// Initialize the socket connection
+// this io is the io from the index.html file on the public folder
+<script src="http://localhost:8080/socket.io/socket.io.js"></script>
+const socket = io('http://localhost:8080', { transports: ['websocket'] });
 
 
 export function sendSwal(message, icon) {
@@ -42,6 +49,53 @@ function Chat(props) {
   const [chat, setChat] = useState(null);
   const textbox = useRef();
 
+
+//Naor's Socket changes !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//   socket.on('newMessage', (message) => {
+//     // Handle the new message
+//     console.log('New message received:', message);
+//     // Update the chat messages state by adding the new message
+//     setChat((prevChat) => ({
+//       ...prevChat,
+//       messages: [...prevChat.messages, message],
+//     }));
+//     // Call paintAll after receiving a new message
+//     paintAll(activeChatId);
+//   });
+
+//   function findChat(username,otherUsername) {
+//     let chat = null;
+//     userChatList.forEach((oneChat) => {
+//       if ((oneChat.users[0].username === username && oneChat.users[1].username === otherUsername ) || (oneChat.users[0].username === otherUsername && oneChat.users[1].username === username)) {
+//         chat = oneChat;
+//       }
+//     });
+//     return chat;
+//   }
+
+      
+
+//   // use effect to listen to the socket if he gets a message
+//   useEffect(async() => {
+//     socket.on('newMessage', (message) => {
+//       console.log(message);
+//       // search the chat that this message belongs to, by the user message.sender and the activeChatId
+//       const chat =  findChat(user?.username,message.sender.username);
+//       // check if both the user,the message.sender both connectedUsers
+
+
+
+
+
+//       if (message.chatId === activeChatId) {
+//         setChat((prevChat) => {
+//           const updatedChat = { ...prevChat };
+//           updatedChat.messages.push(message);
+//           return updatedChat;
+//         });
+//       }
+//     });
+//   }, []);
 
   //Getting for the first time all the users from the server
   useEffect(() => {
@@ -138,6 +192,8 @@ function Chat(props) {
   }
 
   const ClickLogout = () => {
+    // send to the server that the user is logged out
+   // socket.emit('logout',user.username);
     root.render(<Login />);
   };
 

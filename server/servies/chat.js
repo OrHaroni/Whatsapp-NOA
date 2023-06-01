@@ -1,6 +1,8 @@
 const Chat = require('../models/chat.js');
 const Counter = require('../models/Counter.js');
-const Message = require('../models/message.js')
+const Message = require('../models/message.js');
+const usingSocket = require('../app.js');
+const connectedUsers =require('../models/connectedUsers.js');
 
 const CreateChat = async (me, username) => {
     const firstUser = { username: me.username, displayName: me.displayName, profilePic: me.profilePic };
@@ -43,29 +45,34 @@ const deleteChat = async (username, id) => {
         console.log("Didnt find a chat with this id: " + id + " , return null!");
     }
 }
-
 const sendMessage = async (username, id, msg) => {
     console.log("in service send message");
     //Creating a new message into Message DB
     const chat = await getChatById(username, id);
-    console.log("chat:");
-    console.log(chat);
     const sender = getUserInfo(chat, username);
-    console.log("sender:");
-    console.log(sender);
     let generateID = await getMessageID();
     const message = new Message({ id: generateID, created: new Date().toISOString(), sender: sender, content: msg });
     const tmp = { id: generateID, created: new Date().toISOString(), sender: sender, content: msg };
+    await message.save();
+    // Sending the message to the other user
+    const Receiver = getOtherUserInfo(chat, username);
+    // check if the receiver is connected
+    const ifConnected = await connectedUsers.findOne({username: Receiver.username });
+    if (ifConnected)
+    {
+        console.log("receiver user is connected");
+        usingSocket.io.to(userConnected.socketId).emit('newMessage', pushMessage);
+    }
     //Inserting this message into the chat list
     try {
-        await Chat.findOneAndUpdate(
+       await Chat.findOneAndUpdate(
             { id: id },
             { $push: { messages: tmp } },
             { new: true }
         ).exec();
         await message.save();
         return tmp;
-    } catch (error) {
+      } catch(error){
         console.log("there is an error!");
         console.error(error);
     }
@@ -81,6 +88,12 @@ function getUserInfo(chat, me) {
     }
     return chat.users[1];
 }
+function getOtherUserInfo(chat, me) {
+    if (chat.users[0].username === me) {
+        return chat.users[1];
+    }
+    return chat.users[0];
+}
 
 async function getChatID() {
     console.log("In create chat services");
@@ -89,7 +102,7 @@ async function getChatID() {
         { $inc: { count: 1 } },
         { new: true, upsert: true }
     );
-    return await chatCounter.count;;
+    return await chatCounter.count;
 }
 async function getMessageID() {
     console.log("In create chat services");
