@@ -1,4 +1,4 @@
-//Function that returns list of messages for a specific chat id
+//Function that send a message to a specific chat id
 const sendMessage = async ({id, token, msg}) => {
     try {
         const response = await fetch('http://localhost:8080/api/Chats/' + id + "/Messages", {

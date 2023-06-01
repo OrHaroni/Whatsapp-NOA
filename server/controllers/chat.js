@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const CreateChat = async (req, res) => {
     try {
-        console.log("In creat chat controller");
         const me = decode(req.headers.authorization);
         const username = req.body.username;
         const firstUser = await userService.findUserByUsername(me);

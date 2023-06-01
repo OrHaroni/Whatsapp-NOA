@@ -8,6 +8,8 @@ const path = require('path');
 const connectedUsers =require('./models/connectedUsers.js');
 
 
+
+
 // Import the 'cors' package
 const cors = require('cors');
 
@@ -20,12 +22,21 @@ app.get('/', (req, res) => {
   });
 
 io.on('connection', async (socket) => {
-  console.log('connect to socket');
   // add user to connected users
   socket.on('userConnected', async(username) => {
     const temp = new connectedUsers({ username: username, socketId: socket.id });
-    console.log("user connected:");
       await temp.save();
+  });
+  socket.on('newMessage', async( senderUsername, receiverUsername) => {
+   const ifSenderConnected = await connectedUsers.findOne({username: senderUsername});
+   const ifReceiverConnected = await connectedUsers.findOne({username: receiverUsername}); 
+   if(ifSenderConnected && ifReceiverConnected){
+    // find receiver socket id
+    const socketId = await connectedUsers.findOne({username: receiverUsername});
+    // send message to receiver
+    io.to(socketId.socketId).emit('render');
+
+   }
   });
 
   socket.on('logout', async() => {
@@ -38,6 +49,11 @@ io.on('connection', async (socket) => {
     await connectedUsers.deleteOne({ socketId: socket.id });
   });
 
+  socket.on('close', async () => {
+    // Disconnect users and clean up resources here
+    console.log('Server is about to exit. Cleaning up...');
+
+});
 });
 
 const userRoutes = require('./routes/user.js');
@@ -54,6 +70,7 @@ app.use(cors());
 
 // Connecting to MongoDB
 const mongoose = require('mongoose');
+const { copyFileSync } = require('fs');
 mongoose.connect("mongodb://127.0.0.1:27017/DB" , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -71,8 +88,7 @@ app.use('/api/Chats', chatRoutes);
 app.listen(process.env.PORT);
 
 
-server.listen(8080);
 
-module.exports = {
-     io
-};
+
+
+server.listen(8080);

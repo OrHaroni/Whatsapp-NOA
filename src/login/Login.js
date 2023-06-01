@@ -35,14 +35,15 @@ function Login() {
       //the function returns 2 values
       const [statusNum, userToken] = await loginServer(data);
       if (statusNum === 200) {
-        console.log("Login success");
-        // sending the server message that the user is connected using the socketIO
-        socket.emit('userConnected', u);
+      
 
         //getting more data or the user
         const userData = await getUserPersonel({ "username": u, "token": userToken });
+        console.log("Login success");
+        // sending the server message that the user is connected using the socketIO
+        socket.emit('userConnected', u);
         // print the user data
-        root.render(<Chat user={userData} token={userToken} />)
+        root.render(<Chat user={userData} token={userToken} socket={socket} />)
 
       }
       else {
