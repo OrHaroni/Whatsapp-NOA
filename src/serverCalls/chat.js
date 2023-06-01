@@ -26,9 +26,7 @@ const getUserChats = async ({token }) => {
             },
         });
         //Returning the user's chat list
-        console.log("respffffffffffffffffffffffffffonse");
         const i = await (response.json());
-        console.log(i);
         return i;
     } catch (error) {
         console.error(error);
@@ -68,13 +66,35 @@ const getChat = async ({token, id}) => {
         });
         //Returning the chat with this id
         var r = await response.json();
-        console.log("the chat we get from server is :");
-        console.log(r);
+
         return r;
     } catch (error) {
         console.error(error);
     }
 }
+
+//delete a chat from the user chat preview
+const deleteChat = async ({token, id}) => {
+    try {
+        const response = await fetch('http://localhost:8080/api/Chats/' + id, {
+            method: 'DELETE',
+            headers: {
+                "authorization": token,
+                'Content-Type': 'application/json',
+            },
+        });
+        var r = await response.json();
+        return r;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+
+
+
 module.exports = {
-    getUserPersonel, getUserChats,addChat, getChat
+    getUserPersonel, getUserChats,addChat, getChat, deleteChat
 }

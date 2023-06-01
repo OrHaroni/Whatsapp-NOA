@@ -1,11 +1,16 @@
 
 import '../noa.css';
-
+import { removeChat } from '../chat/chat';
 
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
+  const clickDelete = async (event) => {
+    removeChat(event, props.token);
+  };
   const id =  props.id;
   if (props.lastMessage) {
+
+  
 
     const formatDate = (dateString) => {
       const date = new Date(dateString);
@@ -36,6 +41,7 @@ function ChatPreview(props) {
         <div>
           <span className="chat-tag-label">{props.lastMessage}</span>
         </div>
+        <button onClick={clickDelete} type="button" class="btn btn-danger delete-b">X</button>
         <div className='pre-chat-con'>
           <span className="chat-tag-label" style={{ textAlign: "center" }}>{formattedDate}</span>
         </div>
@@ -53,6 +59,7 @@ function ChatPreview(props) {
         <div>
           <span className="chat-tag-label">{props.name}</span>
         </div>
+        <button onClick={clickDelete} type="button" class="btn btn-danger delete-b">X</button>
         <div>
           <span className="chat-tag-label"></span>
         </div>

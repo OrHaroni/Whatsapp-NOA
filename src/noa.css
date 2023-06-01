@@ -288,3 +288,8 @@ a.no-underline {
 .pre-chat-con{
     left: 40% !important;
 }
+.delete-b{
+    position: relative;
+    right : -1%;
+    top: 29%;
+  }
