@@ -10,8 +10,8 @@ import { getUserPersonel } from '../serverCalls/chat';
 import { io } from 'socket.io-client';
 // Initialize the socket connection
 // this io is the io from the index.html file on the public folder
-<script src="http://localhost:8080/socket.io/socket.io.js"></script>
-const socket = io('http://localhost:8080', { transports: ['websocket'] });
+<script src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
+const socket = io('http://127.0.0.1:8080', { transports: ['websocket'] });
 
 
 function Login() {

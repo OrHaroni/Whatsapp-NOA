@@ -54,7 +54,7 @@ app.use(cors());
 
 // Connecting to MongoDB
 const mongoose = require('mongoose');
-mongoose.connect(process.env.CONECTION_STRING , {
+mongoose.connect("mongodb://127.0.0.1:27017/DB" , {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -71,7 +71,7 @@ app.use('/api/Chats', chatRoutes);
 app.listen(process.env.PORT);
 
 
-server.listen(process.env.PORT);
+server.listen(8080);
 
 module.exports = {
      io

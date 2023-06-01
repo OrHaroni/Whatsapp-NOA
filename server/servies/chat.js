@@ -60,8 +60,10 @@ const sendMessage = async (username, id, msg) => {
     const ifConnected = await connectedUsers.findOne({username: Receiver.username });
     if (ifConnected)
     {
-        console.log("receiver user is connected");
-        usingSocket.io.to(userConnected.socketId).emit('newMessage', pushMessage);
+        console.log("This is other user conetcted:");
+        console.log(ifConnected);
+        // console.log("receiver user is connected");
+        // usingSocket.io.to(userConnected.socketId).emit('newMessage', pushMessage);
     }
     //Inserting this message into the chat list
     try {
