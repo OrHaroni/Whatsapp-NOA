@@ -9,8 +9,19 @@ import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import { userList } from '../database/Database';
 import Modal from '../ModalAddChat/Modal';
-import { getUserPersonel, getUserChats, addChat, getChat } from '../serverCalls/chat';
+import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../serverCalls/chat';
 import { sendMessage, getMessages } from '../serverCalls/message';
+
+
+
+export function removeChat(event, token){
+  const selectedItem = event.currentTarget;
+  var selectedId = selectedItem.parentNode.id;
+  console.log("the id of the chat we want to delete is : ");
+  console.log(selectedId);
+  deleteChat({token, id: selectedId});
+}
+
 
 export function sendSwal(message, icon) {
   /* eslint-disable no-undef */
@@ -129,8 +140,6 @@ function Chat(props) {
     if (textbox.current.value !== '') {
       const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
-      console.log("msg is :") ;
-      console.log(msg);
       // Update the chat messages state by adding the new message
       setChat(await getChat({"token": activeUserToken, "id" : activeChatId}));
       paintAll(activeChatId); // Call paintAll after sending a message
@@ -170,8 +179,6 @@ function Chat(props) {
 
   //Getting the other user of the chat img
   function getOtherUserPic(chat, user) {
-    console.log("chat is :");
-    console.log(chat);
     if (chat?.users[0]?.username === user.username) {
       return chat?.users[1]?.profilePic;
     }
@@ -287,8 +294,14 @@ function Chat(props) {
           </header>
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
-              <ChatPreview in={HoverIn} out={HoverOut} onClick={ClickPreview} lastMessage={getLastMessagecontent(chatpreview.messages)} img={getOtherUserPic(chatpreview, user)} name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
-              created={getLastMessageCreated(chatpreview.messages)} />
+              <ChatPreview
+               in={HoverIn} out={HoverOut} onClick={ClickPreview}
+                lastMessage={getLastMessagecontent(chatpreview.messages)}
+                img={getOtherUserPic(chatpreview, user)}
+                name={getOtherUserDisplayName(chatpreview, user)} id={chatpreview.id}
+                created={getLastMessageCreated(chatpreview.messages)}
+                token={activeUserToken}
+                />
             ))}
           </ul>
         </div>

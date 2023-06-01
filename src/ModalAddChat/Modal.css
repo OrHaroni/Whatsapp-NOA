@@ -42,9 +42,8 @@
   cursor: pointer;
 }
 
-.modalContainer .body {
+.modalContainer .m-body {
   background-color:#bcb0b0;
-  background-image: url("");
   flex: 50%;
   display: flex;
   justify-content: flex-start;

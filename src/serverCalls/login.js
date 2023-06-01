@@ -8,8 +8,7 @@ const loginServer = async (data) => {
       'body': JSON.stringify(data)
     });
     let token = await res.json();
-    console.log(token);
-    console.log(token);
+
     let statusNum = res.status;
     //returning the status number and ID!!
     return [statusNum, token];
