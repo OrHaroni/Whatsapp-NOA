@@ -189,15 +189,12 @@ function Chat(props) {
     event.stopPropagation();
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.parentNode.id;
-    console.log("the id of the chat we want to delete is*** : ");
     console.log(selectedId);
     setDeleteButtonClicked(true);
     var k = await deleteChat(activeUserToken, selectedId);
     console.log(k);
     console.log(":))) ");
     const i = await getUserChats({ token: activeUserToken });
-    console.log("******************");
-    console.log("the new userChatList is : ");
     console.log(i);
     setUserChatList(i);
     if (activeChatId === selectedId) {
