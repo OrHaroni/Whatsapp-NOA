@@ -75,17 +75,23 @@ const getChat = async ({token, id}) => {
 
 //delete a chat from the user chat preview
 const deleteChat = async (token, id) => {
+    console.log("deleteChat****");
     try {
-        await fetch('http://localhost:8080/api/Chats/' + id, {
+        const r = await fetch('http://localhost:8080/api/Chats/' + id, {
             method: 'DELETE',
             headers: {
                 "authorization": token,
                 'Content-Type': 'application/json',
             },
         });
+        console.log("Chat deleted");
+        var k = await r.json();
+        return k;
     } catch (error) {
+        console.log("error");
         console.error(error);
     }
+    
 }
 
 

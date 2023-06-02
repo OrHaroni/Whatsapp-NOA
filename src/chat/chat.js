@@ -12,6 +12,7 @@ import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../
 import { sendMessage, getMessages } from '../serverCalls/message';
 import { io } from 'socket.io-client';
 import socket from '../login/Login.js';
+import { set } from 'mongoose';
 
 
 // this io is the io from the index.html file on the public folder
@@ -188,11 +189,20 @@ function Chat(props) {
     event.stopPropagation();
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.parentNode.id;
-    console.log("the id of the chat we want to delete is : ");
+    console.log("the id of the chat we want to delete is*** : ");
     console.log(selectedId);
     setDeleteButtonClicked(true);
-    await deleteChat(activeUserToken, selectedId);
-    
+    var k = await deleteChat(activeUserToken, selectedId);
+    console.log(k);
+    console.log(":))) ");
+    const i = await getUserChats({ token: activeUserToken });
+    console.log("******************");
+    console.log("the new userChatList is : ");
+    console.log(i);
+    setUserChatList(i);
+    if (activeChatId === selectedId) {
+      setChatClicked(false);
+    }
 }
   const ClickPreview = async (event) => {
     if(!deleteButtonClicked){

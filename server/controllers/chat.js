@@ -71,11 +71,16 @@ const deleteChat = async (req, res) => {
         //Check if chat exist and a chat of user
         var tmpChat = await getChatByIdWithoutAutho(username, id);
         if (tmpChat) {
+            
             await chatService.deleteChat(username, id)
-            res.status(200);
+            
+            console.log("chat deleted");
+            res.status(200).send();
+            return;
         } else {
             //404 tells that not found this chat.
             res.status(404);
+            console.log("chat not found");
         }
     } catch (error) {
         console.error(error);
