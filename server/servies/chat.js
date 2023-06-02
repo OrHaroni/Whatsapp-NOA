@@ -36,7 +36,6 @@ const getChatById = async (username, id) => {
 
 const deleteChat = async (username, id) => {
     try {
-        console.log("in service deleteChat");
         await Chat.deleteOne({
             id: id
         })
