@@ -26,13 +26,13 @@ function ChatPreview(props) {
           <img src={props.img} className="rounded-circle chat-profile-pic" />
         </div>
         <div>
-          <span className="chat-tag-label">{props.name}</span>
+          <span className="chat-tag-label-name">{props.name}</span>
         </div>
         <div>
-          <span className="chat-tag-label">{props.lastMessage}</span>
+          <span className="chat-tag-label-last">{props.lastMessage}</span>
         </div>
         <div className='pre-chat-con'>
-          <span className="chat-tag-label" style={{ textAlign: "center" }}>{formattedDate}</span>
+          <span className="chat-tag-label-date" style={{ textAlign: "center" }}>{formattedDate}</span>
         </div>
 
       </>
@@ -46,7 +46,7 @@ function ChatPreview(props) {
           <img src={props.img} className="rounded-circle chat-profile-pic" />
         </div>
         <div>
-          <span className="chat-tag-label">{props.name}</span>
+          <span className="chat-tag-label-name">{props.name}</span>
         </div>
         <div>
           <span className="chat-tag-label"></span>

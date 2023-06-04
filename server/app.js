@@ -35,7 +35,6 @@ io.on('connection', async (socket) => {
     const socketId = await connectedUsers.findOne({username: receiverUsername});
     // send message to receiver
     io.to(socketId.socketId).emit('render');
-
    }
   });
 

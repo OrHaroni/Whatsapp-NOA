@@ -45,10 +45,14 @@ const getAllChats = async (req, res) => {
 }
 
 const getChatById = async (req, res) => {
+    console.log("getChatById");
     try {
         const username = decode(req.headers.authorization);
         const id = req.params.id;
-        res.status(200).json(await chatService.getChatById(username, id));
+        const i = await chatService.getChatById(username, id);
+        console.log("i:");
+        console.log(i);
+        res.status(200).json(i);
     } catch (error) {
         console.error(error);
         res.status(404);

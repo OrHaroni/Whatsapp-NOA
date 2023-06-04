@@ -148,7 +148,8 @@ ul {
   
   .chat-tag-label {
     position: relative;
-    top: 4%;
+    top: -28%;
+    left:25%;
     width: 50%;
     overflow: hidden;
     border-radius: 12px;
@@ -187,7 +188,7 @@ ul {
   #add-btn {
     position: relative;
     top: 30%;
-    left: 78%;
+    left: 70%;
     width: 25px;
     height: 25px;
     float: left;
@@ -362,7 +363,31 @@ ul {
   
   .delete-b {
     position: relative;
-    right: -1%;
-    top: 29%;
+    right: 0%;
+    top: 11%;
   }
-  
+  .chat-tag-label-name{
+    position: relative;
+    top: -28%;
+    left:43%;
+    width: 50%;
+    overflow: hidden;
+    border-radius: 12px;
+  }
+   .chat-tag-label-date{
+    position: relative;
+    top: -67%;
+    left:46%;
+    width: 50%;
+    overflow: hidden;
+    border-radius: 12px;
+    font-size: 14px;
+  }
+  .chat-tag-label-last{
+    position: relative;
+    top: -28%;
+    left:25%;
+    width: 50%;
+    overflow: hidden;
+    border-radius: 12px;
+  }

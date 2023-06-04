@@ -8,7 +8,7 @@ import addbtn from '../pictures/add-chat.png';
 import ChatPreview from '../chatPreview/ChatPreview.js';
 import Message from '../message/Message.js';
 import Modal from '../ModalAddChat/Modal';
-import { getUserPersonel, getUserChats, addChat, getChat , deleteChat} from '../serverCalls/chat';
+import { getUserPersonel, getUserChats, addChat, getChat, deleteChat } from '../serverCalls/chat';
 import { sendMessage, getMessages } from '../serverCalls/message';
 import { io } from 'socket.io-client';
 import socket from '../login/Login.js';
@@ -48,15 +48,27 @@ function Chat(props) {
   const [userChatList, setUserChatList] = useState([]);
   const [chat, setChat] = useState(null);
   const textbox = useRef();
-  
-  
 
-//if both users are online and send a message to each other, the server send render to the receiver to render the chat:
-    props.socket.on('render', async () => {
-    setChat( await getChat({"token": activeUserToken, "id" : activeChatId}));
-    paintAll(activeChatId); // Call paintAll after sending a message
-  });
 
+
+  //if both users are online and send a message to each other, the server send render to the receiver to render the chat:
+  useEffect(() => {
+    const handleRender = async () => {
+      console.log("render");
+      console.log(activeChatId);
+      console.log(activeUserToken);
+      const myChat = await getChat({ "token": activeUserToken, "id": activeChatId });
+      console.log(myChat);
+      setChat(myChat);
+      paintAll(activeChatId);
+    };
+  
+    props.socket.on('render', handleRender);
+  
+    return () => {
+      props.socket.off('render', handleRender);
+    };
+  }, []);
   //Getting for the first time all the users from the server
   useEffect(() => {
     const fetchUserChatList = async () => {
@@ -153,7 +165,7 @@ function Chat(props) {
 
   const ClickLogout = () => {
     // send to the server that the user is logged out
-    props.socket.emit('logout',user.username);
+    props.socket.emit('logout', user.username);
     root.render(<Login />);
   };
 
@@ -162,12 +174,12 @@ function Chat(props) {
       const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
       // Update the chat messages state by adding the new message
-      setChat(await getChat({"token": activeUserToken, "id" : activeChatId}));
+      setChat(await getChat({ "token": activeUserToken, "id": activeChatId }));
       paintAll(activeChatId); // Call paintAll after sending a message
       // sending to the server the new message
       // send to the server the sender username, the receiver username 
-      const senderUsername = user.username ;
-      const activeChat = await getChat({"token": activeUserToken, "id" : activeChatId});
+      const senderUsername = user.username;
+      const activeChat = await getChat({ "token": activeUserToken, "id": activeChatId });
       const receiverUsername = activeChat.users[0].username === user.username ? activeChat.users[1].username : activeChat.users[0].username;
       console.log("the sender username is : ");
       console.log(senderUsername);
@@ -203,26 +215,26 @@ function Chat(props) {
     if (activeChatId === selectedId) {
       setChatClicked(false);
     }
-}
+  }
   const ClickPreview = async (event) => {
-    if(!deleteButtonClicked){
-    //change the state of the chat because the user entered the first chat
-    setChatClicked(true);
+    if (!deleteButtonClicked) {
+      //change the state of the chat because the user entered the first chat
+      setChatClicked(true);
 
-    // // Set the background color of the clicked li element to rgb(122, 130, 159)
-    const selectedItem = event.currentTarget;
-    var selectedId = selectedItem.id; // Access the "id" attribute using dataset
+      // // Set the background color of the clicked li element to rgb(122, 130, 159)
+      const selectedItem = event.currentTarget;
+      var selectedId = selectedItem.id; // Access the "id" attribute using dataset
 
- 
-    //Getting only the number out of the id
-    selectedId = selectedId.match(/\d+$/)[0];
-    setActiveChatId(selectedId);
 
-    console.log("in preview!!");
-    //updating the userChatPreviewList from the server
-    //Setting the new chat.
-    var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
-    setChat(tmpChat);
+      //Getting only the number out of the id
+      selectedId = selectedId.match(/\d+$/)[0];
+      setActiveChatId(selectedId);
+
+      console.log("in preview!!");
+      //updating the userChatPreviewList from the server
+      //Setting the new chat.
+      var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });
+      setChat(tmpChat);
     }
     setDeleteButtonClicked(false);
   };
@@ -252,53 +264,53 @@ function Chat(props) {
   }
 
   function getLastMessageCreated(messages) {
-    if(messages){
-    let highestId = -Infinity;
-    let lastMessage = null;
-  
-    messages.forEach(message => {
-      if (message.id > highestId) {
-        highestId = message.id;
-        lastMessage = message;
-      }
-    });
-  
-    return lastMessage?.created;
-  }
-  return "";
+    if (messages) {
+      let highestId = -Infinity;
+      let lastMessage = null;
+
+      messages.forEach(message => {
+        if (message.id > highestId) {
+          highestId = message.id;
+          lastMessage = message;
+        }
+      });
+
+      return lastMessage?.created;
+    }
+    return "";
   }
   function getLastMessagecontent(messages) {
-    if(messages){
-    let highestId = -Infinity;
-    let lastMessage = null;
-  
-    messages.forEach(message => {
-      if (message.id > highestId) {
-        highestId = message.id;
-        lastMessage = message;
-      }
-    });
-  
-    return lastMessage?.content;
-  }
-  return "";
+    if (messages) {
+      let highestId = -Infinity;
+      let lastMessage = null;
+
+      messages.forEach(message => {
+        if (message.id > highestId) {
+          highestId = message.id;
+          lastMessage = message;
+        }
+      });
+
+      return lastMessage?.content;
+    }
+    return "";
   }
 
   function getLastMessageCreatedSorting(messages) {
-    if(messages){
-    let highestId = -Infinity;
-    let lastMessage = null;
-  
-    messages?.forEach(message => {
-      if (message.id > highestId) {
-        highestId = message.id;
-        lastMessage = message;
-      }
-    });
-  
-    return lastMessage?.created;
-  }
-  return "";
+    if (messages) {
+      let highestId = -Infinity;
+      let lastMessage = null;
+
+      messages?.forEach(message => {
+        if (message.id > highestId) {
+          highestId = message.id;
+          lastMessage = message;
+        }
+      });
+
+      return lastMessage?.created;
+    }
+    return "";
   }
 
   function ifChatClicked() {
@@ -312,18 +324,18 @@ function Chat(props) {
           </div>
           <div id="active-chat" className="chat-history">
             <ul id="active-chat-list" className="list-unstyled chat-list mb-0">
-            {reversedList ? reversedList?.map((message) => (
-  <Message
-    id={message.id}
-    me={user.username}
-    senderUsername={message.sender?.username} // Extract the necessary properties
-    senderProfilePic={message.sender?.profilePic}
-    senderDisplayName={message.sender?.displayName}
-    messageText={message.content}
-    img={user.profilePic}
-    time={message.created}
-  />
-)) : null}
+              {reversedList ? reversedList?.map((message) => (
+                <Message
+                  id={message.id}
+                  me={user.username}
+                  senderUsername={message.sender?.username} // Extract the necessary properties
+                  senderProfilePic={message.sender?.profilePic}
+                  senderDisplayName={message.sender?.displayName}
+                  messageText={message.content}
+                  img={user.profilePic}
+                  time={message.created}
+                />
+              )) : null}
             </ul>
           </div>
           <div id="send-area">
@@ -358,7 +370,7 @@ function Chat(props) {
             <div id="user-in-chat-left">
               <img src={user.profilePic} className="rounded-circle profile-pic-in-div" />
             </div>
-            <span style={{ position: 'absolute', left: '20%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.displayName}</span>
+            <span style={{ position: 'absolute', left: '34%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.displayName}</span>
             <div id="user-in-chat-right">
               <img onClick={async () => {
                 setModalOpen(true);
@@ -370,16 +382,16 @@ function Chat(props) {
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
               <li onClick={ClickPreview} onMouseEnter={HoverIn} onMouseLeave={HoverOut} className="chat-tag" id={chatpreview.id}>
-              <ChatPreview
-                lastMessage={getLastMessagecontent(chatpreview.messages)}
-                img={getOtherUserPic(chatpreview, user)}
-                name={getOtherUserDisplayName(chatpreview, user)}
-                created={getLastMessageCreated(chatpreview.messages)}
-                token={activeUserToken}
-                deleteButtonClicked={deleteButtonClicked}
-                setDeleteButtonClicked={setDeleteButtonClicked}
+                <ChatPreview
+                  lastMessage={getLastMessagecontent(chatpreview.messages)}
+                  img={getOtherUserPic(chatpreview, user)}
+                  name={getOtherUserDisplayName(chatpreview, user)}
+                  created={getLastMessageCreated(chatpreview.messages)}
+                  token={activeUserToken}
+                  deleteButtonClicked={deleteButtonClicked}
+                  setDeleteButtonClicked={setDeleteButtonClicked}
                 />
-                <button onClick={ClickDelete} type="button" class="btn btn-danger delete-b">X</button>
+                <button onClick={ClickDelete} type="button" className="btn btn-danger delete-b">X</button>
               </li>
             ))}
           </ul>
