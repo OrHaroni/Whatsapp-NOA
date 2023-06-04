@@ -25,7 +25,7 @@ app.use(cors());
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/index.html'));
-    console.log(path.join);
+
   });
 
 io.on('connection', async (socket) => {
@@ -77,7 +77,7 @@ io.on('connection', async (socket) => {
 
   socket.on('close', async () => {
     // Disconnect users and clean up resources here
-    console.log('Server is about to exit. Cleaning up...');
+
 
 });
 

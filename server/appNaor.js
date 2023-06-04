@@ -21,13 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors());
 
-// //Using env to get rid of magic strings and use local and test in config
-// const customENV = require('custom-env');
-// customENV.env(process.env.NODE_ENV, './config');
 
-// //Log the url and port:
-// console.log(process.env.CONNECTION_STRING);
-// console.log(process.env.PORT);
 
 const mongoose = require('mongoose');
 app.use(express.static('../public'));
@@ -64,10 +58,10 @@ app.post('/api/Chats', function (req, res) {
     const { token, username } = req.body; // Retrieve the token and username from the request body
   
     // Find the user in the users array based on the token
-    console.log("before work 1 ");
+
 
     const user = users.find(u => u.token === token);
-    console.log("work 1 " +user.username);
+
   
     if (user) {
       // Check if the username exists
@@ -131,10 +125,8 @@ app.get('/api/Chats', function (req, res) {
 app.get('/api/Chats/:id', function (req, res) {
     const { token } = req.headers; // Retrieve the token from the request headers
     const { id } = req.params; // Retrieve the chat ID from the request parameters
-    console.log("id chat to get is " + id);
     // Find the user in the users array based on the token
     const user = users.find(u => u.token === token);
-    console.log("work 2 " +user.username);
   
     if (user) {
       // Find the chat in the user's chatList based on the ID
@@ -184,21 +176,20 @@ app.get('/api/Chats/:id', function (req, res) {
 app.delete('/api/Chats/:id', function (req, res) {
  // need to adjust && didnt see it client side :O
 
-    console.log("Delete : /api/Chats:id ");
+
     res.end();
 });
 //  POST route for /api/Chats/:id/Messages
 app.post('/api/Chats/:id/Messages', function (req, res) {
  // need to adjust 
 
-    console.log("POST : /api/Chats:id/Messages ");
     res.end();
 });
 //  GET route for /api/Chats/:id/Messages
 app.get('/api/Chats/:id/Messages', function (req, res) {
      // need to adjust 
 
-    console.log("GET : /api/Chats:id/Messages ");
+ 
     res.end();
 });
 
@@ -227,7 +218,7 @@ app.post('/api/Tokens', function (req, res) {
 // POST route for /api/Users
 app.post('/api/Users', function (req, res) {
  // need to adjust 
-    console.log("POST : /api/Users ");
+
     res.end();
 });
 

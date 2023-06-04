@@ -82,7 +82,7 @@ function Chat(props) {
 //if both users are online and send a message to each other, the server send render to the receiver to render the chat:
     props.socket.off('render').on('render', async () => {
       try{
-        console.log("render");
+
         setChat( await getChat({"token": activeUserToken, "id" : activeChatId}));
         paintAll(activeChatId); // Call paintAll after sending a message
       }
@@ -218,7 +218,7 @@ function Chat(props) {
     event.stopPropagation();
     const selectedItem = event.currentTarget;
     var selectedId = selectedItem.parentNode.id;
-    console.log(selectedId);
+
     // If the user is deleting the active chat, set the screen to the default screen
     if (selectedId === activeChatId) {
       setChatClicked(false);
@@ -250,7 +250,7 @@ function Chat(props) {
       selectedId = selectedId.match(/\d+$/)[0];
       setActiveChatId(selectedId);
 
-      console.log("in preview!!");
+
       //updating the userChatPreviewList from the server
       //Setting the new chat.
       var tmpChat = await getChat({ "token": activeUserToken, "id": selectedId });

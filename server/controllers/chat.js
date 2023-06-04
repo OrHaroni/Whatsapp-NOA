@@ -45,13 +45,12 @@ const getAllChats = async (req, res) => {
 }
 
 const getChatById = async (req, res) => {
-    console.log("getChatById");
+
     try {
         const username = decode(req.headers.authorization);
         const id = req.params.id;
         const i = await chatService.getChatById(username, id);
-        console.log("i:");
-        console.log(i);
+
         res.status(200).json(i);
     } catch (error) {
         console.error(error);
@@ -59,9 +58,9 @@ const getChatById = async (req, res) => {
     }
 }
 
-async function getChatByIdWithoutAutho(username, id){
+async function getChatByIdWithoutAutho(username, id) {
     try {
-       return await chatService.getChatById(username, id);
+        return await chatService.getChatById(username, id);
     } catch (error) {
         console.error(error);
         return null;
@@ -129,14 +128,14 @@ function decode(token) {
 
 async function checkIfThereIsChat(firstUsername, secondUsername) {
     const chatList = await chatService.getAllChats(firstUsername);
-    
+
     let hasChat = false;
     chatList.some(item => {
-      if (item.users[0].username === secondUsername || item.users[1].username === secondUsername) {
-        hasChat = true;
-        return true; // exit the loop early
-      }
+        if (item.users[0].username === secondUsername || item.users[1].username === secondUsername) {
+            hasChat = true;
+            return true; // exit the loop early
+        }
     });
-  
+
     return hasChat;
-  }
+}

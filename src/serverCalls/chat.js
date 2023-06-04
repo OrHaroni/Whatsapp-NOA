@@ -88,7 +88,7 @@ const deleteChat = async (token, id) => {
         var k = await r.json();
         return k;
     } catch (error) {
-        console.log("error");
+
         console.error(error);
     }
     

@@ -34,13 +34,13 @@ function Login() {
       const data = { "username": u, "password": p };
       //the function returns 2 values
       const [statusNum, userToken] = await loginServer(data);
-      console.log(statusNum);
+
       if (statusNum === 200) {
       
 
         //getting more data or the user
         const userData = await getUserPersonel({ "username": u, "token": userToken });
-        console.log("Login success");
+
         // sending the server message that the user is connected using the socketIO
         socket.emit('userConnected', u);
         // print the user data

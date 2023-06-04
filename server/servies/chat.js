@@ -41,7 +41,7 @@ const deleteChat = async (username, id) => {
         })
     }
     catch (error) {
-        console.log("Didnt find a chat with this id: " + id + " , return null!");
+
     }
 }
 const sendMessage = async (username, id, msg) => {
@@ -62,7 +62,7 @@ const sendMessage = async (username, id, msg) => {
         await message.save();
         return tmp;
       } catch(error){
-        console.log("there is an error!");
+
         console.error(error);
     }
 }

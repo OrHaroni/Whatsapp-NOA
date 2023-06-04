@@ -13,7 +13,7 @@ const getUser = async (username, password) => {
   try {
     return await UserPassName.findOne({ username, password }).exec();
   } catch (error) {
-    console.log("there is an error!");
+
     console.error(error);
   }
 };
@@ -23,7 +23,7 @@ const findUserByUsername = async (username) => {
     const  user =  await UserPassName.findOne({username}).exec();
     return user;
   } catch (error) {
-    console.log("there is an error!");
+
     console.error(error);
     return null;
   }
