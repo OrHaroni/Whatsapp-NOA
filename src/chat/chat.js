@@ -54,7 +54,6 @@ function Chat(props) {
     props.socket.on('render', async () => {
     setChat( await getChat({"token": activeUserToken, "id" : activeChatId}));
     paintAll(activeChatId); // Call paintAll after sending a message
-    
   });
 
   //Getting for the first time all the users from the server
@@ -190,6 +189,10 @@ function Chat(props) {
     var selectedId = selectedItem.parentNode.id;
     console.log("the id of the chat we want to delete is : ");
     console.log(selectedId);
+    // If the user is deleting the active chat, set the screen to the default screen
+    if (selectedId === activeChatId) {
+      setChatClicked(false);
+    }
     setDeleteButtonClicked(true);
     await deleteChat(activeUserToken, selectedId);
     
