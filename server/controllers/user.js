@@ -1,5 +1,7 @@
 const userService = require('../servies/user.js');
 const jwt = require('jsonwebtoken');
+const connectedUsers =require('../models/connectedUsers.js');
+
 
 const createUser = async (req, res) => {
   const username = req.body.username;
@@ -22,6 +24,12 @@ const login = async (req, res) => {
     const p = req.body.password;
     const user = await userService.getUser(u, p);
     if (user) {
+      // check if the user is already logged in, if yes , don't allow login and return error
+      const userAlreadyLoggedIn =  await connectedUsers.findOne({username: u});
+      if(userAlreadyLoggedIn){
+        res.status(402).json({ error: "User already logged in" });
+        return;
+      }
       const token = jwt.sign({ username: u }, "key");
       res.json(token);
     } else {

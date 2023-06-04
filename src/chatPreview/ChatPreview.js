@@ -1,6 +1,6 @@
 //Returning the HTML code of a Chat Preview
 function ChatPreview(props) {
-
+  props.socket.emit('renderAddChat',props.username);
   if (props.lastMessage) {
     const formatDate = (dateString) => {
       const date = new Date(dateString);

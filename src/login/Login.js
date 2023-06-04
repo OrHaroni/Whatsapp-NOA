@@ -34,6 +34,7 @@ function Login() {
       const data = { "username": u, "password": p };
       //the function returns 2 values
       const [statusNum, userToken] = await loginServer(data);
+      console.log(statusNum);
       if (statusNum === 200) {
       
 
@@ -45,6 +46,9 @@ function Login() {
         // print the user data
         root.render(<Chat user={userData} token={userToken} socket={socket} />)
 
+      }
+      else if (statusNum === 402) {
+        sendSwal("User already connected", "warning");
       }
       else {
         sendSwal("Incorect username or\\and password, please try again.", "warning");
