@@ -397,10 +397,11 @@ function Chat(props) {
       <div id="main-chat" className=" form-container p-4 rounded in-chat">
         <div id="contacts-list" className="contacts-list">
           <header id="contacts-header" className="user-in-chat">
+            <span className="user-txt-name">{user.displayName}</span>
             <div id="user-in-chat-left">
               <img src={user.profilePic} className="rounded-circle profile-pic-in-div" />
             </div>
-            <span style={{ position: 'absolute', left: '34%', top: '35%', width: '250px', height: '20px', fontWeight: 'bold' }}>{user.displayName}</span>
+            
             <div id="user-in-chat-right">
               <img onClick={async () => {
                 setModalOpen(true);

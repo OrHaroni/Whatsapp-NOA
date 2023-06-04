@@ -109,7 +109,7 @@ function Register() {
           <label htmlFor="exampleFormControlInput1" className="form-label">Display Name</label><br></br>
           <input onKeyDown={ClickEnter} ref={displaynamev} type="Display Name" className="form-control" id="exampleFormControlInput1"></input><br></br>
           <label htmlFor="formFile" className="form-label">Picture</label><br></br>
-          <input onChange={convertToBase64} className="form-control" type="file"></input><br></br>
+          <input onChange={convertToBase64} className="form-control" accept={".jpg, .jpeg, .png"}type="file"></input><br></br>
           {showImage()}
           <button onClick={ClickRegister} type="submit" className="btn btn-primary our-btn">Register</button>
           <button id="have-acc" onClick={ClickLogin} type="submit" className="btn btn-primary our-btn">I already have an account</button>
