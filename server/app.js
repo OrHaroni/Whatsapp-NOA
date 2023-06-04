@@ -8,6 +8,13 @@ const path = require('path');
 const connectedUsers =require('./models/connectedUsers.js');
 
 
+// when starting the serer,delete all the connected users
+const deleteAllConnectedUsers = async () => {
+  //delete all the connected users
+await connectedUsers.deleteMany({}).exec();
+}
+deleteAllConnectedUsers();
+
 
 
 // Import the 'cors' package
@@ -38,6 +45,26 @@ io.on('connection', async (socket) => {
    }
   });
 
+  
+  socket.on('renderAddChat', async(username) => {
+    const ifReceiverConnected = await connectedUsers.findOne({username: username}); 
+    if(ifReceiverConnected){
+     // find receiver socket id
+     // send message to receiver
+     io.to(ifReceiverConnected.socketId).emit('renderAddChat');
+    }
+  
+  });
+
+    socket.on('renderDeleteChat', async(username) => {
+    const ifReceiverConnected = await connectedUsers.findOne({username: username}); 
+    if(ifReceiverConnected){
+     // send message to receiver
+     io.to(ifReceiverConnected.socketId).emit('renderDeleteChat');
+    }
+  });
+
+
   socket.on('logout', async() => {
     // remove user from connected users
     await connectedUsers.deleteOne({ socketId: socket.id });
@@ -53,6 +80,7 @@ io.on('connection', async (socket) => {
     console.log('Server is about to exit. Cleaning up...');
 
 });
+
 });
 
 const userRoutes = require('./routes/user.js');

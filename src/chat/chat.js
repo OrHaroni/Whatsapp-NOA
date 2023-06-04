@@ -30,6 +30,8 @@ export function sendSwal(message, icon) {
 export const AddChatPreview = (chat, setUserChatList, status) => {
   if (status === 200) {
     setUserChatList((prevChatList) => [...prevChatList, chat]);
+    // use socket.io to send a message to the server to send a message to the other user in the chat to render the chat
+
   } else if (status === 404) {
     sendSwal("User isnt found", "warning");
   } else if (status === 501) {
@@ -50,25 +52,45 @@ function Chat(props) {
   const textbox = useRef();
 
 
+ // render automatic if the other user add you to chat if both are online
+ props.socket.off('renderDeleteChat').on('renderDeleteChat', async () => {
+  try{
+    const i = await getUserChats({ token: activeUserToken });
+    setUserChatList(i);
+    setChatClicked(false);
+  }
+  catch(error){
+    console.error(error);
+  }
+});
 
-  //if both users are online and send a message to each other, the server send render to the receiver to render the chat:
-  useEffect(() => {
-    const handleRender = async () => {
-      console.log("render");
-      console.log(activeChatId);
-      console.log(activeUserToken);
-      const myChat = await getChat({ "token": activeUserToken, "id": activeChatId });
-      console.log(myChat);
-      setChat(myChat);
-      paintAll(activeChatId);
-    };
-  
-    props.socket.on('render', handleRender);
-  
-    return () => {
-      props.socket.off('render', handleRender);
-    };
-  }, []);
+  // render automatic if the other user add you to chat if both are online
+  props.socket.off('renderAddChat').on('renderAddChat', async () => {
+    try{
+      const i = await getUserChats({ token: activeUserToken });
+      setUserChatList(i);
+    }
+    catch(error){
+      console.error(error);
+    }
+  });
+
+
+
+
+
+//if both users are online and send a message to each other, the server send render to the receiver to render the chat:
+    props.socket.off('render').on('render', async () => {
+      try{
+        console.log("render");
+        setChat( await getChat({"token": activeUserToken, "id" : activeChatId}));
+        paintAll(activeChatId); // Call paintAll after sending a message
+      }
+      catch(error){
+        console.error(error);
+      }
+    });
+
   //Getting for the first time all the users from the server
   useEffect(() => {
     const fetchUserChatList = async () => {
@@ -168,25 +190,21 @@ function Chat(props) {
     props.socket.emit('logout', user.username);
     root.render(<Login />);
   };
-
   const ClickSend = async () => {
     if (textbox.current.value !== '') {
       const msg = await sendMessage({ "id": activeChatId, "token": activeUserToken, "msg": textbox.current.value });
       textbox.current.value = '';
       // Update the chat messages state by adding the new message
-      setChat(await getChat({ "token": activeUserToken, "id": activeChatId }));
+
+      const activeChat = await getChat({"token": activeUserToken, "id" : activeChatId});
+      setChat(activeChat);
       paintAll(activeChatId); // Call paintAll after sending a message
       // sending to the server the new message
       // send to the server the sender username, the receiver username 
-      const senderUsername = user.username;
-      const activeChat = await getChat({ "token": activeUserToken, "id": activeChatId });
-      const receiverUsername = activeChat.users[0].username === user.username ? activeChat.users[1].username : activeChat.users[0].username;
-      console.log("the sender username is : ");
-      console.log(senderUsername);
-      console.log("the receiver username is : ");
-      console.log(receiverUsername);
-      props.socket.emit('newMessage', senderUsername, receiverUsername);
+      const senderUsername = user.username ;
 
+      const receiverUsername = activeChat.users[0].username === user.username ? activeChat.users[1].username : activeChat.users[0].username;
+      props.socket.emit('newMessage', senderUsername, receiverUsername);
     }
   };
 
@@ -207,15 +225,17 @@ function Chat(props) {
     }
     setDeleteButtonClicked(true);
     var k = await deleteChat(activeUserToken, selectedId);
-    console.log(k);
-    console.log(":))) ");
     const i = await getUserChats({ token: activeUserToken });
-    console.log(i);
     setUserChatList(i);
+    props.socket.emit('renderDeleteChat',getOtherUsername(chat, user));
+    // If the user is deleting the active chat, set the screen to the default screen
     if (activeChatId === selectedId) {
       setChatClicked(false);
     }
-  }
+
+}
+
+
   const ClickPreview = async (event) => {
     if (!deleteButtonClicked) {
       //change the state of the chat because the user entered the first chat
@@ -254,6 +274,14 @@ function Chat(props) {
     }
     return chat?.users[0]?.profilePic;
   }
+
+  function getOtherUsername(chat, user) {
+    if (chat?.users[0]?.username === user.username) {
+      return chat?.users[1]?.username;
+    }
+    return chat?.users[0]?.username;
+  }
+
 
   //Getting the other user of the chat username
   function getOtherUserDisplayName(chat, user) {
@@ -382,14 +410,17 @@ function Chat(props) {
           <ul className="list-unstyled chat-list mb-0" id="chat-list">
             {userChatList?.map((chatpreview) => (
               <li onClick={ClickPreview} onMouseEnter={HoverIn} onMouseLeave={HoverOut} className="chat-tag" id={chatpreview.id}>
-                <ChatPreview
-                  lastMessage={getLastMessagecontent(chatpreview.messages)}
-                  img={getOtherUserPic(chatpreview, user)}
-                  name={getOtherUserDisplayName(chatpreview, user)}
-                  created={getLastMessageCreated(chatpreview.messages)}
-                  token={activeUserToken}
-                  deleteButtonClicked={deleteButtonClicked}
-                  setDeleteButtonClicked={setDeleteButtonClicked}
+
+              <ChatPreview
+                lastMessage={getLastMessagecontent(chatpreview.messages)}
+                img={getOtherUserPic(chatpreview, user)}
+                name={getOtherUserDisplayName(chatpreview, user)}
+                username={getOtherUsername(chatpreview, user)}
+                created={getLastMessageCreated(chatpreview.messages)}
+                token={activeUserToken}
+                deleteButtonClicked={deleteButtonClicked}
+                setDeleteButtonClicked={setDeleteButtonClicked}
+                socket={props.socket}
                 />
                 <button onClick={ClickDelete} type="button" className="btn btn-danger delete-b">X</button>
               </li>
