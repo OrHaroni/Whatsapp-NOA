@@ -80,7 +80,6 @@ io.on('connection', async (socket) => {
 
 
 });
-
 });
 
 const userRoutes = require('./routes/user.js');
