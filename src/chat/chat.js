@@ -58,6 +58,7 @@ function Chat(props) {
     const i = await getUserChats({ token: activeUserToken });
     setUserChatList(i);
     setChatClicked(false);
+    sortListPreview();
   }
   catch(error){
     console.error(error);
@@ -69,6 +70,7 @@ function Chat(props) {
     try{
       const i = await getUserChats({ token: activeUserToken });
       setUserChatList(i);
+      sortListPreview();
     }
     catch(error){
       console.error(error);
